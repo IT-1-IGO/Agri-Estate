@@ -1,0 +1,39 @@
+.lg-page { background: #fff; min-height: 100vh; padding-top: 0; color: #31424a; }
+.lg-hero { position: relative; overflow: hidden; background: linear-gradient(180deg, #e9f5ee, #f3faf5); padding: 150px 20px 56px; text-align: center; }
+.lg-hero__img { position: absolute; inset: 0 0 0 auto; width: 46%; background: url('/images/estates-hero-landscape-v4.webp') center/cover no-repeat; opacity: .55; -webkit-mask-image: linear-gradient(90deg, transparent, #000 70%); mask-image: linear-gradient(90deg, transparent, #000 70%); }
+.lg-hero__in { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+.lg-hero__icon { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: #dcefe3; color: #0b6b43; margin-bottom: 14px; }
+.lg-hero h1 { margin: 0; font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.1; font-weight: 800; color: #0a2f25; text-transform: none; letter-spacing: -.01em; }
+.lg-hero h1 span { color: #0e8a5a; }
+.lg-hero p { margin: 14px auto 0; max-width: 560px; font-size: 1rem; line-height: 1.65; color: #4a5b62; }
+.lg-wrap { max-width: 1180px; margin: 0 auto; padding: 36px 20px 80px; display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 32px; align-items: start; }
+.lg-toc { position: sticky; top: 110px; }
+.lg-toc__h { margin: 0 0 12px; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #5c6d72; }
+.lg-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.lg-toc a { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 14px; font-size: .86rem; font-weight: 500; line-height: 1.3; color: #46585f; text-decoration: none; transition: background .25s, color .25s; }
+.lg-toc a svg { flex: none; color: #5a7a6c; }
+.lg-toc a:hover { background: #f0f7f2; color: #0a4a33; }
+.lg-toc a.is-active { background: #e2f1e8; color: #0a4a33; font-weight: 700; }
+.lg-main { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.lg-card { display: flex; gap: 20px; padding: 26px 28px; border: 1px solid #dfeae3; border-radius: 22px; background: #fff; box-shadow: 0 8px 24px -18px rgba(10,60,40,.25); scroll-margin-top: 110px; }
+.lg-card__ico { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: #e3f1e8; color: #0b6b43; }
+.lg-card__body { min-width: 0; }
+.lg-card h2 { margin: 0 0 8px; font-size: 1.12rem; font-weight: 700; color: #0a2f25; text-transform: none; letter-spacing: 0; }
+.lg-card p { margin: 0 0 8px; font-size: .94rem; line-height: 1.7; color: #52646b; }
+.lg-card ul { margin: 6px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.lg-card li { font-size: .92rem; line-height: 1.65; color: #52646b; }
+.lg-card li::marker { color: #2f9a62; }
+.lg-card a { color: #0e8a5a; font-weight: 600; }
+.lg-switch { text-align: center; font-size: .85rem; color: #6b7a80; margin-top: 8px; }
+.lg-switch a { color: #0a4a33; text-decoration: none; font-weight: 600; } .lg-switch a:hover { text-decoration: underline; } .lg-switch span { margin: 0 8px; }
+@media (max-width: 900px) {
+  .lg-wrap { grid-template-columns: 1fr; gap: 20px; padding-top: 24px; }
+  .lg-toc { position: static; }
+  .lg-toc ul { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .lg-toc a { white-space: nowrap; padding: 9px 14px; border: 1px solid #dfeae3; }
+  .lg-hero__img { width: 100%; opacity: .25; -webkit-mask-image: none; mask-image: none; }
+  .lg-hero { padding: 128px 18px 40px; }
+  .lg-card { padding: 20px 18px; gap: 14px; }
+}
+@media (max-width: 520px) { .lg-card { flex-direction: column; } }
+@media (prefers-reduced-motion: reduce) { .lg-toc a { transition: none; } }

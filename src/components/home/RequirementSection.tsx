@@ -56,7 +56,7 @@ const RequirementSection: React.FC = () => {
   };
 
   return (
-    <section className="bg-[#f4f9ee] py-20 lg:py-28" aria-labelledby="requirement-heading">
+    <section className="bg-[#F2F3F0] py-20 lg:py-28" aria-labelledby="requirement-heading">
       <div className="container-pro grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 items-start">
         <div className="lg:sticky lg:top-32">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1B5E20]">Tell us what you need</p>
@@ -73,7 +73,7 @@ const RequirementSection: React.FC = () => {
           </ul>
         </div>
 
-        <div className="rounded-[28px] bg-white p-6 sm:p-9 shadow-[0_30px_70px_-34px_rgba(15,77,36,0.55)]">
+        <div className="rounded-[28px] bg-[#E8EBE6] p-6 sm:p-9 shadow-[0_30px_70px_-34px_rgba(15,77,36,0.55)]">
           {status === 'done' ? (
             <div role="status" className="flex items-start gap-3 rounded-2xl bg-[#eaf4e6] p-6 text-[#0f4d24]">
               <CheckCircle2 className="mt-0.5 shrink-0" />

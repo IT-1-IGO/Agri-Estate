@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { X } from 'lucide-react';
 import { brandsData } from '../../data/brandsData';
 
 type Brand = (typeof brandsData)[number];
@@ -15,29 +17,90 @@ const CardBody: React.FC<{ brand: Brand; linked: boolean }> = ({ brand }) => (
   </>
 );
 
-const BrandCard: React.FC<{ brand: Brand; hidden?: boolean }> = ({ brand, hidden }) => {
-  const url = brand.url;
-  if (url) {
+const BrandCard: React.FC<{ brand: Brand; hidden?: boolean; onSoon: (b: Brand) => void }> = ({ brand, hidden, onSoon }) => {
+  const cls = `${CARD} cursor-pointer hover:-translate-y-1.5 hover:border-secondary/40 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary`;
+  if (brand.status === 'live' && brand.url) {
     return (
       <a
-        href={url}
+        href={brand.url}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${brand.title} (opens official website in a new tab)`}
         tabIndex={hidden ? -1 : undefined}
-        className={`${CARD} cursor-pointer hover:-translate-y-1.5 hover:border-secondary/40 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary`}
+        className={cls}
       >
         <CardBody brand={brand} linked />
       </a>
     );
   }
-  return null;
+  return (
+    <button
+      type="button"
+      aria-label={`${brand.title} (coming soon)`}
+      tabIndex={hidden ? -1 : undefined}
+      onClick={() => onSoon(brand)}
+      className={`${cls} text-left`}
+    >
+      <CardBody brand={brand} linked={false} />
+    </button>
+  );
+};
+
+const ComingSoonModal: React.FC<{ brand: Brand | null; onClose: () => void }> = ({ brand, onClose }) => {
+  const btn = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!brand) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    btn.current?.focus();
+    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey); };
+  }, [brand, onClose]);
+  return (
+    <AnimatePresence>
+      {brand && (
+        <motion.div
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-[#052e22]/55 p-4 backdrop-blur-sm"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
+          <motion.div
+            role="dialog" aria-modal="true" aria-labelledby="soon-title"
+            className="relative w-full max-w-md rounded-[28px] border border-[#cfe3d3] bg-gradient-to-b from-white to-[#f3f9ee] p-8 text-center shadow-[0_30px_80px_-20px_rgba(5,46,34,0.45)]"
+            initial={{ opacity: 0, y: 24, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.97 }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button type="button" aria-label="Close" onClick={onClose} className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-[#124B3B] transition-colors hover:bg-[#124B3B]/10">
+              <X size={18} />
+            </button>
+            <div className="mx-auto flex h-24 w-40 items-center justify-center rounded-2xl bg-white p-3 shadow-sm ring-1 ring-[#5A963B]/20">
+              <img src={brand.logo} alt="" className="max-h-full max-w-full object-contain" />
+            </div>
+            <p className="mt-4 text-sm font-bold text-[#124B3B]">{brand.title}</p>
+            <div className="mx-auto mt-3 h-1 w-12 rounded-full bg-[#5A963B]" />
+            <h2 id="soon-title" className="mt-4 text-3xl font-black text-[#124B3B] normal-case tracking-normal">Coming Soon</h2>
+            <p className="mt-1 text-base font-semibold text-[#5A963B]">Something Exciting Is on the Way!</p>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600">
+              We&rsquo;re working hard to bring this brand&rsquo;s website to you. Stay tuned for updates as we prepare to launch.
+            </p>
+            <button ref={btn} type="button" onClick={onClose} className="mt-6 rounded-full bg-[#124B3B] px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition hover:bg-[#0d3a2d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5A963B]">
+              Got It
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 };
 
 const arrowBtn =
   'flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-black/10 text-text-muted transition-colors hover:bg-primary hover:text-white';
 
 const BrandsMarquee = () => {
+  const [soon, setSoon] = useState<Brand | null>(null);
+  const closeSoon = React.useCallback(() => setSoon(null), []);
   return (
     <section className="overflow-hidden border-b border-t border-black/5 bg-background py-12 md:py-14">
       <div className="container-pro">
@@ -78,16 +141,17 @@ const BrandsMarquee = () => {
         <div className="animate-marquee hover:animation-play-state-paused group flex w-max py-2">
           <div className="flex">
             {brandsData.map((brand) => (
-              <BrandCard key={`a-${brand.id}`} brand={brand} />
+              <BrandCard key={`a-${brand.id}`} brand={brand} onSoon={setSoon} />
             ))}
           </div>
           <div className="flex" aria-hidden="true">
             {brandsData.map((brand) => (
-              <BrandCard key={`b-${brand.id}`} brand={brand} hidden />
+              <BrandCard key={`b-${brand.id}`} brand={brand} hidden onSoon={setSoon} />
             ))}
           </div>
         </div>
       </div>
+      <ComingSoonModal brand={soon} onClose={closeSoon} />
     </section>
   );
 };

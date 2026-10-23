@@ -29,7 +29,7 @@ const PATHS = [
 ];
 
 const SellBuyPaths: React.FC = () => (
-  <section className="relative z-20 py-16 bg-background" aria-labelledby="paths-heading">
+  <section className="relative z-20 py-16 bg-[#F3EFE7]" aria-labelledby="paths-heading">
     <div className="container-pro">
       <div className="max-w-3xl mb-10">
         <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#1B5E20] mb-3">IGO Group of Companies</p>

@@ -11,7 +11,6 @@ import Hero from './components/Hero';
 import AIAssistant from './components/ai/AIAssistant';
 import { AnimatePresence } from 'framer-motion';
 import PropertyCard from './components/PropertyCard';
-import About from './pages/About';
 import AboutPage from './pages/AboutPage';
 import Contact from './pages/Contact';
 import { Suspense, lazy } from 'react';
@@ -45,9 +44,9 @@ const Services = lazy(() => import('./pages/Services'));
 const LegalServices = lazy(() => import('./pages/services/LegalServices'));
 const SoilIntelligence = lazy(() => import('./pages/services/SoilIntelligence'));
 const Policy = lazy(() => import('./pages/Policy'));
+const Terms = lazy(() => import('./pages/Terms'));
 import PopularLocations from './components/home/PopularLocations';
 import VerifiedInvestments from './components/home/VerifiedInvestments';
-import WhyChooseAgriEstates from './components/home/WhyChooseAgriEstates';
 import KnowledgeHubSection from './components/home/KnowledgeHubSection';
 import { submitLead } from './lib/leadsService';
 import LiveChatWidget from './components/LiveChatWidget';
@@ -152,30 +151,24 @@ const Home: React.FC = () => {
 
         <SellBuyPaths />
 
-        {/* About Section */}
-        <About standalone={false} />
-
         {/* Location Quick Links */}
         <PopularLocations />
 
         <VerifiedInvestments />
 
-      {/* Why Choose IGO? */}
-      <WhyChooseAgriEstates />
-
       {/* Agri Estate Categories */}
-      <section className="section-padding bg-primary text-white relative overflow-hidden">
+      <section className="py-16 lg:py-24 bg-primary text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-topo opacity-5 pointer-events-none"></div>
         <div className="container-pro">
-          <div className="max-w-3xl mx-auto text-center mb-24">
+          <div className="max-w-3xl mx-auto text-center mb-10 lg:mb-14">
             <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Agri Estate Models</span>
-            <h2 className="heading-lg text-white">Land Into <br /><span className="text-secondary italic">Farm Income</span></h2>
-            <p className="text-lg text-white/50 font-light leading-relaxed">
+            <h2 className="heading-lg !mb-4 lg:!text-5xl text-white">Land Into <br /><span className="text-secondary italic">Farm Income</span></h2>
+            <p className="text-base md:text-lg text-white/50 font-light leading-relaxed">
               Estate-format agriculture models designed around real crops, water access, market linkage, and owner reporting.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {[
               { title: 'Protected Cultivation', desc: 'Shade net and polyhouse vegetable models for high-value recurring harvests.', img: '/images/properties/polyhouse.png', icon: <Sprout />, filter: 'Protected', location: 'Kanchipuram', id: 'polyhouse-project' },
               { title: 'Horticulture Orchards', desc: 'Fruit plantation estates with drip irrigation, staged harvest, and managed sales potential.', img: '/images/properties/mango-orchard.png', icon: <TrendingUp />, filter: 'Horticulture', location: 'Maduranthagam', id: 'horticulture-project' },
@@ -184,16 +177,16 @@ const Home: React.FC = () => {
               <Link
                 key={i}
                 to={`/properties/${cat.id}`}
-                className="group relative h-[600px] rounded-[48px] overflow-hidden cursor-pointer shadow-2xl bg-black block"
+                className="group relative h-[420px] lg:h-[460px] rounded-[40px] overflow-hidden cursor-pointer shadow-2xl bg-black block"
               >
                 <motion.div whileHover={{ y: -15 }} className="w-full h-full">
                   <img src={cat.img} alt={cat.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 opacity-70" />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent"></div>
-                  <div className="absolute bottom-12 left-10 right-10">
-                    <div className="w-14 h-14 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-white mb-8 border border-white/20 group-hover:bg-secondary group-hover:border-secondary transition-all">
+                  <div className="absolute bottom-8 left-8 right-8">
+                    <div className="w-14 h-14 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-white mb-5 border border-white/20 group-hover:bg-secondary group-hover:border-secondary transition-all">
                       {cat.icon}
                     </div>
-                    <h3 className="text-4xl font-bold text-white mb-4 leading-tight uppercase tracking-tighter">{cat.title}</h3>
+                    <h3 className="text-3xl font-bold text-white mb-3 leading-tight uppercase tracking-tighter">{cat.title}</h3>
                     <p className="text-white/60 text-sm leading-relaxed mb-8 opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-4 group-hover:translate-y-0">{cat.desc}</p>
                     <div className="flex items-center text-white font-bold text-[10px] uppercase tracking-[0.2em] group/btn">
                       View Details <ArrowRight size={18} className="ml-3 group-hover/btn:translate-x-3 transition-transform" />
@@ -207,19 +200,19 @@ const Home: React.FC = () => {
       </section>
 
       {/* Recently Added */}
-      <section className="section-padding bg-background border-b border-black/5">
+      <section className="py-16 lg:py-24 bg-[#EAF1F5] border-b border-black/5">
         <div className="container-pro">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-10 lg:mb-14">
             <div className="max-w-xl">
               <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Ready for Planning</span>
-              <h2 className="heading-lg mb-0 text-primary">New Agri <span className="text-secondary italic">Estates</span></h2>
+              <h2 className="heading-lg !mb-0 lg:!text-5xl text-primary">New Agri <span className="text-secondary italic">Estates</span></h2>
             </div>
             <Link to="/locations" className="flex items-center text-primary font-black uppercase tracking-widest text-[11px] hover:text-secondary transition-colors">
               Explore Premium Estates <ArrowRight size={20} className="ml-2" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 [&_.aspect-\[16\/11\]]:aspect-[16/10]">
             {recentlyAdded.map((prop: Property) => (
               <PropertyCard key={prop.id} {...prop} />
             ))}
@@ -297,6 +290,7 @@ function App() {
               <Route path="/services/legal" element={<LegalServices />} />
               <Route path="/services/soil" element={<SoilIntelligence />} />
               <Route path="/policy" element={<Policy />} />
+              <Route path="/terms" element={<Terms />} />
               <Route path="*" element={<NotFound />} />
               </Routes>
               </div>
@@ -315,7 +309,7 @@ function App() {
               <div className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr] xl:gap-x-16">
                 <div className="min-w-0">
                   <Link to="/" aria-label="IGO Agri Estates home" className="inline-block rounded-md bg-white p-1.5 leading-none">
-                    <img src="/images/igo-group-logo.webp" alt="IGO Group" className="h-14 w-auto object-contain" />
+                    <img src="/images/igo-agri-estate-footer-logo.png" alt="IGO Agri Estate" className="h-14 w-auto max-w-full object-contain" />
                   </Link>
                   <p className="mt-6 max-w-[380px] text-[15px] leading-7 text-white/70">
                     IGO Agri Estates helps you buy, sell and invest in verified agricultural land across India, with legal checks and scientific farm planning.
@@ -391,10 +385,10 @@ function App() {
               </div>
 
               <div className="mt-12 flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-white/10 pt-6 text-sm text-white/70">
-                <p>© 2026 IGO Agri Estates. All rights reserved.</p>
+                <p>© 2026 IGO Group Units. All rights reserved.</p>
                 <div className="flex gap-6">
                   <Link to="/policy" className="transition-colors hover:text-white">Privacy Policy</Link>
-                  <Link to="/policy" className="transition-colors hover:text-white">Terms of Service</Link>
+                  <Link to="/terms" className="transition-colors hover:text-white">Terms &amp; Conditions</Link>
                 </div>
               </div>
             </div>
