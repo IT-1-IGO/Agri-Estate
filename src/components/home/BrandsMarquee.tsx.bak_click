@@ -1,0 +1,100 @@
+import React from 'react';
+import { brandsData } from '../../data/brandsData';
+
+type Brand = (typeof brandsData)[number];
+
+const CARD =
+  'group/card relative mx-2.5 flex h-[220px] w-[260px] shrink-0 flex-col justify-center overflow-hidden rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition-all duration-300 sm:w-[270px]';
+
+const CardBody: React.FC<{ brand: Brand; linked: boolean }> = ({ brand }) => (
+  <>
+    <div className="flex h-28 items-center justify-center rounded-2xl border border-transparent bg-black/[0.02] p-3 transition-all group-hover/card:border-black/5 group-hover/card:bg-white">
+      <img src={brand.logo} alt={brand.title} loading="lazy" className="max-h-[88px] max-w-full object-contain mix-blend-multiply" />
+    </div>
+    <h3 className="mt-4 text-center text-base font-black leading-snug text-primary">{brand.title}</h3>
+  </>
+);
+
+const BrandCard: React.FC<{ brand: Brand; hidden?: boolean }> = ({ brand, hidden }) => {
+  const url = brand.url;
+  if (url) {
+    return (
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${brand.title} (opens official website in a new tab)`}
+        tabIndex={hidden ? -1 : undefined}
+        className={`${CARD} cursor-pointer hover:-translate-y-1.5 hover:border-secondary/40 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary`}
+      >
+        <CardBody brand={brand} linked />
+      </a>
+    );
+  }
+  // No verified official website yet: intentionally not clickable.
+  return (
+    <div className={`${CARD} cursor-default`}>
+      <CardBody brand={brand} linked={false} />
+    </div>
+  );
+};
+
+const arrowBtn =
+  'flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-black/10 text-text-muted transition-colors hover:bg-primary hover:text-white';
+
+const BrandsMarquee = () => {
+  return (
+    <section className="overflow-hidden border-b border-t border-black/5 bg-background py-12 md:py-14">
+      <div className="container-pro">
+        <div className="relative mb-8 text-center">
+          <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+            <img src="/images/igo-group-map.png" alt="" aria-hidden="true" loading="lazy" className="w-full max-w-[460px] object-contain opacity-[0.22] mix-blend-multiply" />
+          </div>
+
+          <div className="relative z-10">
+            <div className="mb-3 flex items-center justify-center gap-4">
+              <div className="h-px w-12 bg-secondary/40" />
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">THE SOVEREIGN ECOSYSTEM</span>
+              <div className="h-px w-12 bg-secondary/40" />
+            </div>
+            <h2 className="mb-3 text-3xl font-black text-primary md:text-4xl">
+              The <span className="font-serif italic text-secondary">26 Verticals</span> of IGO.
+            </h2>
+            <p className="mx-auto mb-5 max-w-xl text-sm font-light leading-relaxed text-text-muted md:text-base">
+              A sovereign agricultural ecosystem covering Engineering, Production, Trade, and Consumer Lifestyle.
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <button type="button" aria-label="Previous" className={arrowBtn}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+              </button>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">EXPLORE ALL 26 VERTICALS</span>
+              <button type="button" aria-label="Next" className={arrowBtn}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative w-full pb-4">
+        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-16 bg-gradient-to-r from-background to-transparent md:w-24" />
+        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-background to-transparent md:w-24" />
+
+        <div className="animate-marquee hover:animation-play-state-paused group flex w-max py-2">
+          <div className="flex">
+            {brandsData.map((brand) => (
+              <BrandCard key={`a-${brand.id}`} brand={brand} />
+            ))}
+          </div>
+          <div className="flex" aria-hidden="true">
+            {brandsData.map((brand) => (
+              <BrandCard key={`b-${brand.id}`} brand={brand} hidden />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default BrandsMarquee;

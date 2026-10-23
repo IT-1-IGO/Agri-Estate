@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap');
 .igo-header {
   --igo-green: #1B5E20;
   --igo-green-dark: #144a18;
   --igo-text: #1f2937;
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Inter', 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
   background: #fff;
 }
 .igo-container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
@@ -26,11 +27,11 @@
 .igo-logo__text strong { font-weight: 700; font-size: 22px; letter-spacing: 0.06em; }
 .igo-logo__text small { font-weight: 500; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; }
 
-.igo-menu { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0 auto; padding: 0; }
+.igo-menu { display: flex; align-items: center; gap: clamp(10px, 1.3vw, 28px); list-style: none; margin: 0 auto; padding: 0; }
 .igo-link {
   position: relative; display: inline-block; padding: 8px 0;
-  font-family: 'Jost', sans-serif; font-weight: 500; font-size: 14px;
-  text-transform: uppercase; letter-spacing: 0.08em;
+  font-family: inherit; font-weight: 600; font-size: 14px;
+  text-transform: none; letter-spacing: 0.08em;
   color: var(--igo-text); text-decoration: none; transition: color .25s;
 }
 .igo-link::after {
@@ -43,8 +44,8 @@
 .igo-cta {
   display: inline-block; flex-shrink: 0; padding: 12px 24px; border-radius: 999px;
   background: var(--igo-green); color: #fff; text-decoration: none;
-  font-family: 'Jost', sans-serif; font-weight: 500; font-size: 14px;
-  text-transform: uppercase; letter-spacing: 0.08em; text-align: center;
+  font-family: inherit; font-weight: 700; font-size: 14px;
+  text-transform: none; letter-spacing: 0.08em; text-align: center;
   transition: background .25s, transform .25s, box-shadow .25s;
 }
 .igo-cta:hover { background: var(--igo-green-dark); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(27,94,32,.25); }
@@ -71,8 +72,8 @@
   .igo-mobile ul { list-style: none; margin: 0 0 16px; padding: 0; }
   .igo-mobile li a {
     display: block; padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,.06);
-    font-family: 'Jost', sans-serif; font-weight: 500; font-size: 16px;
-    text-transform: uppercase; letter-spacing: 0.08em; color: var(--igo-text); text-decoration: none;
+    font-family: inherit; font-weight: 600; font-size: 16px;
+    text-transform: none; letter-spacing: 0.08em; color: var(--igo-text); text-decoration: none;
   }
   .igo-mobile li a:hover { color: var(--igo-green); }
   .igo-cta--block { display: block; width: 100%; }
@@ -86,3 +87,46 @@
 .igo-link.is-active { color: var(--igo-green); }
 .igo-link.is-active::after { transform: scaleX(1); }
 .igo-mobile li a.is-active { color: var(--igo-green); }
+
+.igo-link { white-space: nowrap; }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-link { font-size: 12.5px; letter-spacing: 0.04em; } .igo-nav__inner > .igo-cta { padding-inline: 16px; white-space: nowrap; } }
+
+/* ===== Brand + alignment refinements ===== */
+.igo-header, .igo-header * { font-family: 'Inter', 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.igo-nav__inner { align-items: center; }
+.igo-logo { align-items: center; min-width: 0; }
+.igo-logo img { display: block; }
+.igo-logo__text { justify-content: center; gap: 3px; line-height: 1; white-space: nowrap; }
+.igo-logo__text strong { font-weight: 700; font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; }
+.igo-logo__text small { font-weight: 600; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1; }
+.igo-menu { gap: clamp(14px, 1.6vw, 30px); align-items: center; }
+.igo-menu li { display: flex; align-items: center; }
+.igo-link { display: inline-flex; align-items: center; padding: 8px 0; font-weight: 600; font-size: 13.5px; letter-spacing: 0.06em; line-height: 1; }
+.igo-cta { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13.5px; letter-spacing: 0.06em; line-height: 1; white-space: nowrap; }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-link { font-size: 12px; letter-spacing: 0.03em; } .igo-menu { gap: clamp(10px, 1.1vw, 18px); } .igo-nav__inner { gap: 16px; } }
+@media (max-width: 560px) { .igo-logo__text small { display: block; font-size: 9px; letter-spacing: 0.16em; } .igo-logo__text strong { font-size: 19px; } .igo-container { padding: 0 16px; } .igo-logo img { height: 42px; width: 42px; } }
+
+/* ===== Language selector (utility bar) ===== */
+.igo-topbar__inner { align-items: center; }
+.igo-lang { position: relative; }
+.igo-lang__btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.35); color: #fff;
+  font: inherit; font-size: 13px; font-weight: 500; letter-spacing: 0; cursor: pointer; text-transform: none;
+  transition: background .2s;
+}
+.igo-lang__btn:hover { background: rgba(255,255,255,.26); }
+.igo-lang__btn svg:last-child { transition: transform .2s; }
+.igo-lang__btn svg.is-open { transform: rotate(180deg); }
+.igo-lang__menu {
+  position: absolute; right: 0; top: calc(100% + 8px); min-width: 150px; margin: 0; padding: 6px; list-style: none;
+  background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; box-shadow: 0 14px 30px rgba(0,0,0,.16); z-index: 60;
+}
+.igo-lang__menu button {
+  display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 12px;
+  border: 0; border-radius: 8px; background: transparent; color: var(--igo-text); font: inherit; font-size: 14px;
+  letter-spacing: 0; text-transform: none; cursor: pointer; text-align: left;
+}
+.igo-lang__menu button:hover { background: #eef5ee; }
+.igo-lang__menu button.is-active { color: var(--igo-green); font-weight: 600; }
+@media (max-width: 560px) { .igo-topbar__inner { flex-wrap: wrap; row-gap: 6px; } }

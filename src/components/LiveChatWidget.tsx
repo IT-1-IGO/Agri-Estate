@@ -30,7 +30,7 @@ const LiveChatWidget: React.FC = () => {
     setTimeout(() => {
       let response = "I'll connect you with our estate advisor for detailed information.";
       if (text.toLowerCase().includes('roi') || text.toLowerCase().includes('return')) {
-        response = "Average ROI across our estates ranges from 12-18% annually, varying by crop cycle and estate type. Would you like a detailed projection for a specific estate?";
+        response = "Returns depend on the land, the crop cycle and the project. Our advisor can walk you through the details for a specific estate.";
       } else if (text.toLowerCase().includes('visit') || text.toLowerCase().includes('site')) {
         response = "We arrange site visits across all our estate locations. Please share your preferred state and date, and our team will coordinate.";
       } else if (text.toLowerCase().includes('compare') || text.toLowerCase().includes('difference')) {

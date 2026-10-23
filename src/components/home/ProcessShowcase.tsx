@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapPinned, Search, FileCheck2, Settings, Sprout, Headset } from 'lucide-react';
+import { MapPinned, IndianRupee, FileCheck2, Settings, Sprout, Headset } from 'lucide-react';
 import './ProcessShowcase.css';
 
 const STEPS = [
-  { title: ['Discover', 'Your Land'], img: 'discover-land', Icon: MapPinned, text: 'Explore agricultural land and farm opportunities that match your budget, location preferences, investment goals, and farming interests.' },
-  { title: ['Site Visit &', 'Evaluation'], img: 'site-visit', Icon: Search, text: 'Visit your preferred property, assess the land, and understand its location, accessibility, soil conditions, water availability, and development potential.' },
+  { title: ['Visit', 'Your Land'], img: 'discover-land', Icon: MapPinned, text: 'Explore agricultural land and farm opportunities that match your budget, preferred location, investment goals, and farming interests.' },
+  { title: ['Farm Loans'], img: 'farm-loans', Icon: IndianRupee, text: 'Get financial assistance to purchase agricultural land and start your farming journey. We help you explore suitable loan options and guide you through the financing process based on your eligibility and project requirements.' },
   { title: ['Documentation &', 'Purchase Support'], img: 'documentation', Icon: FileCheck2, text: 'Receive guidance through property documentation, verification coordination, agreement procedures, and the purchase process.' },
   { title: ['Farm Planning &', 'Customisation'], img: 'farm-planning', Icon: Settings, text: 'Choose your preferred farm model, such as horticulture, plantation, livestock, protected farming, hydroponics, mushroom cultivation, or microgreens production.' },
   { title: ['Farm Development &', 'Setup'], img: 'farm-development', Icon: Sprout, text: 'If required, we help coordinate farm development based on your selected project, including irrigation, infrastructure, cultivation setup, and other agreed requirements.' },

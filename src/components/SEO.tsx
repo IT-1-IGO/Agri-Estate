@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import { usePublishedCollection } from '../admin/store';
+import { PAGES_SEED } from '../data/siteContent';
 
 interface SEOProps {
   title: string;
@@ -25,6 +27,11 @@ const SEO: React.FC<SEOProps> = ({
   schema,
   noIndex = false,
 }) => {
+  // Optional overrides set in the admin panel (Website Pages), matched by page path.
+  const overrides = usePublishedCollection('pages', PAGES_SEED);
+  const ov = canonical ? overrides.find((o) => o.path === canonical) : undefined;
+  if (ov?.seoTitle) title = String(ov.seoTitle);
+  if (ov?.seoDescription) description = String(ov.seoDescription);
   const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
   const canonicalUrl = canonical ? `${BASE_URL}${canonical}` : BASE_URL;
 

@@ -1,0 +1,66 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown, Globe } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+
+/** Language dropdown (English / தமிழ் / हिन्दी). Lives in the header utility bar. */
+const LanguageSelector: React.FC = () => {
+  const { language, setLanguage, languages } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const current = languages.find(l => l.code === language) ?? languages[0];
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent | TouchEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('touchstart', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('touchstart', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="igo-lang" ref={ref} translate="no">
+      <button
+        type="button"
+        className="igo-lang__btn"
+        onClick={() => setOpen(o => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label="Select language"
+      >
+        <Globe size={14} aria-hidden />
+        <span>{current.name}</span>
+        <ChevronDown size={14} aria-hidden className={open ? 'is-open' : ''} />
+      </button>
+      {open && (
+        <ul className="igo-lang__menu" role="listbox" aria-label="Language">
+          {languages.map(l => (
+            <li key={l.code} role="option" aria-selected={l.code === language}>
+              <button
+                type="button"
+                className={l.code === language ? 'is-active' : undefined}
+                lang={l.code}
+                onClick={() => {
+                  setLanguage(l.code);
+                  setOpen(false);
+                }}
+              >
+                <span>{l.name}</span>
+                {l.code === language && <Check size={14} aria-hidden />}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default LanguageSelector;

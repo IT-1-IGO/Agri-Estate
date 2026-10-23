@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PanImage from '../interactive/PanImage';
 import { X, RotateCw, Maximize2, Map, Camera, Info } from 'lucide-react';
 
 interface VRTourModalProps {
@@ -28,13 +29,13 @@ const VRTourModal: React.FC<VRTourModalProps> = ({ isOpen, onClose, propertyName
             className="bg-black w-full max-w-6xl aspect-video rounded-[40px] overflow-hidden shadow-2xl relative border border-white/10"
           >
             {/* 360 Viewport (Mock) */}
-            <div className="absolute inset-0 group">
-              <img 
-                src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90" 
-                alt="360 Panoroma"
-                className="w-full h-full object-cover opacity-60 scale-110 group-hover:scale-100 transition-transform duration-[10s]"
+            <div className="absolute inset-0">
+              <PanImage
+                src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90"
+                alt="Estate panorama"
+                className="w-full h-full opacity-80"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40"></div>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40"></div>
             </div>
 
             {/* UI Overlays */}

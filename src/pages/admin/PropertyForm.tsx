@@ -390,7 +390,7 @@ const handleArrayChange = (field: 'images' | 'features' | 'crops' | 'setupScope'
                     <option>Teak Plantation Estate</option>
                     <option>Mango Horticulture Orchard</option>
                     <option>Polyhouse Protected Farm</option>
-                    <option>Open Field Paddy Estate</option>
+                    <option>Open Field Agri Estate</option>
                     <option>Urban Vertical Farm</option>
                   </select>
                 </div>

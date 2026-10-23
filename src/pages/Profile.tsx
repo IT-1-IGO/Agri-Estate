@@ -43,8 +43,7 @@ const Profile: React.FC = () => {
     const savedNotifications = JSON.parse(localStorage.getItem('igo.notifications') || '[]');
     setNotifications(savedNotifications.length ? savedNotifications : [
       { id: 1, title: 'Welcome to IGO Agriestates', message: 'Your institutional profile is now active. You can now request site visits and drone tours.', time: 'Just now', read: false },
-      { id: 2, title: 'Estate Update', message: 'Mahabalipuram Teak Estate has 2 units remaining. Check updated ROI projections.', time: '2 hours ago', read: false }
-    ]);
+          ]);
   }, [user, navigate]);
 
   const handleSignOut = async () => {

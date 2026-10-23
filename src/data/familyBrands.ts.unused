@@ -1,0 +1,32 @@
+// 26 brands exactly as listed (in order) on https://igogreenenergy.in/#our-brands
+// url: verified destinations only. Brands with no separate verified website
+// point to the IGO Group landing page (the reference site that lists them).
+const GROUP = 'https://igogreenenergy.in/#our-brands';
+export const familyBrands: { name: string; url: string }[] = [
+  { name: 'IGO Agritech Farms', url: 'https://www.igoagritechfarms.com' },
+  { name: 'Farmers Factory', url: GROUP },
+  { name: 'Valluvam', url: GROUP },
+  { name: 'IGO Academy', url: GROUP },
+  { name: 'IGO Farm Loans', url: GROUP },
+  { name: 'Farmgate Mandi', url: GROUP },
+  { name: 'Palm Cafe', url: GROUP },
+  { name: 'IGO Agri Mart', url: GROUP },
+  { name: 'IGO Farmlands Estates', url: 'https://www.igoagriestate.com' },
+  { name: 'IGO Nursery', url: 'https://www.igonursery.com' },
+  { name: 'IGO Farm Factories', url: GROUP },
+  { name: 'IGO Tech Farming Scientists', url: GROUP },
+  { name: 'IGO Fintech', url: GROUP },
+  { name: 'IGO Franchise (FICO)', url: GROUP },
+  { name: 'Tech Farming Expert', url: GROUP },
+  { name: 'Tech Farming Wealth', url: GROUP },
+  { name: 'Protein Cuts', url: GROUP },
+  { name: 'IGO Farm Automation', url: GROUP },
+  { name: 'IGO Exports & Imports', url: GROUP },
+  { name: 'India Green App', url: GROUP },
+  { name: 'IGO Crop Care', url: GROUP },
+  { name: 'IGO Mart', url: GROUP },
+  { name: 'IGO Organic Pharmacy', url: GROUP },
+  { name: 'IGO Green Energy', url: 'https://igogreenenergy.in/' },
+  { name: 'IGO Natural Cosmetics', url: GROUP },
+  { name: 'India Green Organics', url: GROUP },
+];

@@ -271,7 +271,6 @@ const AdminDashboard: React.FC = () => {
     { id: 'inventory', label: 'Asset Inventory', icon: LayoutDashboard },
     { id: 'leads', label: 'Investment Pipeline', icon: Users },
     { id: 'blogs', label: 'Content: Blogs', icon: FileText },
-    { id: 'videos', label: 'Content: Videos', icon: Video },
     { id: 'analytics', label: 'Visitor Activity', icon: Eye },
     { id: 'settings', label: 'Global Settings', icon: Settings },
   ];

@@ -159,6 +159,7 @@ export const useProperties = () => {
       if (!isSupabaseConfigured) {
         let prop = properties.find(p => p.id === id);
         if (!prop) prop = getMergedLocalProperties().find(p => p.id === id);
+        if (!prop) prop = allEstates.find(p => p.id === id);
         return prop ? computeNumericValues(prop) : null;
       }
       const { data, error: fetchError } = await supabase.from('properties').select('*').eq('id', id).single();

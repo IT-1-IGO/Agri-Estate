@@ -18,27 +18,8 @@ const Locations: React.FC = () => {
           </p>
         </div>
       </div>
-
-      {/* Stats Overview */}
+      {/* Stats removed */}
       <div className="container-pro mt-16">
-        <div className="grid grid-cols-4 gap-6 mb-16">
-          <div className="text-center">
-            <p className="text-4xl font-black text-primary">15+</p>
-            <p className="text-sm text-text-muted uppercase tracking-wider">Estates</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-black text-secondary">5</p>
-            <p className="text-sm text-text-muted uppercase tracking-wider">Locations</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-black text-green-600">18%</p>
-            <p className="text-sm text-text-muted uppercase tracking-wider">Avg ROI</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-black text-primary">100%</p>
-            <p className="text-sm text-text-muted uppercase tracking-wider">Verified</p>
-          </div>
-        </div>
 
         {/* Location Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">

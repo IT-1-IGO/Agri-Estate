@@ -1,0 +1,104 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, MapPin, Users } from 'lucide-react';
+import { locations } from '../../data/locationEstates';
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const Leaf: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 120 220" className={className} fill="currentColor" aria-hidden="true">
+    <path d="M60 215c-2-60-1-110 4-205 20 30 38 60 30 100-6 30-20 55-34 105z" opacity=".9" />
+    <path d="M58 150c-30-8-48-30-52-62 28 4 48 20 54 50z" opacity=".75" />
+    <path d="M64 120c26-10 42-32 46-64-26 6-44 24-50 52z" opacity=".75" />
+    <path d="M60 80c-22-8-34-26-36-50 22 4 34 18 38 42z" opacity=".6" />
+  </svg>
+);
+
+const PopularLocations: React.FC = () => {
+  const reduce = useReducedMotion();
+  const loc = locations.find(l => l.id === 'maduranthagam');
+  if (!loc) return null;
+
+  const reveal = (delay = 0, y = 24) => ({
+    initial: reduce ? false as const : { opacity: 0, y },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-60px' },
+    transition: { duration: 0.7, ease: EASE, delay },
+  });
+
+  return (
+    <section id="estates" className="relative overflow-hidden bg-[#f4f8f1] py-16 lg:py-24" aria-labelledby="popular-locations-heading">
+      {/* Decorative botanicals (very low opacity) */}
+
+      <div className="container-pro relative">
+        <div className="flex items-start justify-between gap-6">
+          <div className="max-w-xl">
+            <motion.span {...reveal(0, 16)} className="block text-xs font-extrabold uppercase tracking-[0.3em] text-secondary">Explore by Corridor</motion.span>
+            <motion.h2 {...reveal(0.1)} id="popular-locations-heading" className="mt-2 text-3xl font-extrabold normal-case tracking-tight text-[#0b4a2a] sm:text-4xl lg:text-[2.6rem]">
+              Popular Estate Locations
+            </motion.h2>
+            <motion.p {...reveal(0.2)} className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
+              Discover prime agricultural land in the most promising regions. Each location is carefully selected for its soil quality, water resources and growth potential.
+            </motion.p>
+            <motion.div {...reveal(0.28, 8)} className="mt-5 h-[2px] w-16 rounded-full bg-secondary" />
+          </div>
+
+          <Link to="/locations" className="group hidden shrink-0 items-center gap-4 text-sm font-extrabold uppercase tracking-widest text-secondary md:flex">
+            View All Locations
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#dcecd6] text-[#0b4a2a] transition-all duration-300 group-hover:translate-x-1 group-hover:bg-[#cfe5c8]">
+              <ArrowRight size={20} />
+            </span>
+          </Link>
+        </div>
+
+        {/* Centered single feature card */}
+        <motion.div {...reveal(0.15, 32)} className="mx-auto mt-10 max-w-5xl lg:mt-12">
+          <motion.article
+            whileHover={reduce ? undefined : { y: -6, transition: { duration: 0.4, ease: EASE } }}
+            className="group grid overflow-hidden rounded-3xl bg-white shadow-[0_24px_56px_-30px_rgba(15,77,36,0.55)] transition-shadow duration-500 hover:shadow-[0_34px_64px_-30px_rgba(15,77,36,0.6)] md:grid-cols-2"
+          >
+            <div className="relative aspect-[16/10] overflow-hidden md:aspect-auto md:min-h-[380px]">
+              <img
+                src="/images/featured/maduranthagam-aerial.webp"
+                alt="Aerial view of a green agricultural estate with orchard rows and a water pond at sunset"
+                width={1024}
+                height={1024}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+            </div>
+
+            <div className="flex flex-col justify-center p-7 sm:p-9">
+              <div className="flex items-start justify-between">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#dcecd6] text-[#0b4a2a]"><MapPin size={26} fill="currentColor" /></span>
+                <span className="rounded-full bg-[#0b4a2a] px-4 py-1.5 text-sm font-semibold text-white">Popular</span>
+              </div>
+              <h3 className="mt-4 text-3xl font-extrabold normal-case tracking-tight text-[#0b4a2a]">{loc.name}</h3>
+              <ul className="mt-3 space-y-2.5 text-base text-slate-600">
+                <li className="flex items-center gap-3"><MapPin size={18} className="text-[#1B5E20]" /> Tamil Nadu</li>
+                <li className="flex items-center gap-3"><Users size={18} className="text-[#1B5E20]" /> {loc.estateCount} Estates</li>
+              </ul>
+              <hr className="my-5 border-[#0f4d24]/10" />
+              <p className="text-base leading-relaxed text-slate-600">Well-connected location with fertile soil and excellent water resources.</p>
+              <Link
+                to={`/locations?location=${loc.id}`}
+                className="mt-6 inline-flex w-fit items-center gap-3 rounded-full border-2 border-[#0b4a2a] px-6 py-2.5 font-semibold text-[#0b4a2a] transition-all duration-300 hover:gap-4 hover:bg-[#0b4a2a] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b4a2a]"
+              >
+                View Details <ArrowRight size={18} />
+              </Link>
+            </div>
+          </motion.article>
+        </motion.div>
+
+
+        <Link to="/locations" className="mx-auto mt-8 flex w-fit items-center gap-3 text-sm font-extrabold uppercase tracking-widest text-secondary md:hidden">
+          View All Locations <ArrowRight size={16} />
+        </Link>
+      </div>
+    </section>
+  );
+};
+
+export default PopularLocations;

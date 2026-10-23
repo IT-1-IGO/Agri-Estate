@@ -16,7 +16,6 @@ IGO Agri Estates is a real estate and managed-farmland investment marketplace. C
 - [About](https://www.igoagriestate.com/about): Company background, mission, and track record.
 - [Contact](https://www.igoagriestate.com/contact): Advisor contact details and enquiry form.
 - [Valuation Simulator](https://www.igoagriestate.com/valuation): Estimate land/estate value.
-- [AI Price Report](https://www.igoagriestate.com/ai-report): Instant valuation from comparable sales and soil data.
 - [Tax Optimizer](https://www.igoagriestate.com/tax-optimizer): Agricultural land tax planning tool.
 - [Knowledge Hub](https://www.igoagriestate.com/knowledge-hub) and [Blog](https://www.igoagriestate.com/blog): Guides on farmland investment, land law, and managed farming.
 - [Legal Services](https://www.igoagriestate.com/services/legal) and [Soil Intelligence](https://www.igoagriestate.com/services/soil): Supporting advisory services.

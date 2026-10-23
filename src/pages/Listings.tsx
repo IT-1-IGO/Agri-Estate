@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, MapPin, Maximize, TrendingUp, Home, ChevronRight, Heart, BarChart2, X, Droplets, Sprout, Building, Factory, Leaf, Trees } from 'lucide-react';
+import { Search, ArrowRight, MapPin, Maximize, TrendingUp, Home, ChevronRight, Heart, BarChart2, X, Droplets, Sprout, Building, Factory, Leaf, Trees } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { locations, getEstatesByLocation, allEstates as staticEstates } from '../data/locationEstates';
 import { useProperties } from '../hooks/useProperties';
@@ -29,7 +29,7 @@ const LOCATION_MATCH_KEYWORDS: Record<string, string[]> = {
 // "No Estates Found" until the other dataset loads in. Listing every real-world synonym here means
 // the correct estates show up immediately, regardless of which dataset is currently active.
 const CATEGORY_MATCH_KEYWORDS: Record<string, string[]> = {
-  'open field': ['open field', 'paddy', 'vegetable field', 'sugarcane', 'open cultivation', 'field farming'],
+  'open field': ['open field', 'vegetable field', 'open cultivation', 'field farming'],
   'horticulture': ['horticulture', 'mango', 'orchard', 'fruit'],
   'nursery': ['nursery', 'plantation', 'teak', 'agroforestry', 'sapling', 'floriculture'],
   'livestock': ['livestock', 'goat', 'dairy', 'cattle', 'poultry', 'animal'],
@@ -59,7 +59,7 @@ const Listings: React.FC = () => {
   const allProperties = useMemo(() => {
     const dbIds = new Set(publicProperties.map(p => p.id));
     const staticOnly = staticEstates.filter(p => !dbIds.has(p.id));
-    return [...publicProperties, ...staticOnly];
+    return [...publicProperties, ...staticOnly].filter(p => /ma[dh]uranthagam/i.test(p.location || ''));
   }, [publicProperties]);
 
   // Get estates based on selection
@@ -118,6 +118,13 @@ const Listings: React.FC = () => {
     });
   };
 
+  const heroRef = useRef<HTMLDivElement>(null);
+  const scrollToResults = () => {
+    const el = heroRef.current;
+    if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().bottom + window.scrollY - 80, behavior: 'smooth' });
+  };
+
   const handleLocationChange = (loc: string) => {
     setSelectedLocation(loc);
     setSelectedCategory('all'); // Clear category filter to prevent hidden filtering
@@ -136,79 +143,104 @@ const Listings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-32 pb-20">
+    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-gradient-to-b from-[#F7F8EF] via-[#EEF3E1] to-[#E3ECD2] pt-32 pb-20">
       <SEO
-        title="Buy Agricultural Land & Farms for Sale Across India"
-        description="Explore verified agricultural estates for sale across Tamil Nadu, Karnataka, Maharashtra, Andhra Pradesh & Telangana. Filter by location, crop type, size, and price. Teak plantations, polyhouse farms, mango orchards, and more."
+        title="Agricultural Land for Sale in Maduranthagam"
+        description="Explore agricultural land in Maduranthagam, Tamil Nadu, offered directly by IGO with verified documents and guided site visits."
         canonical="/locations"
-        keywords="agricultural land for sale India, farmland for sale Tamil Nadu, Karnataka farm land, Maharashtra agri estate, Andhra Pradesh agricultural land, Telangana farmland, buy estate Mahabalipuram, Kanchipuram agri land, horticulture farm sale, plantation land India, polyhouse farm sale, mango orchard India"
+        keywords="agricultural land Maduranthagam, farmland for sale Maduranthagam, IGO Agri Estates, buy agricultural land Tamil Nadu"
         schema={{
           '@context': 'https://schema.org',
           '@type': 'ItemList',
           name: 'Agricultural Estates for Sale — IGO Agri Estates',
-          description: 'Verified agricultural land listings across Tamil Nadu, Karnataka and Maharashtra',
+          description: 'Agricultural land listings in Maduranthagam, Tamil Nadu',
           url: 'https://www.igoagriestate.com/locations',
-          numberOfItems: 15,
+          numberOfItems: 2,
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Mahabalipuram Teak Estate', url: 'https://www.igoagriestate.com/properties/mahabalipuram-teak-estate' },
-            { '@type': 'ListItem', position: 2, name: 'Mahabalipuram Mango Orchard', url: 'https://www.igoagriestate.com/properties/mahabalipuram-mango-orchard' },
-            { '@type': 'ListItem', position: 3, name: 'Chennai Vertical Farm', url: 'https://www.igoagriestate.com/properties/chennai-vertical-farm' },
-            { '@type': 'ListItem', position: 4, name: 'Kanchipuram Herbal Garden', url: 'https://www.igoagriestate.com/properties/kanchipuram-herbal-garden' },
+            { '@type': 'ListItem', position: 1, name: 'Maduranthagam Agricultural Land: Parcel 1', url: 'https://www.igoagriestate.com/properties/maduranthagam-agri-land-1' },
+            { '@type': 'ListItem', position: 2, name: 'Maduranthagam Agricultural Land: Parcel 2', url: 'https://www.igoagriestate.com/properties/maduranthagam-agri-land-2' },
           ]
         }}
       />
       {/* Hero Section - Location Selector */}
-      <div className="relative bg-gradient-to-b from-primary/5 to-background py-20 border-b border-black/5">
-        <div className="container-pro">
-          <div className="text-center max-w-4xl mx-auto mb-16">
-            <h1 className="text-5xl md:text-7xl font-black text-primary mb-6 leading-tight">
-              Estates by <span className="text-secondary italic">Location</span>
+      <div
+        ref={heroRef}
+        className="relative flex min-h-[480px] w-full max-w-full items-center overflow-hidden bg-[#F7F8EF] bg-cover bg-no-repeat py-12 md:min-h-[520px] md:py-14 lg:aspect-[3/1] lg:min-h-[560px]"
+        style={{ backgroundImage: "url('/images/estates-hero-landscape-v4.webp')", backgroundPosition: 'center center' }}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-white/10" aria-hidden="true" />
+
+        <div className="container-pro relative w-full">
+          <div className="mx-auto mb-7 max-w-5xl text-center">
+            <div className="mb-4 flex items-center justify-center gap-3">
+                            <span className="inline-flex items-center rounded-full border border-[#cfe0bd] bg-[#E8F0D9]/80 px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B] sm:px-8 sm:text-xs">
+                Find your ideal land
+              </span>
+                          </div>
+            <h1 className="mb-4 text-3xl font-black leading-tight text-[#064E3B] sm:text-4xl lg:text-[clamp(2.75rem,3.1vw,3.9rem)]">
+              Estates by <span className="italic text-[#A66A12]">Location</span>
             </h1>
-            <p className="text-xl text-text-muted font-light leading-relaxed">
-              Explore premium agricultural estates in Mahabalipuram, Maduranthagam, Chennai, Kanchipuram & more — each with verified titles, clear ROI, and IGO's managed support.
+            <p className="mx-auto max-w-[56rem] text-sm font-normal leading-relaxed text-slate-600 sm:text-base lg:text-[clamp(1rem,1.1vw,1.25rem)]">
+              Agricultural land in Maduranthagam, offered directly by IGO with verified documents and guided site visits.
             </p>
           </div>
 
           {/* Location Tabs */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <button
-              onClick={() => handleLocationChange('all')}
-              className={`px-8 py-4 rounded-full text-sm font-black uppercase tracking-widest transition-all ${
-                selectedLocation === 'all'
-                  ? 'bg-secondary text-primary shadow-xl shadow-secondary/20'
-                  : 'bg-white border border-black/5 text-primary hover:border-secondary'
-              }`}
-            >
-              All Estates
-            </button>
-            {locations.map(loc => (
+          <div className="mb-6 flex justify-center">
+            <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-[999px] bg-[#E8F0D9]/60 p-2 shadow-[0_8px_24px_-12px_rgba(6,78,59,0.25)]">
               <button
-                key={loc.id}
-                onClick={() => handleLocationChange(loc.id)}
-                className={`px-6 py-4 rounded-full text-sm font-black uppercase tracking-widest transition-all flex items-center gap-2 ${
-                  selectedLocation === loc.id
-                    ? 'bg-secondary text-primary shadow-lg'
-                    : 'bg-white border border-black/5 text-primary hover:border-secondary'
+                onClick={() => handleLocationChange('all')}
+                className={`flex items-center gap-2.5 rounded-full px-5 py-3 text-xs font-black uppercase tracking-widest transition-all sm:px-7 sm:py-3.5 sm:text-[13px] ${
+                  selectedLocation === 'all'
+                    ? 'bg-gradient-to-r from-[#0b7a52] to-[#064E3B] text-white shadow-lg shadow-[#064E3B]/30'
+                    : 'border border-[#d4e5c6] bg-white text-[#064E3B] hover:border-[#4c9a5a]'
                 }`}
               >
-                <MapPin size={16} />
-                {loc.name}
-                <span className="text-[10px] opacity-60">({loc.estateCount})</span>
+                <Leaf size={16} aria-hidden="true" />
+                All Estates
               </button>
-            ))}
+              {locations.map(loc => (
+                <button
+                  key={loc.id}
+                  onClick={() => handleLocationChange(loc.id)}
+                  className={`flex items-center gap-2.5 rounded-full px-5 py-3 text-xs font-black uppercase tracking-widest transition-all sm:px-7 sm:py-3.5 sm:text-[13px] ${
+                    selectedLocation === loc.id
+                      ? 'bg-gradient-to-r from-[#0b7a52] to-[#064E3B] text-white shadow-lg shadow-[#064E3B]/30'
+                      : 'border border-[#d4e5c6] bg-white text-[#064E3B] hover:border-[#4c9a5a]'
+                  }`}
+                >
+                  <MapPin size={16} aria-hidden="true" />
+                  {loc.name}
+                  <span>({loc.estateCount})</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Quick Search */}
-          <div className="max-w-2xl mx-auto relative">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/30" size={20} />
+          <form
+            role="search"
+            onSubmit={(e) => { e.preventDefault(); scrollToResults(); }}
+            className="relative mx-auto flex max-w-2xl items-center rounded-full border border-[#e3ead6] bg-white py-2 pl-6 pr-2 lg:max-w-[48vw] 2xl:max-w-[920px] shadow-[0_18px_40px_-18px_rgba(6,78,59,0.35)]"
+          >
+            <Search className="shrink-0 text-[#0b7a52]" size={22} aria-hidden="true" />
+            <span className="mx-4 h-8 w-px shrink-0 bg-[#dfe7d2]" aria-hidden="true" />
             <input
               type="text"
+              aria-label="Search by estate name, crop, or feature"
               placeholder="Search by estate name, crop, or feature..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-black/10 rounded-full py-5 pl-16 pr-6 text-lg font-bold shadow-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all"
+              className="min-w-0 flex-1 border-none bg-transparent py-2 text-base text-slate-700 outline-none placeholder:text-slate-500 focus:ring-0 sm:text-base"
             />
-          </div>
+            <button
+              type="submit"
+              aria-label="Search estates"
+              className="ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#14532d] text-white transition-colors hover:bg-[#064E3B]"
+            >
+              <ArrowRight size={20} />
+            </button>
+          </form>
         </div>
       </div>
 
@@ -335,8 +367,6 @@ const EstateCard: React.FC<EstateCardProps> = ({ estate, onFavorite, onCompare }
     'Teak': Trees,
     'Mango': Leaf,
     'Polyhouse': Factory,
-    'Paddy': Sprout,
-    'Sugarcane': Leaf,
     'Vertical': Building,
     'Mushroom': Sprout,
     'Silk': Leaf,
@@ -416,19 +446,19 @@ const EstateCard: React.FC<EstateCardProps> = ({ estate, onFavorite, onCompare }
         <div className="grid grid-cols-3 gap-4 py-6 border-y border-black/5 mb-6">
           <div>
             <p className="text-[9px] uppercase text-text-muted mb-1">Area</p>
-            <p className="font-bold text-primary flex items-center gap-1">
+            <p className="font-bold text-primary text-sm leading-tight flex items-start gap-1">
               <Maximize size={14} className="text-secondary" />{estate.sizeValue || estate.size}
             </p>
           </div>
           <div>
             <p className="text-[9px] uppercase text-text-muted mb-1">ROI</p>
-            <p className="font-bold text-primary flex items-center gap-1">
-              <TrendingUp size={14} className="text-secondary" />{estate.roiValue ? `${estate.roiValue}%` : (estate.roi ? estate.roi.split('%')[0] + '%' : 'NA')}
+            <p className="font-bold text-primary text-sm leading-tight flex items-start gap-1">
+              <TrendingUp size={14} className="text-secondary" />{estate.roiValue ? `${estate.roiValue}%` : (/\d/.test(estate.roi || '') ? estate.roi.split('%')[0] + '%' : 'On request')}
             </p>
           </div>
           <div>
             <p className="text-[9px] uppercase text-text-muted mb-1">Price</p>
-            <p className="font-bold text-secondary">{estate.price}</p>
+            <p className="font-bold text-secondary text-sm leading-tight">{estate.price}</p>
           </div>
         </div>
 

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tractor, Waves, Fence, House, Sprout, Building2, CircleArrowRight, Settings, ShieldCheck, Users, Leaf, ArrowRight } from 'lucide-react';
+import { Tractor, Waves, Fence, House, Sprout, Building2, Settings, ShieldCheck, Users, Leaf, ArrowRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import HotspotImage from '../interactive/HotspotImage';
 import './FarmDevelopment.css';
 
 const SERVICES: { Icon: LucideIcon; title: string; text: string }[] = [
@@ -45,7 +46,16 @@ const FarmDevelopment: React.FC = () => {
 
       <div className="fd-main">
         <figure className="fd-media">
-          <img src="/images/featured/farm-development.webp" alt="Agriculture engineer with a tablet inspecting an irrigated farm with a greenhouse" width={966} height={710} loading="lazy" decoding="async" />
+          <HotspotImage
+            src="/images/featured/farm-development.webp"
+            alt="Agriculture engineer with a tablet inspecting an irrigated farm with a greenhouse"
+            className="absolute inset-0"
+            hotspots={[
+              { x: 62, y: 38, title: 'Greenhouse Setup', text: 'Controlled-environment structures for high-yield crops.' },
+              { x: 38, y: 72, title: 'Irrigation System', text: 'Drip and sprinkler lines planned for efficient water use.' },
+              { x: 22, y: 45, title: 'Site Inspection', text: 'Engineers test soil and review the land before development.' },
+            ]}
+          />
         </figure>
         <ul className="fd-grid">
           {SERVICES.map(({ Icon, title, text }, i) => (
@@ -53,7 +63,6 @@ const FarmDevelopment: React.FC = () => {
               <span className="fd-card__icon"><Icon size={26} strokeWidth={2} /></span>
               <h3 className="fd-card__title">{title}</h3>
               <p className="fd-card__text">{text}</p>
-              <CircleArrowRight className="fd-card__go" size={20} aria-hidden="true" />
             </li>
           ))}
         </ul>

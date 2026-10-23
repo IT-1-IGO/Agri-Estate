@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Send, MessageSquare, User, FileText, ArrowRight, Sprout } from 'lucide-react';
 import './Contact.css';
@@ -10,6 +10,29 @@ interface ContactProps {
   standalone?: boolean;
 }
 
+
+/** Types and erases a hint character by character; only runs while `active` (field empty and not focused). */
+const TypedHint: React.FC<{ text: string; active: boolean }> = ({ text, active }) => {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!active) { setN(0); return; }
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setN(text.length); return; }
+    let i = 0, dir = 1, t: number;
+    const tick = () => {
+      i += dir;
+      setN(i);
+      let d = dir === 1 ? 85 : 40;
+      if (dir === 1 && i >= text.length) { dir = -1; d = 1400; }
+      else if (dir === -1 && i <= 0) { dir = 1; d = 500; }
+      t = window.setTimeout(tick, d);
+    };
+    t = window.setTimeout(tick, 400);
+    return () => window.clearTimeout(t);
+  }, [active, text]);
+  if (!active) return null;
+  return <span className="ct-typing" aria-hidden="true">{text.slice(0, n)}<i className="ct-caret" /></span>;
+};
+
 const Contact: React.FC<ContactProps> = ({ standalone = true }) => {
   const Heading = standalone ? 'h1' : 'h2';
   const [formData, setFormData] = useState({
@@ -19,6 +42,7 @@ const Contact: React.FC<ContactProps> = ({ standalone = true }) => {
     subject: '',
     message: ''
   });
+  const [focusId, setFocusId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
@@ -140,38 +164,43 @@ const Contact: React.FC<ContactProps> = ({ standalone = true }) => {
                 <div className="ct-row">
                   <label className="ct-field" htmlFor="contact-name">
                     <span className="ct-ico"><User size={18} /></span>
-                    <span className="ct-field__body">
+                    <span className={`ct-field__body${!formData.name && focusId !== 'contact-name' ? ' is-hinting' : ''}`}>
                       <span className="ct-field__label">Your Name <b>*</b></span>
-                      <input id="contact-name" required type="text" placeholder="Enter your name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                      <input id="contact-name" onFocus={() => setFocusId('contact-name')} onBlur={() => setFocusId(null)} required type="text" placeholder="Enter your name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                      <TypedHint text="Enter your name" active={!formData.name && focusId !== 'contact-name'} />
                     </span>
                   </label>
                   <label className="ct-field" htmlFor="contact-email">
                     <span className="ct-ico"><Mail size={18} /></span>
-                    <span className="ct-field__body">
+                    <span className={`ct-field__body${!formData.email && focusId !== 'contact-email' ? ' is-hinting' : ''}`}>
                       <span className="ct-field__label">Email Address <b>*</b></span>
-                      <input id="contact-email" required type="email" placeholder="Enter your email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                      <input id="contact-email" onFocus={() => setFocusId('contact-email')} onBlur={() => setFocusId(null)} required type="email" placeholder="Enter your email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                      <TypedHint text="Enter your email" active={!formData.email && focusId !== 'contact-email'} />
                     </span>
                   </label>
                 </div>
                 <label className="ct-field" htmlFor="contact-phone">
                   <span className="ct-ico"><Phone size={18} /></span>
-                  <span className="ct-field__body">
+                  <span className={`ct-field__body${!formData.phone && focusId !== 'contact-phone' ? ' is-hinting' : ''}`}>
                     <span className="ct-field__label">Phone Number <b>*</b></span>
-                    <input id="contact-phone" required type="tel" placeholder="+91 XXXXX XXXXX" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+                    <input id="contact-phone" onFocus={() => setFocusId('contact-phone')} onBlur={() => setFocusId(null)} required type="tel" placeholder="+91 XXXXX XXXXX" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+                      <TypedHint text="+91 XXXXX XXXXX" active={!formData.phone && focusId !== 'contact-phone'} />
                   </span>
                 </label>
                 <label className="ct-field" htmlFor="contact-subject">
                   <span className="ct-ico"><FileText size={18} /></span>
-                  <span className="ct-field__body">
+                  <span className={`ct-field__body${!formData.subject && focusId !== 'contact-subject' ? ' is-hinting' : ''}`}>
                     <span className="ct-field__label">Subject <b>*</b></span>
-                    <input id="contact-subject" required type="text" placeholder="e.g. Inquiry about Sandalwood Estates" value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} />
+                    <input id="contact-subject" onFocus={() => setFocusId('contact-subject')} onBlur={() => setFocusId(null)} required type="text" placeholder="Enter your subject" value={formData.subject} onChange={(e) => setFormData({ ...formData, subject: e.target.value })} />
+                      <TypedHint text="Enter your subject" active={!formData.subject && focusId !== 'contact-subject'} />
                   </span>
                 </label>
                 <label className="ct-field ct-field--area" htmlFor="contact-message">
                   <span className="ct-ico"><MessageSquare size={18} /></span>
-                  <span className="ct-field__body">
+                  <span className={`ct-field__body${!formData.message && focusId !== 'contact-message' ? ' is-hinting' : ''}`}>
                     <span className="ct-field__label">Your Message <b>*</b></span>
-                    <textarea id="contact-message" required rows={4} placeholder="How can we assist you today?" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} />
+                    <textarea id="contact-message" onFocus={() => setFocusId('contact-message')} onBlur={() => setFocusId(null)} required rows={4} placeholder="How can we assist you today?" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} />
+                      <TypedHint text="How can we assist you today?" active={!formData.message && focusId !== 'contact-message'} />
                   </span>
                 </label>
 

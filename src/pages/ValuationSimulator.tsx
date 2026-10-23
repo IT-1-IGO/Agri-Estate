@@ -60,7 +60,7 @@ const ValuationSimulator: React.FC = () => {
           offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' }
         }}
       />
-      <div className="container max-w-6xl">
+      <div className="container mx-auto max-w-6xl px-6 lg:px-10">
         <div className="text-center mb-16">
           <motion.span 
             initial={{ opacity: 0, y: 10 }}
@@ -87,12 +87,12 @@ const ValuationSimulator: React.FC = () => {
           </motion.p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
+        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
           {/* Inputs Section */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            className="lg:col-span-5 space-y-8"
+            className="lg:col-span-6 space-y-8"
           >
             <div className="bg-white rounded-[32px] p-8 border border-black/5 shadow-xl">
               <div className="space-y-6">
@@ -190,7 +190,7 @@ const ValuationSimulator: React.FC = () => {
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            className="lg:col-span-7"
+            className="lg:col-span-6"
           >
             <AnimatePresence mode="wait">
               {!showResult ? (

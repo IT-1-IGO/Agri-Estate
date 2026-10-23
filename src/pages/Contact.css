@@ -52,6 +52,26 @@
 .ct-success p { margin: 0; color: #44525a; }
 .ct-success button { margin-top: 22px; background: none; border: 0; color: var(--g); font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
 
+/* floating labels: label rests inside the field, floats up on focus or when filled */
+.ct-field__body { position: relative; padding-top: 22px; gap: 0; }
+.ct-field__label { position: absolute; left: 0; top: 24px; z-index: 1; pointer-events: none; transform-origin: left top; font-size: .98rem; font-weight: 500; color: #6b7a74; transition: transform .25s ease, color .25s ease, font-weight .25s ease; }
+.ct-field input, .ct-field textarea { position: relative; min-height: 30px; padding: 4px 0 2px; }
+.ct-field input::placeholder, .ct-field textarea::placeholder { color: transparent; transition: color .25s ease .05s; }
+.ct-field:focus-within .ct-field__label,
+.ct-field__body:has(input:not(:placeholder-shown)) .ct-field__label,
+.ct-field__body:has(textarea:not(:placeholder-shown)) .ct-field__label { transform: translateY(-22px) scale(.84); font-weight: 600; color: var(--f); }
+.ct-field:focus-within input::placeholder, .ct-field:focus-within textarea::placeholder { color: #98a2a0; }
+.ct-field--area textarea { min-height: 96px; }
+@media (prefers-reduced-motion: reduce) { .ct-field__label, .ct-field input::placeholder { transition: none !important; } }
+
+/* typing hint: shown only while the field is empty and unfocused; label floats up so they never overlap */
+.ct-field__body.is-hinting .ct-field__label { transform: translateY(-22px) scale(.84); font-weight: 600; color: var(--f); }
+.ct-typing { position: absolute; left: 0; bottom: 4px; font-size: .95rem; line-height: 1.4; color: #98a2a0; pointer-events: none; white-space: nowrap; max-width: 100%; overflow: hidden; }
+.ct-field--area .ct-typing { top: 26px; bottom: auto; }
+.ct-caret { display: inline-block; width: 1.5px; height: 1.05em; margin-left: 2px; vertical-align: -.18em; background: var(--g); animation: ctBlink 1s steps(1) infinite; }
+@keyframes ctBlink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ct-caret { animation: none; } }
+
 @media (max-width: 1000px) {
   .ct-inner { grid-template-columns: 1fr; gap: 24px; }
   .ct-info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }

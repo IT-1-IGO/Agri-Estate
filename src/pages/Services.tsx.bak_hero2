@@ -1,0 +1,239 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import {
+  ArrowRight,
+  Settings,
+  Clock,
+  ShieldCheck,
+  Sprout,
+  IndianRupee,
+  Handshake,
+  RefreshCw,
+} from 'lucide-react';
+import SEO from '../components/SEO';
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+const SERIF = '"DM Serif Display","Playfair Display",Georgia,"Times New Roman",serif';
+
+const GREEN = '#124B3B';
+const INK = '#123C37';
+const MUTED = '#4F6A66';
+
+const AMC_BENEFITS = [
+  { Icon: Settings, label: 'Regular Maintenance' },
+  { Icon: Clock, label: 'Quick Support' },
+  { Icon: ShieldCheck, label: 'Improved Performance' },
+  { Icon: Sprout, label: 'Longer Equipment Life' },
+];
+
+const BUYBACK_BENEFITS = [
+  { Icon: IndianRupee, label: 'Fair Valuation' },
+  { Icon: Handshake, label: 'Transparent Process' },
+  { Icon: RefreshCw, label: 'Hassle-Free Experience' },
+  { Icon: ShieldCheck, label: 'Trusted Partnership' },
+];
+
+const Label: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GREEN }}>
+    <span className="h-px w-8" style={{ background: GREEN }} aria-hidden="true" />
+    {children}
+  </p>
+);
+
+const Benefits: React.FC<{ items: { Icon: typeof Settings; label: string }[] }> = ({ items }) => (
+  <ul className="mt-7 grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-y-0">
+    {items.map(({ Icon, label }, i) => (
+      <li
+        key={label}
+        className={`flex flex-col items-start gap-3 px-0 sm:px-4 sm:first:pl-0 ${i > 0 ? 'sm:border-l sm:border-[#124B3B]/15' : ''}`}
+      >
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#D5E6CF]" style={{ color: GREEN }}>
+          <Icon size={26} strokeWidth={1.7} aria-hidden="true" />
+        </span>
+        <span className="text-[15px] leading-snug" style={{ color: INK }}>{label}</span>
+      </li>
+    ))}
+  </ul>
+);
+
+const CtaButton: React.FC<{ to: string; children: React.ReactNode }> = ({ to, children }) => (
+  <Link
+    to={to}
+    className="group/btn mt-8 inline-flex items-center gap-3 rounded-full px-7 py-3 text-[15px] font-semibold normal-case tracking-normal text-white shadow-[0_10px_24px_-12px_rgba(18,75,59,0.7)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d3a2d] hover:shadow-[0_16px_28px_-12px_rgba(18,75,59,0.75)]"
+    style={{ background: GREEN }}
+  >
+    {children}
+    <ArrowRight size={18} className="transition-transform duration-300 group-hover/btn:translate-x-1" aria-hidden="true" />
+  </Link>
+);
+
+const Badge: React.FC<{ children: React.ReactNode; Icon: typeof ShieldCheck; className?: string }> = ({ children, Icon, className = '' }) => (
+  <span
+    className={`absolute flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium leading-tight text-white shadow-lg ${className}`}
+    style={{ background: GREEN }}
+  >
+    <Icon size={30} strokeWidth={1.5} aria-hidden="true" />
+    <span>{children}</span>
+  </span>
+);
+
+const Services: React.FC = () => {
+  const reduce = useReducedMotion();
+  const reveal = (delay = 0, y = 24) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.2 },
+          transition: { duration: 0.7, ease: EASE, delay },
+        };
+
+  const card =
+    'relative overflow-hidden rounded-[28px] border border-[#DDEBD8] bg-gradient-to-br from-[#EAF2E4] via-[#E4EEDD] to-[#DDEBD8] shadow-[0_18px_40px_-28px_rgba(18,75,59,0.45)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_26px_50px_-26px_rgba(18,75,59,0.5)]';
+  const h2 = 'mt-4 text-[2rem] font-normal normal-case leading-[1.12] tracking-tight sm:text-4xl lg:text-[2.6rem]';
+  const body = 'mt-4 max-w-xl text-[15px] leading-7 sm:text-base';
+
+  return (
+    <main className="overflow-x-hidden bg-[#F8F8F0] pt-[76px]" style={{ color: INK }}>
+      <SEO
+        title="Services | AMC and Buyback"
+        description="Reliable AMC and Buyback services that bring long-term value and peace of mind to your agricultural investments."
+        canonical="/services"
+      />
+
+      {/* 1. Hero */}
+      <section className="relative isolate overflow-hidden bg-[#F8F8F0]" aria-labelledby="services-heading">
+        <div className="container-pro relative z-10 py-12 md:flex md:min-h-[420px] md:items-center md:py-20">
+          <motion.div {...reveal(0)} className="max-w-[560px] md:w-[52%]">
+            <Label>Our Services</Label>
+            <h1
+              id="services-heading"
+              className="mt-5 text-[2.1rem] font-normal normal-case leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.2rem]"
+              style={{ fontFamily: SERIF, color: GREEN }}
+            >
+              Comprehensive Support for a Sustainable Tomorrow
+            </h1>
+            <p className="mt-5 max-w-md text-[15px] leading-7 sm:text-base" style={{ color: MUTED }}>
+              We offer reliable AMC and Buyback services to ensure long-term value and peace of mind for your agricultural investments.
+            </p>
+          </motion.div>
+        </div>
+        <img
+          src="/images/services/services-hero-wide.webp"
+          alt=""
+          aria-hidden="true"
+          width={2048}
+          height={660}
+          fetchPriority="high"
+          className="relative block h-[240px] w-full object-cover object-[78%_top] [mask-image:linear-gradient(180deg,transparent_0,#000_25%)] sm:h-[300px] md:absolute md:inset-0 md:z-0 md:h-full md:object-[center_top] md:[mask-image:none]"
+        />
+        <svg className="pointer-events-none absolute bottom-0 left-0 z-[1] hidden h-16 w-full md:block" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 40 C 220 8, 420 70, 760 46 C 1000 30, 1200 58, 1440 38 L1440 64 L0 64 Z" fill="#DDEBD8" opacity="0.55" />
+          <path d="M0 52 C 260 30, 520 72, 860 54 C 1100 42, 1280 62, 1440 50 L1440 64 L0 64 Z" fill="#F8F8F0" opacity="0.9" />
+        </svg>
+      </section>
+
+      <div className="container-pro space-y-6 py-8 md:space-y-8 md:py-10">
+        {/* 2. AMC */}
+        <motion.section {...reveal(0)} className={card} aria-labelledby="amc-heading">
+          <div className="grid items-stretch gap-8 p-4 sm:p-5 lg:grid-cols-[0.92fr_1.2fr] lg:gap-10">
+            <div className="relative overflow-hidden rounded-[22px]">
+              <img
+                src="/images/services/services-amc.webp"
+                alt="Technician inspecting solar panels in a green field"
+                width={740}
+                height={732}
+                loading="lazy"
+                className="block aspect-[1/0.95] h-full w-full object-cover object-center lg:aspect-auto lg:min-h-[420px]"
+              />
+              <Badge Icon={ShieldCheck} className="left-4 top-4">
+                Reliable<br />Maintenance
+              </Badge>
+            </div>
+            <div className="flex flex-col justify-center pb-4 pr-0 pt-2 lg:py-6 lg:pr-8">
+              <Label>AMC Service</Label>
+              <h2 id="amc-heading" className={h2} style={{ fontFamily: SERIF, color: GREEN }}>
+                Annual Maintenance Contract (AMC)
+              </h2>
+              <p className={body} style={{ color: MUTED }}>
+                Keep your systems running at their best with our Annual Maintenance Contract (AMC) service. We ensure regular check-ups, timely maintenance and quick support to minimize downtime and maximize performance.
+              </p>
+              <Benefits items={AMC_BENEFITS} />
+              <div><CtaButton to="/contact">Learn More</CtaButton></div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* 3. Buyback */}
+        <motion.section {...reveal(0)} className={card} aria-labelledby="buyback-heading">
+          <div className="grid items-stretch gap-8 p-4 sm:p-5 lg:grid-cols-[1.2fr_0.92fr] lg:gap-10">
+            <div className="order-2 flex flex-col justify-center pb-4 pt-2 lg:order-1 lg:py-6 lg:pl-8">
+              <Label>Buyback Service</Label>
+              <h2 id="buyback-heading" className={h2} style={{ fontFamily: SERIF, color: GREEN }}>
+                Buyback Service
+              </h2>
+              <p className={body} style={{ color: MUTED }}>
+                We offer a hassle-free buyback service to help you get the best value for your investment. Whether you’re upgrading or exiting, we ensure a transparent, fair and smooth process.
+              </p>
+              <Benefits items={BUYBACK_BENEFITS} />
+              <div><CtaButton to="/contact">Learn More</CtaButton></div>
+            </div>
+            <div className="relative order-1 overflow-hidden rounded-[22px] lg:order-2">
+              <img
+                src="/images/services/services-buyback.webp"
+                alt="A handshake in a green field with a buyback agreement in the foreground"
+                width={728}
+                height={720}
+                loading="lazy"
+                className="block aspect-[1/0.95] h-full w-full object-cover object-center lg:aspect-auto lg:min-h-[420px]"
+              />
+              <Badge Icon={RefreshCw} className="right-4 top-4">
+                Value<br />Returns
+              </Badge>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* 4. Commitment */}
+        <motion.section
+          {...reveal(0)}
+          className="relative isolate overflow-hidden rounded-[28px] border border-[#DDEBD8] bg-gradient-to-r from-[#F4F6EA] via-[#EDF3E3] to-[#E3EEDB]"
+          aria-labelledby="commit-heading"
+        >
+          <img
+            src="/images/estates-hero-landscape-v4.webp"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            className="absolute inset-y-0 right-0 -z-10 hidden h-full w-[62%] object-cover object-[center_60%] [mask-image:linear-gradient(90deg,transparent_0,#000_45%)] md:block"
+          />
+          <div className="flex flex-col gap-6 px-6 py-9 sm:px-10 md:min-h-[200px] md:flex-row md:items-center md:justify-between md:py-10">
+            <div className="max-w-md border-l-2 pl-5" style={{ borderColor: GREEN }}>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GREEN }}>Our Commitment</p>
+              <h2 id="commit-heading" className="mt-2 text-[1.9rem] font-normal normal-case leading-[1.15] sm:text-4xl" style={{ fontFamily: SERIF, color: GREEN }}>
+                Your Growth, Our Commitment
+              </h2>
+              <p className="mt-3 text-[15px] leading-7" style={{ color: MUTED }}>
+                From ongoing support to future opportunities, our services are designed to add value at every step of your journey.
+              </p>
+            </div>
+            <div>
+              <Link
+                to="/contact"
+                className="group/btn inline-flex items-center gap-3 rounded-full px-7 py-3 text-[15px] font-semibold normal-case tracking-normal text-white shadow-[0_10px_24px_-12px_rgba(18,75,59,0.7)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d3a2d]"
+                style={{ background: GREEN }}
+              >
+                Get in Touch
+                <ArrowRight size={18} className="transition-transform duration-300 group-hover/btn:translate-x-1" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        </motion.section>
+      </div>
+    </main>
+  );
+};
+
+export default Services;

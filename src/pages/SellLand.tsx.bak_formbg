@@ -1,0 +1,108 @@
+import React, { useState } from 'react';
+import { CheckCircle2, ClipboardList, MapPinned, Scale, Banknote, FileSignature, Loader2 } from 'lucide-react';
+import SEO from '../components/SEO';
+import SellProcessSection from '../components/home/SellProcessSection';
+import { submitLead } from '../lib/leadsService';
+
+const STEPS = [
+  { Icon: ClipboardList, title: 'Share your land', text: 'Tell us location, size and survey details through the form below.' },
+  { Icon: MapPinned, title: 'Site verification', text: 'An IGO team visits the land to check access, soil, water and boundaries.' },
+  { Icon: Scale, title: 'Legal check', text: 'Our legal team reviews the title, encumbrances and land records.' },
+  { Icon: Banknote, title: 'Valuation and offer', text: 'You receive a transparent market-based offer for your land.' },
+  { Icon: FileSignature, title: 'Agreement and payment', text: 'Registration is completed and payment is made directly to you.' },
+];
+
+const LAND_TYPES = ['Agricultural (dry)', 'Agricultural (irrigated)', 'Plantation / orchard', 'Farm with structures', 'Other'];
+
+const inputCls = 'w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#1B5E20]';
+
+const SellLand: React.FC = () => {
+  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [form, setForm] = useState({ name: '', phone: '', email: '', location: '', size: '', landType: LAND_TYPES[0], waterSource: '', budget: '', notes: '' });
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setState('sending');
+    try {
+      await submitLead({
+        type: 'requirement',
+        intent: 'Sell Land to IGO',
+        name: form.name,
+        phone: form.phone,
+        email: form.email || undefined,
+        location: form.location,
+        size: form.size,
+        landType: form.landType,
+        waterSource: form.waterSource || undefined,
+        budget: form.budget || undefined,
+        notes: `[SELL LAND TO IGO] ${form.notes}`.trim(),
+      });
+      setState('done');
+    } catch {
+      setState('error');
+    }
+  };
+
+  return (
+    <main className="bg-background pt-20 pb-20">
+      <SEO
+        title="Sell Your Land to IGO | Direct Land Purchase"
+        description="Sell your agricultural land directly to IGO Group. Free site visit, legal verification and a transparent offer, with no brokers."
+        canonical="/sell-land"
+      />
+      <h1 className="sr-only">Sell your land directly to IGO</h1>
+      <div className="w-full overflow-x-auto sm:overflow-visible">
+        <div className="relative mx-auto min-w-[640px] max-w-[2048px] sm:min-w-0">
+          <img
+            src="/images/sell-land-hero.webp"
+            alt="Sell your land directly to IGO. No brokers and no listing fees. IGO GROUP, India's leading farming conglomerate."
+            width={2048}
+            height={682}
+            fetchPriority="high"
+            className="block h-auto w-full"
+          />
+          <a
+            href="#sell-form"
+            aria-label="Get my offer"
+            className="absolute rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
+            style={{ left: '5.2%', top: '61.8%', width: '13.1%', height: '9.8%' }}
+          />
+        </div>
+      </div>
+      <SellProcessSection />
+      <div className="container-pro pt-16">
+        <section id="sell-form" aria-labelledby="form-heading" className="max-w-3xl mx-auto rounded-3xl bg-white border border-black/5 shadow-lg p-6 md:p-10">
+          <h2 id="form-heading" className="text-2xl md:text-3xl text-[#0f4d24]">Tell us about your land</h2>
+          {state === 'done' ? (
+            <div role="status" className="mt-6 flex items-start gap-3 rounded-2xl bg-[#eaf4e6] p-5 text-[#0f4d24]">
+              <CheckCircle2 className="shrink-0" />
+              <p>Thank you. The IGO land team will call you within one working day to arrange a site visit.</p>
+            </div>
+          ) : (
+            <form onSubmit={submit} className="mt-6 grid sm:grid-cols-2 gap-4">
+              <label className="block">Your name<input required className={inputCls} value={form.name} onChange={set('name')} autoComplete="name" /></label>
+              <label className="block">Phone<input required type="tel" className={inputCls} value={form.phone} onChange={set('phone')} autoComplete="tel" /></label>
+              <label className="block">Email (optional)<input type="email" className={inputCls} value={form.email} onChange={set('email')} autoComplete="email" /></label>
+              <label className="block">Land location<input required className={inputCls} value={form.location} onChange={set('location')} placeholder="Village, taluk, district" /></label>
+              <label className="block">Land size<input required className={inputCls} value={form.size} onChange={set('size')} placeholder="e.g. 5 acres" /></label>
+              <label className="block">Land type
+                <select className={inputCls} value={form.landType} onChange={set('landType')}>{LAND_TYPES.map((t) => <option key={t}>{t}</option>)}</select>
+              </label>
+              <label className="block">Water source<input className={inputCls} value={form.waterSource} onChange={set('waterSource')} placeholder="Borewell, canal, river..." /></label>
+              <label className="block">Expected price (optional)<input className={inputCls} value={form.budget} onChange={set('budget')} /></label>
+              <label className="block sm:col-span-2">Anything else we should know<textarea rows={3} className={inputCls} value={form.notes} onChange={set('notes')} /></label>
+              {state === 'error' && <p role="alert" className="sm:col-span-2 text-red-700">Something went wrong. Please try again or call +91 73977 89803.</p>}
+              <button type="submit" disabled={state === 'sending'} className="sm:col-span-2 rounded-full bg-[#1B5E20] text-white px-8 py-3 font-semibold inline-flex items-center justify-center gap-2 disabled:opacity-60">
+                {state === 'sending' && <Loader2 className="animate-spin" size={18} />} Submit for valuation
+              </button>
+            </form>
+          )}
+        </section>
+      </div>
+    </main>
+  );
+};
+
+export default SellLand;

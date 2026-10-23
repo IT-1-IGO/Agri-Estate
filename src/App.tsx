@@ -1,8 +1,8 @@
 import {
-  MapPin, Star, ArrowRight, Zap, TrendingUp, Sprout, ShieldCheck, CheckCircle2,
+  MapPin, ArrowRight, Zap, TrendingUp, Sprout, ShieldCheck, CheckCircle2,
   LayoutGrid, Newspaper, PlayCircle, Users, Calculator, Globe, MessageCircle, Camera
 } from 'lucide-react';
-import { Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import React from 'react';
 import SEO from './components/SEO';
 import type { Property } from './types';
@@ -10,9 +10,9 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AIAssistant from './components/ai/AIAssistant';
 import { AnimatePresence } from 'framer-motion';
-import StatsSection from './components/home/StatsSection';
 import PropertyCard from './components/PropertyCard';
 import About from './pages/About';
+import AboutPage from './pages/AboutPage';
 import Contact from './pages/Contact';
 import { Suspense, lazy } from 'react';
 const Leadership = lazy(() => import('./pages/Leadership'));
@@ -25,26 +25,30 @@ const PostRequirement = lazy(() => import('./pages/PostRequirement'));
 const PropertyDetails = lazy(() => import('./pages/PropertyDetails'));
 const ValuationSimulator = lazy(() => import('./pages/ValuationSimulator'));
 const TaxOptimizer = lazy(() => import('./pages/TaxOptimizer'));
-const Marketplace = lazy(() => import('./pages/Marketplace'));
-const PostProperty = lazy(() => import('./pages/PostProperty'));
+const Careers = lazy(() => import('./pages/Careers'));
 const Blog = lazy(() => import('./pages/Blog'));
 const KnowledgeHub = lazy(() => import('./pages/KnowledgeHub'));
 const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
-const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const CustomPage = lazy(() => import('./pages/CustomPage'));
+const AdminApp = lazy(() => import('./admin/AdminApp'));
 const PropertyForm = lazy(() => import('./pages/admin/PropertyForm'));
 const InvestorDashboard = lazy(() => import('./pages/dashboard/InvestorDashboard'));
+const SellLand = lazy(() => import('./pages/SellLand'));
+const Projects = lazy(() => import('./pages/Projects'));
 const SellerDashboard = lazy(() => import('./pages/SellerDashboard'));
-const AIReportPage = lazy(() => import('./pages/AIReportPage'));
 const BlogsPage = lazy(() => import('./pages/BlogsPage'));
-const VideosPage = lazy(() => import('./pages/VideosPage'));
 import { motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 // import GlobalBackground from './components/3d/GlobalBackground';
+const Services = lazy(() => import('./pages/Services'));
 const LegalServices = lazy(() => import('./pages/services/LegalServices'));
 const SoilIntelligence = lazy(() => import('./pages/services/SoilIntelligence'));
 const Policy = lazy(() => import('./pages/Policy'));
-import { locations } from './data/locationEstates';
+import PopularLocations from './components/home/PopularLocations';
+import VerifiedInvestments from './components/home/VerifiedInvestments';
+import WhyChooseAgriEstates from './components/home/WhyChooseAgriEstates';
+import KnowledgeHubSection from './components/home/KnowledgeHubSection';
 import { submitLead } from './lib/leadsService';
 import LiveChatWidget from './components/LiveChatWidget';
 import { useProperties } from './hooks/useProperties';
@@ -68,7 +72,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 const AdminProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isAuthenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
-  if (!isAuthenticated) return <Navigate to="/admin" replace />;
+  if (!isAuthenticated) return <Navigate to="/admin/login" replace />;
   return <>{children}</>;
 };
 
@@ -94,10 +98,11 @@ const NotFound: React.FC = () => (
 );
 
 import BrandsMarquee from './components/home/BrandsMarquee';
+import SellBuyPaths from './components/home/SellBuyPaths';
+import RequirementSection from './components/home/RequirementSection';
 
 const Home: React.FC = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const { publicProperties } = useProperties();
 
   // Identify visitor if logged in
@@ -144,122 +149,25 @@ const Home: React.FC = () => {
         ]}
       />
       <Hero />
-        <div className="container-pro relative z-20 -mt-24">
-          <StatsSection />
-        </div>
+
+        <SellBuyPaths />
 
         {/* About Section */}
         <About standalone={false} />
 
         {/* Location Quick Links */}
-        <section id="estates" className="py-16 bg-background">
-          <div className="container-pro">
-            <div className="flex items-center justify-between mb-10">
-              <div>
-                <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-2 block">Explore by Corridor</span>
-                <h2 className="text-3xl font-black text-primary">Popular Estate Locations</h2>
-              </div>
-              <Link to="/locations" className="hidden md:flex items-center gap-2 text-secondary font-bold uppercase tracking-widest text-sm hover:underline">
-                View All Locations <ArrowRight size={16} />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {locations.map(loc => (
-                <Link
-                  key={loc.id}
-                  to={`/locations?location=${loc.id}`}
-                  className="group bg-white rounded-3xl p-6 border border-black/5 hover:border-secondary hover:shadow-xl transition-all text-center"
-                >
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-secondary group-hover:text-primary transition-colors">
-                    <MapPin size={20} />
-                  </div>
-                  <h3 className="font-bold text-primary mb-1">{loc.name}</h3>
-                  <p className="text-xs text-text-muted">{loc.estateCount} Estates</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        <PopularLocations />
 
-        <section className="section-padding bg-background border-b border-black/5">
-        <div className="container-pro">
-          <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-16 items-start">
-            <div>
-              <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Premium Estates in Tamil Nadu</span>
-              <h2 className="heading-lg text-primary">Verified Agricultural <br /><span className="text-secondary italic">Land Investments</span></h2>
-              <p className="text-lg text-text-muted font-light leading-relaxed mt-6">
-                From Mahabalipuram's teak plantations to Chennai's vertical farms — discover handpicked estates with clear titles, managed support, and transparent returns.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-5">
-              {[
-                { title: 'Browse by Location', desc: 'Explore estates in Mahabalipuram, Chennai, Maduranthagam, Kanchipuram & more.', icon: <MapPin className="text-secondary" />, link: '/locations' },
-                { title: 'Investment Calculator', desc: 'Estimate EMI, rental yield, and crop returns per estate.', icon: <Calculator className="text-secondary" />, link: '/valuation' },
-                { title: 'AI Price Report', desc: 'Get instant valuation based on comparable sales and soil data.', icon: <TrendingUp className="text-secondary" />, link: '/ai-report' },
-                { title: 'Talk to Advisor', desc: 'Our location experts match your goals with the right estate corridor.', icon: <Users className="text-secondary" />, link: '/contact' }
-              ].map((item) => (
-                <Link key={item.title} to={item.link} className="block bg-white border border-black/5 rounded-[28px] p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all group">
-                  <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-primary transition-colors">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-xl font-black text-primary mb-3">{item.title}</h3>
-                  <p className="text-sm text-text-muted leading-relaxed">{item.desc}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+        <VerifiedInvestments />
 
       {/* Why Choose IGO? */}
-      <section className="section-padding bg-background relative overflow-hidden">
-        <div className="container-pro">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
-            <div>
-              <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Agri Estate Advantage</span>
-              <h2 className="heading-lg text-primary">Why Choose <br /><span className="text-secondary italic">Igo Agriestates</span>?</h2>
-              <p className="text-lg text-text-muted font-light leading-relaxed mb-12">
-                We help customers evaluate agricultural land and convert it into a professionally planned Agri Estate with crop strategy, development budgeting, managed operations, and transparent revenue tracking.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {[
-                  { title: 'Crop Model First', desc: 'Every estate is explained with a practical crop plan and revenue route.', icon: <Sprout className="text-secondary" /> },
-                  { title: 'Estate Budgeting', desc: 'Understand setup cost, operating cost, crop cycle, and break-even before deciding.', icon: <LayoutGrid className="text-secondary" /> },
-                  { title: 'Managed Farming', desc: 'IGO supports farm development, labour coordination, crop monitoring, and reporting.', icon: <Users className="text-secondary" /> },
-                  { title: 'Document Clarity', desc: 'Land purchase is supported with title, survey, tax, water, and registration checks.', icon: <CheckCircle2 className="text-secondary" /> }
-                ].map((item, i) => (
-                  <div key={i} className="group">
-                    <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                      {item.icon}
-                    </div>
-                    <h4 className="text-xl font-bold text-primary mb-2 uppercase tracking-tight">{item.title}</h4>
-                    <p className="text-sm text-text-muted leading-relaxed font-light">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="relative">
-              <div className="absolute inset-0 bg-secondary/10 blur-[100px] rounded-full z-0"></div>
-              <img
-                src="/images/team-expert-indian.png"
-                alt="Professional Team"
-                className="rounded-[60px] shadow-2xl relative z-10 w-full border border-white/40"
-              />
-              <div className="absolute -bottom-10 -left-10 glass p-8 rounded-[40px] shadow-2xl z-20 border-white/60">
-                <div className="text-5xl font-black text-primary mb-1">15+</div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-secondary">Years of Agri Expertise</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <WhyChooseAgriEstates />
 
       {/* Agri Estate Categories */}
       <section className="section-padding bg-primary text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-topo opacity-5 pointer-events-none"></div>
         <div className="container-pro">
-          <div className="max-w-3xl mb-24">
+          <div className="max-w-3xl mx-auto text-center mb-24">
             <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Agri Estate Models</span>
             <h2 className="heading-lg text-white">Land Into <br /><span className="text-secondary italic">Farm Income</span></h2>
             <p className="text-lg text-white/50 font-light leading-relaxed">
@@ -319,236 +227,26 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Trending Cities & Knowledge */}
-      <section className="section-padding bg-background relative">
-        <div className="container-pro">
-          <div className="grid lg:grid-cols-12 gap-20">
-            {/* Trending Cities */}
-            <div className="lg:col-span-7">
-              <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Growth Corridors</span>
-              <h2 className="heading-lg text-primary mb-12 leading-none">Trending <br /><span className="text-secondary italic">Agri-Cities</span></h2>
+      {/* Knowledge */}
+      <KnowledgeHubSection />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {[
-                  { name: 'Mysore Corridors', stats: '15% YoY Growth', img: '/images/cities/mysore.png', id: 'mysore' },
-                  { name: 'Nashik Vineyards', stats: 'Managed High Yield', img: '/images/cities/nashik.png', id: 'nashik' },
-                  { name: 'Coimbatore Hubs', stats: 'Top Industrial Agri', img: '/images/cities/coimbatore.png', id: 'coimbatore' },
-                  { name: 'Telangana Belt', stats: 'Bio-CNG Pioneer', img: '/images/cities/telangana.png', id: 'telangana' }
-                ].map((city, i) => (
-                  <motion.div 
-                    key={i} 
-                    whileHover={{ x: 10 }} 
-                    onClick={() => navigate(`/locations?location=${city.id}`)}
-                    className="flex items-center space-x-6 p-4 rounded-[32px] hover:bg-primary/5 transition-all cursor-pointer group"
-                  >
-                    <div className="w-24 h-24 rounded-[24px] overflow-hidden shadow-lg border border-black/5 flex-shrink-0">
-                      <img src={city.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform" alt={city.name} loading="lazy" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-primary mb-1 tracking-tight">{city.name}</h4>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-secondary">{city.stats}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Knowledge Hub */}
-            <div className="lg:col-span-5 bg-primary rounded-[60px] p-12 text-white relative overflow-hidden shadow-2xl">
-              <div className="absolute top-0 right-0 w-full h-full bg-topo opacity-5 pointer-events-none"></div>
-              <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Knowledge Hub</span>
-              <h2 className="text-4xl font-bold mb-10 leading-tight">Investment <br /><span className="text-secondary italic">Intelligence</span></h2>
-
-              <div className="space-y-8 relative z-10">
-                <Link to="/videos" className="block p-6 bg-white/5 rounded-[32px] border border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
-                  <div className="flex items-center space-x-4 mb-4">
-                    <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center text-primary">
-                      <PlayCircle size={20} />
-                    </div>
-                    <h5 className="font-bold text-lg">Trending Videos</h5>
-                  </div>
-                  <p className="text-xs text-white/50 leading-relaxed font-light">Watch virtual site visits and drone audits of our prime estates.</p>
-                </Link>
-
-                <Link to="/blogs" className="block p-6 bg-white/5 rounded-[32px] border border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
-                  <div className="flex items-center space-x-4 mb-4">
-                    <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center text-primary">
-                      <Newspaper size={20} />
-                    </div>
-                    <h5 className="font-bold text-lg">Market Blogs</h5>
-                  </div>
-                  <p className="text-xs text-white/50 leading-relaxed font-light">Deep dives into Bio-CNG integration and state-wise land laws.</p>
-                </Link>
-
-                <Link to="/knowledge-hub" className="btn-gold w-full py-5 rounded-[24px]">
-                  Explore Masterclass
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Institutional Acquisition Desk */}
-      <section className="section-padding bg-background relative overflow-hidden">
-        <div className="container-pro">
-          <div className="bg-primary rounded-[80px] p-12 md:p-24 text-white relative overflow-hidden shadow-[0_48px_96px_-24px_rgba(2,44,34,0.3)] border border-white/5">
-            <div className="absolute top-0 right-0 w-full h-full bg-topo opacity-5 pointer-events-none"></div>
-            <div className="relative z-10 grid lg:grid-cols-2 gap-24 items-center">
-              <div>
-                <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Direct Acquisition</span>
-                <h2 className="heading-lg mb-10 leading-tight text-white">Can't find your <br /><span className="text-secondary italic font-serif">Ideal Estate?</span></h2>
-                <p className="text-white/50 text-xl mb-12 leading-relaxed font-light">
-                  Our institutional desk will source off-market lands tailored to your specific NPK requirements and ROI goals.
-                </p>
-                <div className="flex flex-wrap gap-10">
-                  <div className="flex items-center space-x-4">
-                    <ShieldCheck size={28} className="text-secondary" />
-                    <span className="font-bold text-sm tracking-wide">Verified Titles</span>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <Zap size={28} className="text-secondary" />
-                    <span className="font-bold text-sm tracking-wide">Quick Onboarding</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="glass-dark p-12 rounded-[56px] border-white/10">
-                 <form
-                   className="space-y-8"
-                   onSubmit={async (e) => {
-                     e.preventDefault();
-                     const form = e.currentTarget as HTMLFormElement;
-                     const category = form.elements.namedItem('category') as HTMLSelectElement;
-                     const state = form.elements.namedItem('state') as HTMLSelectElement;
-                     const size = form.elements.namedItem('size') as HTMLInputElement;
-                     const name = (form.elements.namedItem('name') as HTMLInputElement)?.value || user?.user_metadata?.name || 'Institutional Inquiry';
-                     const phone = (form.elements.namedItem('phone') as HTMLInputElement)?.value || user?.user_metadata?.phone || 'Captured via Desk';
-                     const email = (form.elements.namedItem('email') as HTMLInputElement)?.value || user?.email || '';
-                     
-                     const result = await submitLead({
-                       type: 'requirement',
-                       name,
-                       phone,
-                       email,
-                       asset_category: category?.value,
-                       preferred_state: state?.value,
-                       investment_size: size?.value
-                     });
-                     if (result.success) {
-                       import('./lib/trackingService').then(ts => ts.identifyVisitor(name, email));
-                       alert(`Thank you ${name}. Your institutional requirement has been submitted. Our desk will contact you soon.`);
-                       form.reset();
-                     }
-                   }}
-                 >
-                  {!user && (
-                    <div className="space-y-6 mb-8">
-                      <div className="grid grid-cols-2 gap-6">
-                        <div className="space-y-3">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Full Name</label>
-                          <input name="name" required placeholder="John Doe" className="w-full bg-white/5 border border-white/10 rounded-[20px] py-4 px-6 text-sm font-bold outline-none focus:border-secondary transition-colors text-white" />
-                        </div>
-                        <div className="space-y-3">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Phone Number</label>
-                          <input name="phone" required placeholder="+91..." className="w-full bg-white/5 border border-white/10 rounded-[20px] py-4 px-6 text-sm font-bold outline-none focus:border-secondary transition-colors text-white" />
-                        </div>
-                      </div>
-                      <div className="space-y-3">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Work Email</label>
-                        <input name="email" type="email" required placeholder="john@company.com" className="w-full bg-white/5 border border-white/10 rounded-[20px] py-4 px-6 text-sm font-bold outline-none focus:border-secondary transition-colors text-white" />
-                      </div>
-                    </div>
-                  )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Asset Category</label>
-                      <select name="category" className="w-full bg-white/5 border border-white/10 rounded-[20px] py-4 px-6 text-sm font-bold outline-none focus:border-secondary transition-colors cursor-pointer appearance-none text-white">
-                        <option className="bg-primary">Horticulture</option>
-                        <option className="bg-primary">Plantation</option>
-                        <option className="bg-primary">Livestock</option>
-                      </select>
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Preferred State</label>
-                      <select name="state" className="w-full bg-white/5 border border-white/10 rounded-[20px] py-4 px-6 text-sm font-bold outline-none focus:border-secondary transition-colors cursor-pointer appearance-none text-white">
-                        <option className="bg-primary">Karnataka</option>
-                        <option className="bg-primary">Maharashtra</option>
-                        <option className="bg-primary">Tamil Nadu</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Investment Size (Cr)</label>
-                    <input name="size" type="text" placeholder="e.g. 5.5" className="w-full bg-white/5 border border-white/10 rounded-[20px] py-4 px-6 text-sm font-bold outline-none focus:border-secondary transition-colors placeholder:text-white/20 text-white" />
-                  </div>
-                  <button type="submit" className="w-full btn-gold border-none py-6 shadow-2xl shadow-secondary/20 uppercase tracking-[0.2em] text-[12px] font-black">
-                    Submit Requirement
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Customer Reviews */}
-      <section className="section-padding bg-background relative overflow-hidden">
-        <div className="container-pro">
-          <div className="text-center max-w-3xl mx-auto mb-24">
-            <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Institutional Trust</span>
-            <h2 className="heading-lg text-primary">What Customers <span className="text-secondary italic">Love & Review</span></h2>
-            <div className="w-24 h-1.5 bg-secondary mx-auto rounded-full mt-6"></div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {[
-              { name: "Rahul Sharma", role: "Coffee Planter", quote: "IGO AGRI ESTATES made my dream of owning a managed vineyard come true with scientific soil audits." },
-              { name: "Anita Desai", role: "HNWI Investor", quote: "The transparency in legal chain verification is what sets Igo apart from any traditional broker." },
-              { name: "Vikram Reddy", role: "Estate Owner", quote: "Sold my horticulture asset in record time without any commission overhead. Truly revolutionary." }
-            ].map((t, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="glass p-12 rounded-[56px] text-left border-black/5 hover:border-secondary/20 transition-all group shadow-xl"
-              >
-                <div className="flex text-secondary mb-8 space-x-1">
-                  {[1, 2, 3, 4, 5].map(s => <Star key={s} size={18} fill="currentColor" />)}
-                </div>
-                <p className="text-xl italic mb-10 text-primary font-serif leading-relaxed">"{t.quote}"</p>
-                <div className="flex items-center space-x-5">
-                  <div className="w-14 h-14 bg-primary rounded-[20px] flex items-center justify-center font-black text-secondary text-xl shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-                    {t.name[0]}
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-primary">{t.name}</h5>
-                    <p className="text-[10px] text-secondary uppercase tracking-[0.2em] font-black">{t.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <Contact standalone={false} />
+      <RequirementSection />
     </main>
   );
 };
 
 import { trackVisit } from './lib/trackingService';
+import LiveContent from './cms/LiveContent';
 
 function App() {
   const location = useLocation();
   const [settings, setSettings] = useState(getLocalSettings);
+  // The new admin panel has its own layout, so hide the public header/footer/widgets there.
+  const isPanel = /^\/admin(\/|$)/.test(location.pathname) && !/^\/admin\/(dashboard|new|edit)(\/|$)/.test(location.pathname);
 
   useEffect(() => {
     // Track page views on route change
-    trackVisit();
+    if (!location.search.includes('cms_preview')) trackVisit();
   }, [location.pathname]);
 
   useEffect(() => {
@@ -560,16 +258,18 @@ function App() {
       <LanguageProvider>
         {/* <GlobalBackground /> */}
         <div className="min-h-screen relative font-sans selection:bg-secondary/30">
-          <Navbar />
+          <LiveContent />
+          {!isPanel && <Navbar />}
            <AnimatePresence mode="wait">
             <Suspense fallback={<RouteLoader />}>
+              <div id="cms-root" style={{ display: 'contents' }}>
               <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/locations" element={<Listings />} />
               <Route path="/listings" element={<Listings />} />
               <Route path="/properties/:id" element={<PropertyDetails />} />
               <Route path="/post-requirement" element={<PostRequirement />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/leadership" element={<Leadership />} />
               <Route path="/faq" element={<Faq />} />
               <Route path="/contact" element={<Contact />} />
@@ -577,102 +277,128 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/valuation" element={<ValuationSimulator />} />
-              <Route path="/ai-report" element={<AIReportPage />} />
               <Route path="/tax-optimizer" element={<TaxOptimizer />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/post-property" element={<PostProperty />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/p/:slug" element={<CustomPage />} />
+              <Route path="/post-property" element={<Navigate to="/sell-land" replace />} />
+              <Route path="/sell-land" element={<SellLand />} />
+              <Route path="/projects" element={<Projects />} />
               <Route path="/seller-dashboard" element={<SellerDashboard />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blogs" element={<BlogsPage />} />
-              <Route path="/videos" element={<VideosPage />} />
+              <Route path="/videos" element={<Navigate to="/" replace />} />
               <Route path="/knowledge-hub" element={<KnowledgeHub />} />
               <Route path="/dashboard" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
-              <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/admin/*" element={<AdminApp />} />
               <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
               <Route path="/admin/new" element={<AdminProtectedRoute><PropertyForm /></AdminProtectedRoute>} />
               <Route path="/admin/edit/:id" element={<AdminProtectedRoute><PropertyForm /></AdminProtectedRoute>} />
+              <Route path="/services" element={<Services />} />
               <Route path="/services/legal" element={<LegalServices />} />
               <Route path="/services/soil" element={<SoilIntelligence />} />
               <Route path="/policy" element={<Policy />} />
               <Route path="*" element={<NotFound />} />
               </Routes>
+              </div>
             </Suspense>
            </AnimatePresence>
 
-          {settings.enableAI && <AIAssistant />}
-          {settings.enableChat && <LiveChatWidget />}
+          {!isPanel && settings.enableAI && <AIAssistant />}
+          {!isPanel && settings.enableChat && <LiveChatWidget />}
 
-          {/* 26 Verticals Brands Marquee - Global above footer */}
-          {!['/leadership', '/contact', '/faq'].includes(location.pathname) && <BrandsMarquee />}
+          {/* 26 Verticals Brands Marquee - Home page only */}
+          {!isPanel && location.pathname === '/' && <BrandsMarquee />}
 
-          {/* Institutional Footer */}
-          <footer className="bg-primary text-white pt-32 pb-16 border-t border-white/5 relative overflow-hidden">
-            <div className="absolute bottom-0 right-0 w-full h-full bg-topo opacity-5 pointer-events-none"></div>
-            <div className="container-pro relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 lg:gap-24 mb-32">
-                <div className="lg:col-span-5">
-                  <Link to="/" className="flex items-center space-x-5 mb-10 group">
-                    <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center p-2 shadow-xl group-hover:scale-105 transition-transform overflow-hidden">
-                      <img src="/images/logo.png" alt="IGO Logo" className="w-full h-full object-contain" />
-                    </div>
-                    <div className="flex flex-col -space-y-1">
-                      <span className="font-black text-2xl tracking-tight text-white uppercase">Agri</span>
-                      <span className="text-[11px] text-secondary font-black uppercase italic tracking-[0.4em] ml-0.5">Estate India</span>
-                    </div>
+          {/* Footer */}
+          {!isPanel && <footer className="relative overflow-hidden bg-[#022c22] text-white normal-case tracking-normal">
+            <div className="relative z-10 mx-auto w-full max-w-[1660px] px-5 pb-6 pt-12 sm:px-8 md:pt-[60px] lg:px-10 xl:px-14">
+              <div className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr] xl:gap-x-16">
+                <div className="min-w-0">
+                  <Link to="/" aria-label="IGO Agri Estates home" className="inline-block rounded-md bg-white p-1.5 leading-none">
+                    <img src="/images/igo-group-logo.webp" alt="IGO Group" className="h-14 w-auto object-contain" />
                   </Link>
-                  <p className="text-white/40 text-lg max-w-md mb-12 leading-relaxed font-light">
-                    Defined by transparency, driven by technology. IGO Agriestates is the institutional standard for sustainable land investments.
+                  <p className="mt-6 max-w-[380px] text-[15px] leading-7 text-white/70">
+                    IGO Agri Estates helps you buy, sell and invest in verified agricultural land across India, with legal checks and scientific farm planning.
                   </p>
-                  <div className="flex space-x-5">
+                  <div className="mt-6 flex gap-3">
                     {[
                       { icon: FacebookIcon, link: 'https://www.facebook.com/share/173LkV9obs/', label: 'Facebook' },
                       { icon: InstagramIcon, link: 'https://www.instagram.com/igofarmlandestates/?hl=en', label: 'Instagram' },
-                      { icon: Globe, link: 'https://www.igoagritechfarms.com/', label: 'Website' }
+                      { icon: Globe, link: 'https://www.igoagritechfarms.com/', label: 'IGO Agritech Farms website' }
                     ].map(social => (
-                      <a 
-                        key={social.label} 
-                        href={social.link} 
-                        target="_blank" 
+                      <a
+                        key={social.label}
+                        href={social.link}
+                        target="_blank"
                         rel="noopener noreferrer"
-                        className="w-14 h-14 border border-white/10 rounded-[20px] flex items-center justify-center hover:bg-secondary hover:text-primary transition-all text-white hover:border-secondary shadow-lg group"
+                        aria-label={social.label}
                         title={social.label}
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-white hover:bg-white hover:text-[#022c22]"
                       >
-                        <social.icon size={22} />
+                        <social.icon size={18} />
                       </a>
                     ))}
                   </div>
                 </div>
 
-                 <div className="lg:col-span-3">
-                   <h5 className="font-black mb-10 uppercase tracking-[0.4em] text-secondary text-[10px]">Asset Portals</h5>
-                   <ul className="space-y-6 text-white/50 text-sm font-black uppercase tracking-widest">
-                     <li><Link to="/locations" className="hover:text-secondary transition-colors">Browse Estates</Link></li>
-                     <li><Link to="/valuation" className="hover:text-secondary transition-colors">Investment Calculator</Link></li>
-                     <li><Link to="/ai-report" className="hover:text-secondary transition-colors">AI Valuation Report</Link></li>
-                     <li><Link to="/post-property" className="hover:text-secondary transition-colors">List Your Plot</Link></li>
-                   </ul>
-                 </div>
+                <nav aria-label="Explore" className="min-w-0">
+                  <h5 className="m-0 text-lg font-extrabold uppercase leading-7 tracking-wide text-white">Explore</h5>
+                  <ul className="mt-6 flex flex-col gap-3.5 text-[15px] leading-6 text-white/80">
+                    {[
+                      ['Home', '/'],
+                      ['Buy Land', '/listings'],
+                      ['Sell Land', '/sell-land'],
+                      ['Projects', '/projects'],
+                      ['About Us', '/about'],
+                      ['Leadership', '/leadership'],
+                      ['FAQ', '/faq'],
+                      ['Contact Us', '/contact'],
+                    ].map(([label, to]) => (
+                      <li key={label}><Link to={to} className="font-normal normal-case tracking-normal transition-colors hover:text-white hover:underline">{label}</Link></li>
+                    ))}
+                  </ul>
+                </nav>
 
-                <div className="lg:col-span-4">
-                  <h5 className="font-black mb-10 uppercase tracking-[0.4em] text-secondary text-[10px]">Intelligence List</h5>
-                  <p className="text-sm text-white/40 mb-10 font-light leading-relaxed">Subscribe for priority access to institutional-grade horticulture estates and Bio-CNG feasibility reports.</p>
-                  <div className="flex bg-white/5 p-2 rounded-[32px] border border-white/10 focus-within:border-secondary transition-all shadow-inner">
-                    <input type="email" placeholder="Institutional Email" className="bg-transparent border-none outline-none px-6 py-4 text-sm w-full text-white placeholder:text-white/20" />
-                    <button className="bg-secondary text-primary px-10 py-4 rounded-[24px] font-black text-[10px] uppercase tracking-widest hover:bg-white transition-all shadow-xl shadow-secondary/20">Join</button>
+                <nav aria-label="Services and resources" className="min-w-0">
+                  <h5 className="m-0 text-lg font-extrabold uppercase leading-7 tracking-wide text-white">Services</h5>
+                  <ul className="mt-6 flex flex-col gap-3.5 text-[15px] leading-6 text-white/80">
+                    {[
+                      ['Legal Services', '/services/legal'],
+                      ['Soil Testing', '/services/soil'],
+                      ['Land Valuation', '/valuation'],
+                      ['Tax Optimizer', '/tax-optimizer'],
+                      ['Knowledge Hub', '/knowledge-hub'],
+                      ['Blogs', '/blogs'],
+                      ['Videos', '/videos'],
+                    ].map(([label, to]) => (
+                      <li key={label}><Link to={to} className="font-normal normal-case tracking-normal transition-colors hover:text-white hover:underline">{label}</Link></li>
+                    ))}
+                  </ul>
+                </nav>
+
+                <div className="min-w-0">
+                  <h5 className="m-0 text-lg font-extrabold uppercase leading-7 tracking-wide text-white">Head Office</h5>
+                  <div className="mt-6 flex flex-col gap-3.5 text-[15px] leading-6 text-white/80">
+                    <address className="not-italic leading-7">
+                      No. 17, Kovalan Street,<br />
+                      2nd Main Road, Uthandi Kanathur,<br />
+                      Chennai – 600119, Tamil Nadu, India
+                    </address>
+                    <a href="mailto:bd2@igogroups.com" className="w-fit transition-colors hover:text-white hover:underline">bd2@igogroups.com</a>
+                    <a href="tel:+917397789803" className="w-fit transition-colors hover:text-white hover:underline">+91 73977 89803</a>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-16 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10">
-                <p className="text-white/30 text-[11px] font-black uppercase tracking-[0.3em]">© 2026 IGO AGRI ESTATES. Cultivating Sustainable Legacies.</p>
-                <div className="flex space-x-12 text-[11px] font-black uppercase tracking-[0.2em] text-white/30">
-                  <Link to="/policy" className="hover:text-secondary transition-colors">Legal</Link>
-                  <Link to="/policy" className="hover:text-secondary transition-colors">Privacy</Link>
-                  <Link to="/policy" className="hover:text-secondary transition-colors">Agri-Policy</Link>
+              <div className="mt-12 flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-white/10 pt-6 text-sm text-white/70">
+                <p>© 2026 IGO Agri Estates. All rights reserved.</p>
+                <div className="flex gap-6">
+                  <Link to="/policy" className="transition-colors hover:text-white">Privacy Policy</Link>
+                  <Link to="/policy" className="transition-colors hover:text-white">Terms of Service</Link>
                 </div>
               </div>
             </div>
-          </footer>
+          </footer>}
         </div>
       </LanguageProvider>
     </AuthProvider>

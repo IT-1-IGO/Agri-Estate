@@ -1,0 +1,57 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ExternalLink } from 'lucide-react';
+import SEO from '../components/SEO';
+import TiltImage from '../components/interactive/TiltImage';
+import { useProperties } from '../hooks/useProperties';
+
+const Projects: React.FC = () => {
+  const { publicProperties } = useProperties();
+  const projects = publicProperties.filter((p) => p.projectUrl);
+
+  return (
+    <main className="bg-background pt-32 pb-20">
+      <SEO
+        title="IGO Agri Tech Projects | Land with Farm Projects"
+        description="Buy verified land together with an IGO Agri Tech project: polyhouse, hydroponic, horticulture, mushroom, microgreens and more."
+        canonical="/projects"
+      />
+      <div className="container-pro">
+        <header className="max-w-3xl mb-12">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#1B5E20] mb-3">IGO Agri Tech x IGO Agri Estates</p>
+          <h1 className="text-4xl md:text-6xl text-[#0f4d24] leading-tight">Land, with the project already planned.</h1>
+          <p className="mt-5 text-lg text-slate-600">
+            Each project pairs verified land with an IGO Agri Tech farm model: setup, crop plan and guidance from site visit to harvest.
+          </p>
+        </header>
+
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p) => (
+            <li key={p.id} className="rounded-3xl overflow-hidden bg-white border border-black/5 shadow-md flex flex-col">
+              <TiltImage className="aspect-[16/10]">
+                <img src={p.image} alt={p.title} loading="lazy" className="w-full h-full object-cover" />
+              </TiltImage>
+              <div className="p-6 flex flex-col flex-1">
+                <h2 className="text-xl text-[#0f4d24] normal-case tracking-normal">{p.title}</h2>
+                <p className="mt-1 text-sm text-slate-500">{p.location} · {p.size}</p>
+                {p.revenueModel && <p className="mt-3 text-sm text-slate-700 line-clamp-3">{p.revenueModel}</p>}
+                {p.crops && <p className="mt-3 text-xs text-[#0f4d24] bg-[#eaf4e6] rounded-full px-3 py-1 self-start">{p.crops.slice(0, 3).join(' · ')}</p>}
+                <div className="mt-auto pt-5 flex items-center justify-between gap-3">
+                  <Link to={`/properties/${p.id}`} className="inline-flex items-center gap-2 font-semibold text-[#1B5E20]">View details <ArrowRight size={16} /></Link>
+                  <a href={p.projectUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-[#1B5E20]">
+                    IGO Agri Tech <ExternalLink size={14} />
+                  </a>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-12 text-center">
+          <Link to="/contact" className="inline-block rounded-full bg-[#1B5E20] text-white px-8 py-3 font-semibold">Talk to the project team</Link>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default Projects;

@@ -17,7 +17,6 @@ import {
   Share2,
   Sprout,
   TrendingUp,
-  BarChart2,
   Map,
   Droplets,
   Zap,
@@ -36,11 +35,11 @@ import {
 } from 'lucide-react';
 import { useProperties } from '../hooks/useProperties';
 import LeadCaptureForm from '../components/LeadCaptureForm';
-import MortgageCalculator from '../components/property/MortgageCalculator';
 import AuthRequiredModal from '../components/modals/AuthRequiredModal';
 import { useAuth } from '../context/AuthContext';
 import { useRecentlyViewed, getRecommendations } from '../hooks/useRecommendations';
 import type { Property } from '../types';
+import Lightbox from '../components/interactive/Lightbox';
 
 const igoPhone = '+918376883780';
 const igoEmail = 'info@igoagritechfarms.com';
@@ -281,6 +280,7 @@ const PropertyDetails: React.FC = () => {
   }, [rentalInputs, property]);
 
   const [activeImage, setActiveImage] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const galleryImages = property ? (property.images || [property.image]) : [];
 
   if (loading) {
@@ -309,7 +309,7 @@ const PropertyDetails: React.FC = () => {
     <div className="pt-32 pb-24 bg-background min-h-screen">
       <SEO
         title={`${property.title} — ${property.location} | Agricultural Estate for Sale in India`}
-        description={`${property.title} in ${property.location}. ${property.size} estate at ${property.price}. ROI: ${property.roi || '12-18%'}. ${property.description?.slice(0, 80) || 'Verified agricultural estate with clear title and managed farming support.'}`.slice(0, 160)}
+        description={`${property.title} in ${property.location}. ${property.size} estate at ${property.price}. ${property.description?.slice(0, 80) || 'Verified agricultural estate with clear title and managed farming support.'}`.slice(0, 160)}
         canonical={`/properties/${property.id}`}
         ogImage={property.image?.startsWith('http') ? property.image : `https://www.igoagriestate.com${property.image || '/images/hero-bg.png'}`}
         ogType="article"
@@ -367,7 +367,8 @@ const PropertyDetails: React.FC = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.6 }}
-                  className="w-full h-full object-cover" 
+                  onClick={() => setLightboxIndex(activeImage)}
+                  className="w-full h-full object-cover cursor-zoom-in" 
                 />
               </AnimatePresence>
               <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent pointer-events-none" />
@@ -717,11 +718,6 @@ const PropertyDetails: React.FC = () => {
                       desc: 'Direct buy-back or premium B2B linkage with retail chains ensuring guaranteed revenue.',
                       icon: Truck
                     },
-                    {
-                      title: 'Corridor Appreciation',
-                      desc: 'Strategic selection of land in growth corridors ensures 12-15% annual land value increase.',
-                      icon: IndianRupee
-                    }
                   ].map((item, i) => (
                     <div key={i} className="p-6 rounded-3xl bg-white/10 border border-white/10 hover:bg-white/15 transition-all">
                       <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center mb-4 shadow-lg">
@@ -731,19 +727,6 @@ const PropertyDetails: React.FC = () => {
                       <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
                     </div>
                   ))}
-                </div>
-
-                <div className="mt-12 p-8 rounded-[32px] bg-white/5 border border-white/10">
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div>
-                      <h4 className="text-2xl font-bold mb-2">Projected Annual Profit</h4>
-                      <p className="text-white/60 text-sm">Combined land appreciation + managed crop revenue</p>
-                    </div>
-                    <div className="text-center md:text-right">
-                      <span className="text-5xl font-black text-secondary tracking-tighter">{property.roi || '15-18%'}</span>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-1">Estimated Annualized Returns</p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </section>
@@ -917,25 +900,6 @@ const PropertyDetails: React.FC = () => {
             </div>
           </section>
         )}
-
-        {/* Mortgage Calculator - for Buy properties */}
-        {property && property.intention !== 'Rent' && property.intention !== 'Lease' && !property.type?.toLowerCase()?.includes('rent') && !property.type?.toLowerCase()?.includes('lease') && (
-          <section className="mt-12">
-            <div className="bg-white rounded-[40px] p-8 md:p-12 border border-black/5 shadow-xl">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center">
-                  <BarChart2 size={24} className="text-secondary" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted">Finance Calculator</p>
-                  <h2 className="text-2xl font-bold text-primary">Home Loan EMI Estimator</h2>
-                </div>
-              </div>
-
-              <MortgageCalculator property={property} />
-            </div>
-          </section>
-        )}
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-black/5 p-3 xl:hidden">
@@ -967,6 +931,8 @@ const PropertyDetails: React.FC = () => {
           </button>
         </div>
       </div>
+
+      <Lightbox images={galleryImages} index={lightboxIndex} onIndexChange={setLightboxIndex} alt={property.title} />
 
       <AuthRequiredModal 
         isOpen={showAuthModal} 

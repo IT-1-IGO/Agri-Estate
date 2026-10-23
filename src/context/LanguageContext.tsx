@@ -1,65 +1,69 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useLayoutEffect, useMemo, useState, ReactNode } from 'react';
+import { Language, LANGUAGES, STORAGE_KEY, isLanguage, translate } from '../i18n';
+import { setDomLanguage, startDomTranslator } from '../i18n/domTranslator';
 
-type Language = 'en' | 'hi' | 'ta' | 'te' | 'kn' | 'mr';
+export type { Language };
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   languages: { code: Language; name: string }[];
+  /** Translate a string from the central dictionaries; falls back to the English text. */
+  t: (text: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const readSaved = (): Language => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (isLanguage(saved)) return saved;
+  } catch {
+    /* storage unavailable (private mode): stay on English */
+  }
+  return 'en';
+};
+
+/** The previous implementation used Google Translate cookies; make sure they cannot interfere. */
+const clearLegacyCookies = () => {
+  try {
+    const expired = 'expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = `googtrans=; ${expired}`;
+    document.cookie = `googtrans=; ${expired} domain=${window.location.hostname};`;
+  } catch {
+    /* ignore */
+  }
+};
+
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>(readSaved);
 
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem('igo-lang', lang);
-    document.documentElement.lang = lang;
-    
-    // Set Google Translate cookie
-    if (lang === 'en') {
-      document.cookie = "googtrans=/en/en; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = `googtrans=/en/en; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
-    } else {
-      document.cookie = `googtrans=/en/${lang}; path=/;`;
-      document.cookie = `googtrans=/en/${lang}; domain=${window.location.hostname}; path=/;`;
-    }
-    
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    // Read from cookie first if exists
-    const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
-    let currentLang = 'en' as Language;
-    
-    if (match && match[1]) {
-      currentLang = match[1] as Language;
-    } else {
-      const saved = localStorage.getItem('igo-lang') as Language;
-      if (saved) currentLang = saved;
-    }
-    
-    setLanguageState(currentLang);
-    document.documentElement.lang = currentLang;
+  // Runs after the first render's DOM exists but before paint: no flash of English for saved Tamil/Hindi.
+  useLayoutEffect(() => {
+    clearLegacyCookies();
+    document.documentElement.lang = language;
+    startDomTranslator(language);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const languages: { code: Language; name: string }[] = [
-    { code: 'en', name: 'English' },
-    { code: 'hi', name: 'हिन्दी' },
-    { code: 'ta', name: 'தமிழ்' },
-    { code: 'te', name: 'తెలుగు' },
-    { code: 'kn', name: 'ಕನ್ನಡ' },
-    { code: 'mr', name: 'मराठी' },
-  ];
+  const setLanguage = useCallback((lang: Language) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem(STORAGE_KEY, lang);
+    } catch {
+      /* ignore */
+    }
+    document.documentElement.lang = lang;
+    setDomLanguage(lang);
+  }, []);
 
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage, languages }}>
-      {children}
-    </LanguageContext.Provider>
-  );
+  const t = useCallback((text: string) => translate(language, text), [language]);
+
+  const languages = useMemo(() => LANGUAGES.map(l => ({ code: l.code, name: l.label })), []);
+
+  const value = useMemo(() => ({ language, setLanguage, languages, t }), [language, setLanguage, languages, t]);
+
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
 
 export const useLanguage = () => {

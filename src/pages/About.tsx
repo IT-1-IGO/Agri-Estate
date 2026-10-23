@@ -1,7 +1,7 @@
 import React from 'react';
 import SEO from '../components/SEO';
-import { motion } from 'framer-motion';
-import { ShieldCheck, Target, Users, Landmark } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import MissionSection from '../components/home/MissionSection';
 
 interface AboutProps {
   /** false when this component is embedded as a section inside another page (e.g. the homepage),
@@ -11,12 +11,22 @@ interface AboutProps {
 
 const About: React.FC<AboutProps> = ({ standalone = true }) => {
   const Heading = standalone ? 'h1' : 'h2';
+  const reduce = useReducedMotion();
+  const EASE = [0.22, 1, 0.36, 1] as const;
+  // Fade + rise, played once when the element scrolls into view; disabled for reduced-motion users
+  const reveal = (delay = 0, y = 24) => ({
+    initial: reduce ? false as const : { opacity: 0, y },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-60px' },
+    transition: { duration: 0.7, ease: EASE, delay },
+  });
   return (
-    <section id="about" className="py-20 bg-background">
+    <>
+    <section id="about" className="relative bg-[#f8fbf6] py-16 lg:py-24">
       {standalone && (
         <SEO
           title="About IGO Agri Estates — India's Premier Agricultural Land Platform"
-          description="IGO Agri Estates is India's premier institutional marketplace for managed farmland. 15+ years of expertise, 5000+ acres managed, clear title verification, and scientific crop planning across Tamil Nadu, Karnataka, Maharashtra, Andhra Pradesh & Telangana."
+          description="IGO Agri Estates is the land arm of IGO Group of Companies. We buy and sell agricultural land directly and offer land with IGO Agri Tech farm projects."
           canonical="/about"
           keywords="IGO Agri Estates about, agricultural land company India, farmland investment company India, agri estate company, managed farmland India, farm land developer Tamil Nadu Karnataka Maharashtra"
           ogImage="https://www.igoagriestate.com/images/team-expert-indian.png"
@@ -27,7 +37,7 @@ const About: React.FC<AboutProps> = ({ standalone = true }) => {
               name: "About IGO Agri Estates",
               url: 'https://www.igoagriestate.com/about',
               mainEntity: { '@id': 'https://www.igoagriestate.com/#organization' },
-              description: "IGO Agri Estates is India's premier institutional marketplace for managed farmland, offering 15+ years of expertise, clear title verification, and scientific crop planning."
+              description: "IGO Agri Estates is the land arm of IGO Group of Companies, buying and selling agricultural land directly and offering land with IGO Agri Tech farm projects."
             },
             {
               '@context': 'https://schema.org',
@@ -40,63 +50,49 @@ const About: React.FC<AboutProps> = ({ standalone = true }) => {
           ]}
         />
       )}
-      <div className="container-pro">
+      <div className="container-pro grid items-center gap-10 lg:grid-cols-[1fr_1.08fr] lg:gap-16">
+        <div>
+          <motion.p {...reveal(0, 16)} className="text-xs font-bold uppercase tracking-[0.3em] text-[#00814a]">Our Legacy</motion.p>
+          <motion.div {...reveal(0.12)}>
+            <Heading className="mt-3 text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-[#0b4a2a] sm:text-5xl lg:text-[3.4rem]">
+              The Institution <br />of{' '}
+              <motion.span
+                className="inline-block italic text-secondary"
+                initial={reduce ? false : { opacity: 0, y: 10, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.9, ease: EASE, delay: 0.5 }}
+              >Agricultural Land</motion.span>
+            </Heading>
+          </motion.div>
+          <motion.div {...reveal(0.26)} className="mt-7 max-w-xl space-y-1 text-lg leading-relaxed text-slate-600">
+            <p>IGO Agri Estates is the land arm of IGO Group of Companies, buying and selling agricultural land directly.</p>
+            <p>We bridge the gap between traditional land ownership and modern investment excellence.</p>
+          </motion.div>
+        </div>
+
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-4xl mx-auto text-center mb-20"
+          initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+          className="group overflow-hidden rounded-3xl shadow-[0_24px_50px_-28px_rgba(15,77,36,0.55)]"
         >
-          <p className="text-[10px] font-black text-[#00814a] uppercase tracking-[0.5em] mb-6">Our Legacy</p>
-          <Heading className="text-6xl font-black text-primary uppercase tracking-tighter leading-none mb-8">
-            The Institution <br />of <span className="text-secondary italic font-serif">Agricultural Land</span>
-          </Heading>
-          <p className="text-xl text-text-muted font-light leading-relaxed">
-            IGO Agriestates is India's premier institutional marketplace for managed farmland and agricultural real estate. We bridge the gap between traditional land ownership and modern investment excellence.
-          </p>
+          <img
+            src="/images/team-legacy-landscape.webp"
+            alt="IGO Agri Estates expert team — agricultural land investment specialists reviewing project information on a tablet in a green farm"
+            width={1024}
+            height={455}
+            loading="lazy"
+            decoding="async"
+            className="aspect-[9/4] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          />
         </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-16 items-center mb-32">
-          <div className="space-y-8">
-            <h2 className="text-4xl font-black text-primary uppercase tracking-tight">Our Mission</h2>
-            <p className="text-text-muted leading-relaxed">
-              To democratize agricultural land ownership by providing institutional-grade transparency, scientific agronomy support, and secure title management. We believe land is the ultimate asset, and our goal is to make it productive and profitable for every investor.
-            </p>
-            <div className="grid grid-cols-2 gap-6 pt-6">
-              <div className="space-y-2">
-                <div className="text-3xl font-black text-[#00814a]">15+</div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">Years Experience</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl font-black text-[#00814a]">5k+</div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-text-muted">Acres Managed</div>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-[40px] overflow-hidden shadow-2xl h-[500px]">
-             <img 
-               src="/images/team-expert-indian.png" 
-               alt="IGO Agri Estates expert team — agricultural land investment specialists in Tamil Nadu, India"
-               className="w-full h-full object-cover"
-             />
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-4 gap-8 mb-32">
-          {[
-            { icon: <ShieldCheck className="text-secondary" />, title: 'Title Security', desc: 'Rigorous 30-year title verification for every asset.' },
-            { icon: <Target className="text-secondary" />, title: 'Scientific ROI', desc: 'Data-driven crop projections and yield analysis.' },
-            { icon: <Users className="text-secondary" />, title: 'Expert Support', desc: 'Dedicated agronomy and legal desks at your service.' },
-            { icon: <Landmark className="text-secondary" />, title: 'Compliance', desc: 'Full adherence to state-specific agricultural laws.' }
-          ].map((item, i) => (
-            <div key={i} className="p-10 bg-white border border-black/5 rounded-[32px] hover:shadow-xl transition-all">
-              <div className="mb-6">{item.icon}</div>
-              <h3 className="text-lg font-black text-primary uppercase mb-3">{item.title}</h3>
-              <p className="text-sm text-text-muted leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
+
+    <MissionSection />
+    </>
   );
 };
 

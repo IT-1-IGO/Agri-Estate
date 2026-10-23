@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Calendar, User, ArrowRight, TrendingUp } from 'lucide-react';
-import { getLocalBlogs, getLocalVideos, subscribeLocalSync, BLOG_SYNC_EVENT, VIDEO_SYNC_EVENT } from '../lib/localSync';
+import { Calendar, User, ArrowRight } from 'lucide-react';
+import { getLocalBlogs, subscribeLocalSync, BLOG_SYNC_EVENT } from '../lib/localSync';
 import SEO from '../components/SEO';
 
 const Blog: React.FC = () => {
   const [posts, setPosts] = useState(getLocalBlogs());
-  const [videos, setVideos] = useState(getLocalVideos());
 
   useEffect(() => {
     const unsubBlogs = subscribeLocalSync(BLOG_SYNC_EVENT, () => setPosts(getLocalBlogs()));
-    const unsubVideos = subscribeLocalSync(VIDEO_SYNC_EVENT, () => setVideos(getLocalVideos()));
     return () => {
       unsubBlogs();
-      unsubVideos();
     };
   }, []);
 
@@ -59,7 +56,7 @@ const Blog: React.FC = () => {
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl mb-6"
           >
-            Blogs & <span className="text-secondary italic">Trending Videos</span>
+            Market <span className="text-secondary italic">Blogs</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -70,52 +67,6 @@ const Blog: React.FC = () => {
             Stay updated with the latest market trends, farming technology, and investment strategies.
           </motion.p>
         </div>
-
-        {/* Trending Videos */}
-        <section id="videos" className="mb-20 scroll-mt-32">
-          <div className="flex items-center space-x-2 mb-8">
-            <TrendingUp className="text-secondary" />
-            <h2 className="text-3xl font-bold">Trending Videos</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {videos.map((vid, i) => (
-              <motion.button
-                type="button"
-                onClick={() => vid.url ? window.open(vid.url, '_blank', 'noopener,noreferrer') : undefined}
-                key={vid.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                className="relative aspect-video rounded-[40px] overflow-hidden group cursor-pointer shadow-xl text-left"
-              >
-                <img 
-                  src={vid.thumb} 
-                  alt={vid.title} 
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/images/properties/polyhouse.png';
-                  }}
-                  className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-[2s]" 
-                />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:bg-secondary group-hover:scale-110 transition-all">
-                    <Play className="text-white fill-white" size={32} />
-                  </div>
-                </div>
-                <div className="absolute bottom-8 left-8 right-8">
-                  <h3 className="text-2xl font-bold text-white mb-1">{vid.title}</h3>
-                  <p className="text-white/60 text-sm">{vid.views} views • Trending Now</p>
-                </div>
-              </motion.button>
-            ))}
-            {videos.length === 0 && (
-              <div className="col-span-2 text-center py-10 bg-white rounded-[40px] border border-black/5 text-text-muted">
-                No videos available at the moment.
-              </div>
-            )}
-          </div>
-        </section>
 
         {/* Latest Articles */}
         <section id="blogs" className="scroll-mt-32">

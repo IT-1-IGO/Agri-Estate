@@ -21,10 +21,8 @@ Allow: /properties/
 Allow: /about
 Allow: /contact
 Allow: /blogs
-Allow: /videos
 Allow: /knowledge-hub
 Allow: /valuation
-Allow: /ai-report
 Allow: /tax-optimizer
 Allow: /marketplace
 Allow: /services/

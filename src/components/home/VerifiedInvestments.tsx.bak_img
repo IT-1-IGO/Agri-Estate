@@ -1,0 +1,132 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, MapPin, Calculator, TrendingUp, Users, Sprout, ShieldCheck } from 'lucide-react';
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const CARDS = [
+  { title: 'Browse by Location', desc: 'Explore agricultural land in Maduranthagam.', Icon: MapPin, to: '/locations', cta: 'View Locations', img: '/images/featured/vi-card-location.webp', alt: 'Aerial view of green agricultural farmland with a location marker' },
+  { title: 'Investment Calculator', desc: 'Estimate EMI, rental yield, and crop returns per estate.', Icon: Calculator, to: '/valuation', cta: 'Calculate Now', img: '/images/featured/vi-card-calculator.webp', alt: 'Young plant growing beside neatly stacked coins' },
+  { title: 'AI-enabled services', desc: "Technology and AI support across IGO Group's land and farm services.", Icon: TrendingUp, to: '/contact', cta: 'Learn More', img: '/images/featured/vi-card-ai.webp', alt: 'Tablet showing a precision-farming field map' },
+  { title: 'Talk to Advisor', desc: 'Our location experts match your goals with the right estate corridor.', Icon: Users, to: '/contact', cta: 'Contact Us', img: '/images/featured/vi-card-advisor.webp', alt: 'IGO advisor in a dark-green polo holding a tablet in a farm' },
+];
+
+const INFO = [
+  { Icon: MapPin, top: 'Maduranthagam', bottom: 'Tamil Nadu' },
+  { Icon: Sprout, top: '2 Estates', bottom: 'Available' },
+  { Icon: ShieldCheck, top: 'Verified', bottom: 'Documents' },
+];
+
+const Leaf: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 120 220" className={className} fill="currentColor" aria-hidden="true">
+    <path d="M60 215c-2-60-1-110 4-205 20 30 38 60 30 100-6 30-20 55-34 105z" opacity=".9" />
+    <path d="M58 150c-30-8-48-30-52-62 28 4 48 20 54 50z" opacity=".75" />
+    <path d="M64 120c26-10 42-32 46-64-26 6-44 24-50 52z" opacity=".75" />
+    <path d="M60 80c-22-8-34-26-36-50 22 4 34 18 38 42z" opacity=".6" />
+  </svg>
+);
+
+const VerifiedInvestments: React.FC = () => {
+  const reduce = useReducedMotion();
+  const reveal = (delay = 0, y = 24) => ({
+    initial: reduce ? false as const : { opacity: 0, y },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-60px' },
+    transition: { duration: 0.6, ease: EASE, delay },
+  });
+
+  return (
+    <section className="relative overflow-hidden border-b border-black/5 bg-[#f4f8f1] py-16 lg:py-24" aria-labelledby="verified-heading">
+      {/* Shared organic clip shape for card images */}
+      <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="igo-card-curve" clipPathUnits="objectBoundingBox">
+            <path d="M0.3 0 H1 V1 H0 C0.22 0.72 0.36 0.34 0.3 0 Z" />
+          </clipPath>
+        </defs>
+      </svg>
+
+      <Leaf className="pointer-events-none absolute -left-10 bottom-6 hidden h-72 w-40 -rotate-12 text-[#1B5E20] opacity-[0.06] md:block" />
+      <Leaf className="pointer-events-none absolute -right-8 bottom-0 hidden h-80 w-44 rotate-[18deg] scale-x-[-1] text-[#1B5E20] opacity-[0.07] md:block" />
+
+      <div className="container-pro relative">
+        <div className="grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 xl:gap-16">
+          {/* Left column */}
+          <div className="min-w-0">
+            <motion.span {...reveal(0, 16)} className="block text-xs font-extrabold uppercase tracking-[0.3em] text-secondary">Premium Estates in Tamil Nadu</motion.span>
+            <motion.h2 {...reveal(0.1)} id="verified-heading" className="mt-3 text-4xl font-extrabold normal-case leading-[1.05] tracking-tight text-[#0b4a2a] sm:text-5xl">
+              Verified <br />
+              <span className="italic text-secondary">Agricultural Land Investments</span>
+            </motion.h2>
+            <motion.p {...reveal(0.2)} className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              Land offered directly by IGO, starting with Maduranthagam, with verified documents, guided site visits and IGO Agri Tech project support.
+            </motion.p>
+            <motion.div {...reveal(0.28, 8)} className="mt-5 h-[2px] w-16 rounded-full bg-secondary" />
+
+            <motion.div {...reveal(0.2, 32)} className="group relative mt-8 aspect-video overflow-hidden rounded-3xl shadow-[0_24px_52px_-28px_rgba(15,77,36,0.55)]">
+              <img
+                src="/images/featured/vi-farmland-wide.webp"
+                alt="Aerial view of lush green agricultural land and farm plots"
+                width={1024}
+                height={576}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <ul className="absolute inset-x-3 bottom-3 flex flex-wrap items-center justify-between gap-x-5 gap-y-2 rounded-2xl bg-white/85 px-4 py-3 shadow-lg backdrop-blur-md sm:inset-x-4 sm:bottom-4 sm:right-auto sm:justify-start sm:gap-6 sm:rounded-full sm:px-6">
+                {INFO.map(({ Icon, top, bottom }, i) => (
+                  <li key={top} className={`flex items-center gap-2.5 ${i > 0 ? 'sm:border-l sm:border-[#0f4d24]/15 sm:pl-6' : ''}`}>
+                    <Icon size={22} className="shrink-0 text-[#1B5E20]" />
+                    <span className="leading-tight">
+                      <span className="block text-sm font-semibold text-[#0b4a2a]">{top}</span>
+                      <span className="block text-xs text-slate-500">{bottom}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Right column: 2x2 cards */}
+          <div className="grid min-w-0 grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 lg:pt-6">
+            {CARDS.map(({ title, desc, Icon, to, cta, img, alt }, i) => (
+              <motion.div key={title} {...reveal(0.1 + i * 0.12, 28)} className="h-full">
+                <Link
+                  to={to}
+                  className="group relative flex h-full min-h-[250px] overflow-hidden rounded-3xl bg-white shadow-[0_16px_38px_-26px_rgba(15,77,36,0.5)] ring-1 ring-[#0f4d24]/5 transition duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_50px_-26px_rgba(15,77,36,0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
+                >
+                  <div className="relative z-10 flex w-[62%] flex-col p-6 pr-2 sm:p-7 sm:pr-3">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#e3efdd] text-[#0b4a2a]"><Icon size={22} /></span>
+                    <h3 className="mt-5 text-lg font-bold normal-case leading-snug tracking-normal text-[#0b4a2a] sm:text-xl">{title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-500">{desc}</p>
+                    <span className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-[#0b4a2a] transition-all duration-300 group-hover:gap-3">
+                      {cta} <ArrowRight size={16} />
+                    </span>
+                  </div>
+                  <div className="absolute bottom-3 right-3 top-3 w-[44%]" style={{ clipPath: 'url(#igo-card-curve)' }}>
+                    <img
+                      src={img}
+                      alt={alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full rounded-2xl object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <motion.div {...reveal(0.1, 12)} className="mx-auto mt-14 flex max-w-xl items-center gap-4 text-[#2e7d32]" aria-hidden="true">
+          <svg viewBox="0 0 240 12" className="h-3 flex-1" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".45"><path d="M0 9c40 2 70-6 120-5" strokeLinecap="round" /></svg>
+          <Sprout size={26} />
+          <svg viewBox="0 0 240 12" className="h-3 flex-1" fill="none" stroke="currentColor" strokeWidth="1.2" opacity=".45"><path d="M0 4c50-1 80 7 240 5" strokeLinecap="round" /></svg>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default VerifiedInvestments;

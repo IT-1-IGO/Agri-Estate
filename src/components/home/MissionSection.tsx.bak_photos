@@ -1,0 +1,126 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, ShieldCheck, Target, Users, FileText, HeartHandshake, Sprout } from 'lucide-react';
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const CARDS = [
+  { Icon: ShieldCheck, title: 'Title Security', desc: 'Verified title documents and legal checks for greater peace of mind.', img: '/images/featured/mission-title-security.webp', alt: 'Agreement document with a pen and a small house', to: '/services/legal' },
+  { Icon: Target, title: 'Scientific ROI', desc: 'Data-driven crop projections and yield analysis for better returns.', img: '/images/featured/mission-scientific-roi.webp', alt: 'Seedling growing from rich soil in a sunlit field', to: '/valuation' },
+  { Icon: Users, title: 'Expert Support', desc: 'Dedicated agronomy and legal support throughout your journey.', img: '/images/featured/mission-expert-support.webp', alt: 'IGO field agent in a black polo advising a farmer with a tablet', to: '/contact' },
+  { Icon: FileText, title: 'Compliance', desc: 'Guidance on applicable agricultural regulations and documentation.', img: '/images/featured/mission-compliance.webp', alt: 'Land survey map with a location pin', to: '/services/legal' },
+  { Icon: HeartHandshake, title: 'Community Impact', desc: 'Creating opportunities for farmers and rural communities.', img: '/images/featured/mission-community.webp', alt: 'Farmers working in green crop fields with hills behind', to: '/blogs' },
+  { Icon: Sprout, title: 'Long-term Value', desc: 'Healthy land, improved productivity and sustainable long-term value.', img: '/images/featured/mission-long-term.webp', alt: 'Young plant growing from fertile soil held in two hands', to: '/projects' },
+];
+
+const Leaf: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className, style }) => (
+  <svg viewBox="0 0 120 220" className={className} style={style} fill="currentColor" aria-hidden="true">
+    <path d="M60 215c-2-60-1-110 4-205 20 30 38 60 30 100-6 30-20 55-34 105z" opacity=".9" />
+    <path d="M58 150c-30-8-48-30-52-62 28 4 48 20 54 50z" opacity=".75" />
+    <path d="M64 120c26-10 42-32 46-64-26 6-44 24-50 52z" opacity=".75" />
+    <path d="M60 80c-22-8-34-26-36-50 22 4 34 18 38 42z" opacity=".6" />
+  </svg>
+);
+
+const MissionSection: React.FC = () => {
+  const reduce = useReducedMotion();
+  const reveal = (delay = 0, y = 24) => ({
+    initial: reduce ? false as const : { opacity: 0, y },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-60px' },
+    transition: { duration: 0.6, ease: EASE, delay },
+  });
+
+  return (
+    <section id="mission" className="relative overflow-hidden bg-[#F8F5EC] py-16 lg:py-24" aria-labelledby="mission-heading">
+      <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="igo-mission-curve" clipPathUnits="objectBoundingBox">
+            <path d="M0.34 0 H1 V1 H0 C0.2 0.74 0.4 0.34 0.34 0 Z" />
+          </clipPath>
+        </defs>
+      </svg>
+
+      {/* soft decorative shapes */}
+      <div className="pointer-events-none absolute -right-24 -top-24 hidden h-72 w-72 rounded-full bg-[#e9ecdd] opacity-70 md:block" aria-hidden="true" />
+      <Leaf className="pointer-events-none absolute -left-8 bottom-2 hidden h-64 w-36 -rotate-12 text-[#07583F] opacity-[0.06] md:block" />
+      <Leaf className="pointer-events-none absolute -right-6 bottom-0 hidden h-72 w-40 rotate-[18deg] scale-x-[-1] text-[#07583F] opacity-[0.06] md:block" />
+
+      <div className="container-pro relative">
+        <div className="grid items-start gap-10 xl:grid-cols-[0.9fr_1.6fr] xl:gap-12">
+          {/* Left: mission copy + photo */}
+          <div className="min-w-0">
+            <motion.div {...reveal(0, 16)} className="flex items-center gap-4">
+              <span className="text-xs font-extrabold uppercase tracking-[0.3em] text-[#B47A12]">Our Mission</span>
+              <span className="h-[2px] w-12 rounded-full bg-[#B47A12]" />
+            </motion.div>
+            <motion.h2 {...reveal(0.1)} id="mission-heading" className="mt-3 text-4xl font-extrabold normal-case leading-[1.08] tracking-tight text-[#07583F] sm:text-5xl">
+              To promote sustainable <br />
+              <span className="italic text-[#B47A12]">and profitable agriculture.</span>
+            </motion.h2>
+            <motion.p {...reveal(0.2)} className="mt-5 max-w-lg text-base leading-relaxed text-slate-500 sm:text-lg">
+              We empower farmers, investors and communities with trusted land solutions, modern farming practices and long-term value.
+            </motion.p>
+
+            <motion.div {...reveal(0.25, 32)} className="relative mt-10 max-w-[520px] pb-6 pl-6 pt-4">
+              <Leaf className="pointer-events-none absolute -left-1 top-0 z-10 h-20 w-12 -rotate-[20deg] text-[#07583F]" />
+              <Leaf className="pointer-events-none absolute -right-2 bottom-3 z-10 h-16 w-10 rotate-[40deg] text-[#2e7d32]" />
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
+                <path d="M3 70 C 2 30, 20 8, 46 3" fill="none" stroke="#B47A12" strokeWidth="0.6" vectorEffect="non-scaling-stroke" opacity=".7" />
+                <path d="M97 40 C 98 70, 84 92, 58 98" fill="none" stroke="#B47A12" strokeWidth="0.6" vectorEffect="non-scaling-stroke" opacity=".7" />
+              </svg>
+              <div className="group relative aspect-[3/2] overflow-hidden shadow-[0_24px_50px_-28px_rgba(7,88,63,0.55)]" style={{ borderRadius: '46% 54% 50% 50% / 38% 36% 64% 62%' }}>
+                <img
+                  src="/images/featured/mission-main-agent.webp"
+                  alt="IGO Agri Estate field agent in a black polo with a green IGO logo discussing farming with local farmers in a green field"
+                  width={465}
+                  height={273}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover object-left transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+              </div>
+              <div className="absolute bottom-0 left-0 z-20 flex items-center gap-3 rounded-full bg-white/95 px-5 py-3 shadow-lg">
+                <Sprout size={26} strokeWidth={1.6} className="shrink-0 text-[#07583F]" />
+                <span className="text-sm font-semibold leading-tight text-[#07583F]">Smart Agriculture<br />for a Better Tomorrow</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right: six cards */}
+          <div className="grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 xl:pt-6">
+            {CARDS.map(({ Icon, title, desc, img, alt, to }, i) => (
+              <motion.div key={title} {...reveal(0.1 + i * 0.09, 28)} className="h-full">
+                <Link
+                  to={to}
+                  className="group relative flex h-full min-h-[290px] overflow-hidden rounded-[22px] bg-white shadow-[0_14px_34px_-24px_rgba(7,88,63,0.45)] ring-1 ring-[#B47A12]/10 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_50px_-24px_rgba(7,88,63,0.55)] hover:ring-[#B47A12]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07583F]"
+                >
+                  <div className="relative z-10 flex w-[64%] flex-col p-5 pr-1 sm:p-6 sm:pr-1">
+                    <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f4eddc] text-[#B47A12]"><Icon size={26} strokeWidth={1.6} /></span>
+                    <h3 className="mt-5 text-[0.95rem] font-extrabold uppercase leading-snug tracking-wide text-[#07583F]">{title}</h3>
+                    <p className="mt-3 border-l-2 border-[#B47A12]/70 pl-3 text-[0.8rem] leading-relaxed text-slate-500">{desc}</p>
+                    <span className="mt-auto flex h-9 w-9 items-center justify-center rounded-full bg-[#e8efe3] text-[#07583F] transition-colors duration-300 group-hover:bg-[#07583F] group-hover:text-white">
+                      <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                  <div className="absolute bottom-3 right-3 top-3 w-[42%]" style={{ clipPath: 'url(#igo-mission-curve)' }}>
+                    <img
+                      src={img}
+                      alt={alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full rounded-2xl object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default MissionSection;

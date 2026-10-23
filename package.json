@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm run clean && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite --host --port 5173",
     "build": "tsc -b && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build",
-    "clean": "powershell -Command \"if (Test-Path node_modules/.vite) { Remove-Item -Path node_modules/.vite -Force -Recurse }\"",
+    "clean": "node -e \"require('fs').rmSync('node_modules/.vite',{recursive:true,force:true})\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -1,11 +1,14 @@
 import React from 'react';
 import SEO from '../../components/SEO';
-import { motion } from 'framer-motion';
+import HeroStage from '../../components/HeroStage';
+import { useLanguage } from '../../context/LanguageContext';
 import { ShieldCheck, FileCheck, Scale, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 const LegalServices: React.FC = () => {
+  const { language } = useLanguage();
+  const nonEn = language !== 'en'; // Tamil/Hindi glyphs are taller: scale the banner type to keep its layout
   return (
-    <div className="pt-32 pb-24 min-h-screen bg-background">
+    <div className="pb-24 min-h-screen bg-background pt-[76px]">
       <SEO
         title="Agricultural Land Legal Services India — Title Verification & Due Diligence"
         description="IGO Agri Estates provides comprehensive legal due diligence for agricultural land purchases across India. 30-year encumbrance checks, title chain verification, survey, tax, and registration support in Tamil Nadu, Karnataka, Maharashtra, Andhra Pradesh & Telangana."
@@ -25,19 +28,38 @@ const LegalServices: React.FC = () => {
           areaServed: ['Tamil Nadu', 'Karnataka', 'Maharashtra']
         }}
       />
-      <div className="container-pro">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-4xl"
-        >
-          <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">Institutional Security</span>
-          <h1 className="heading-xl text-primary mb-8">Title Ledger & <br/><span className="text-secondary italic">Legal Diligence</span></h1>
-          <p className="text-xl text-text-muted font-light leading-relaxed mb-16 max-w-2xl">
-            Secure your agricultural investments with our comprehensive legal framework. From 30-year encumbrance checks to Bio-CNG feasibility.
-          </p>
-        </motion.div>
+      {/* Hero banner: text-free artwork with live, translatable text (tablet/desktop); live text above a cropped image on mobile */}
+      <section className="relative w-full bg-[#EEF3E6]" aria-labelledby="legal-hero-heading">
+        <h1 id="legal-hero-heading" className="sr-only">Title Ledger & Legal Diligence</h1>
+        <HeroStage src="/images/services/legal-hero-clean.webp" width={2172} height={724}>
+          <div className="absolute" style={{ left: '5.6cqw', top: '5.1cqw', width: '44cqw' }}>
+            <p className="flex items-center font-semibold uppercase" style={{ gap: '1cqw', fontSize: '0.95cqw', lineHeight: '1.6cqw', letterSpacing: '0.25em', color: '#0f4d3a' }}>
+              <span aria-hidden="true" style={{ width: '2.6cqw', height: 1, background: '#0f4d3a' }} />
+              Institutional Security
+            </p>
+            <p aria-hidden="true" className="font-medium normal-case" style={{ marginTop: '0.1cqw', fontFamily: '"DM Serif Display","Playfair Display",Georgia,"Times New Roman",serif', fontSize: nonEn ? '3.6cqw' : '5cqw', lineHeight: nonEn ? 1.18 : 1.02, color: '#0f4d3a' }}>
+              Title Ledger &amp; <br /><span className="italic" style={{ color: '#a8741a' }}>Legal Diligence</span>
+            </p>
+            <p style={{ marginTop: '1.2cqw', maxWidth: '40cqw', fontSize: '1.18cqw', lineHeight: 1.45, color: '#3c5a52' }}>
+              Secure your agricultural investments with our comprehensive legal framework. From 30-year encumbrance checks to Bio-CNG feasibility.
+            </p>
+          </div>
+        </HeroStage>
+        <div className="md:hidden">
+          <div className="px-5 pb-5 pt-9 sm:px-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#0f4d3a]">Institutional Security</p>
+            <p aria-hidden="true" className="mt-3 text-[2.1rem] font-medium normal-case leading-[1.1] text-[#0f4d3a]" style={{ fontFamily: '"DM Serif Display","Playfair Display",Georgia,"Times New Roman",serif' }}>
+              Title Ledger &amp; <span className="italic text-[#a8741a]">Legal Diligence</span>
+            </p>
+            <p className="mt-4 text-base leading-7 text-[#3c5a52]">
+              Secure your agricultural investments with our comprehensive legal framework. From 30-year encumbrance checks to Bio-CNG feasibility.
+            </p>
+          </div>
+          <img src="/images/services/legal-hero-clean.webp" alt="" aria-hidden="true" className="block h-[240px] w-full object-cover object-[80%_center] sm:h-[300px]" />
+        </div>
+      </section>
 
+      <div className="container-pro pt-14">
         <div className="grid md:grid-cols-2 gap-10">
           {[
             { icon: <ShieldCheck size={32} />, title: 'Title Chain Verification', desc: 'Rigorous 30-year audit of EC, Patta, Chitta, and FMB sketches to ensure zero ownership disputes.' },

@@ -1,0 +1,53 @@
+/**
+ * Central translation registry.
+ *
+ * English is the source language: every dictionary is keyed by the exact English text
+ * used in the UI. A missing key simply falls back to the English text.
+ *
+ * To translate new customer-facing text, add the English string as a key in ta.ts and hi.ts
+ * (or call t('English text') in a component, which uses the same dictionaries).
+ */
+import ta from './ta';
+import hi from './hi';
+
+export type Language = 'en' | 'ta' | 'hi';
+
+export const LANGUAGES: { code: Language; label: string; short: string }[] = [
+  { code: 'en', label: 'English', short: 'EN' },
+  { code: 'ta', label: 'தமிழ்', short: 'த' },
+  { code: 'hi', label: 'हिन्दी', short: 'हि' },
+];
+
+export const STORAGE_KEY = 'igo-lang';
+
+/** Collapse whitespace and unify typographic quotes so source text matches rendered text. */
+export const normalizeKey = (s: string): string =>
+  s
+    .replace(/[‘’ʼ]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/ /g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const build = (dict: Record<string, string>): Map<string, string> => {
+  const m = new Map<string, string>();
+  for (const k of Object.keys(dict)) m.set(normalizeKey(k), dict[k]);
+  return m;
+};
+
+const maps: Record<Language, Map<string, string>> = {
+  en: new Map(),
+  ta: build(ta),
+  hi: build(hi),
+};
+
+export const isLanguage = (v: unknown): v is Language => v === 'en' || v === 'ta' || v === 'hi';
+
+/** Returns the translation for `text`, or undefined when there is none (caller keeps English). */
+export const lookup = (lang: Language, text: string): string | undefined => {
+  if (lang === 'en') return undefined;
+  return maps[lang].get(normalizeKey(text));
+};
+
+/** Translate a string, falling back to English. */
+export const translate = (lang: Language, text: string): string => lookup(lang, text) ?? text;

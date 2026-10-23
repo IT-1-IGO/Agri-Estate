@@ -5,7 +5,7 @@ import SEO from '../components/SEO';
 import './Faq.css';
 
 const FAQS: { q: string; a: string }[] = [
-  { q: 'What types of agricultural land do you offer?', a: 'We offer managed farmland across India, including organic farmland, mango and other plantation estates, greenhouse-ready plots, open cultivation land and paddy fields. Every listing comes with verified documentation, clear boundaries and transparent pricing.' },
+  { q: 'What types of agricultural land do you offer?', a: 'We offer agricultural land directly from IGO, starting with Maduranthagam, along with land developed with IGO Agri Tech farm projects such as polyhouse, hydroponic and horticulture. Every listing comes with verified documentation, clear boundaries and transparent pricing.' },
   { q: 'Do you provide support for farm development and infrastructure?', a: 'Yes. Our team supports the full journey from land preparation, soil testing and levelling to irrigation, fencing, greenhouse setup, plantation, and farm sheds, storage and roads, all planned around your goals and budget.' },
   { q: 'What is the process to start a farm project with your company?', a: 'It starts with a free consultation to understand your goals. We then shortlist verified land, arrange a site visit, complete documentation, and move into farm planning, development and ongoing support, with a dedicated team at every step.' },
   { q: 'Are there any government subsidies or financial assistance available?', a: 'Many agricultural activities qualify for central and state schemes, such as support for drip irrigation, greenhouses and horticulture. Our advisors guide you on the schemes that may apply to your project and help with the application process. Eligibility depends on the scheme and your location.' },

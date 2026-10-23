@@ -1,0 +1,103 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, ShieldCheck, Target, Users, FileText, HeartHandshake, Sprout } from 'lucide-react';
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const CARDS = [
+  { n: '01', Icon: ShieldCheck, title: 'Title Security', desc: 'Verified title documents and legal checks for greater peace of mind.', to: '/services/legal' },
+  { n: '02', Icon: Target, title: 'Scientific ROI', desc: 'Data-driven crop projections and yield analysis for better returns.', to: '/valuation' },
+  { n: '03', Icon: Users, title: 'Expert Support', desc: 'Dedicated agronomy and legal support throughout your journey.', to: '/contact' },
+  { n: '04', Icon: FileText, title: 'Compliance', desc: 'Guidance on applicable agricultural regulations and documentation.', to: '/services/legal' },
+  { n: '05', Icon: HeartHandshake, title: 'Community Impact', desc: 'Creating opportunities for farmers and rural communities.', to: '/blogs' },
+  { n: '06', Icon: Sprout, title: 'Long-term Value', desc: 'Healthy land, improved productivity and sustainable long-term value.', to: '/projects' },
+];
+
+const Leaf: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 120 220" className={className} fill="currentColor" aria-hidden="true">
+    <path d="M60 215c-2-60-1-110 4-205 20 30 38 60 30 100-6 30-20 55-34 105z" opacity=".9" />
+    <path d="M58 150c-30-8-48-30-52-62 28 4 48 20 54 50z" opacity=".75" />
+    <path d="M64 120c26-10 42-32 46-64-26 6-44 24-50 52z" opacity=".75" />
+    <path d="M60 80c-22-8-34-26-36-50 22 4 34 18 38 42z" opacity=".6" />
+  </svg>
+);
+
+/* Small botanical line illustration (SVG only) */
+const SproutLine: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 280 110" className={className} fill="none" stroke="#07583F" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M4 92 C 50 86, 90 98, 130 90 S 220 78, 276 88" opacity=".55" />
+    <path d="M78 90 C 76 70, 74 52, 78 34" />
+    <path d="M78 52 C 62 52, 48 44, 44 28 C 62 28, 76 36, 78 52 Z" />
+    <path d="M78 40 C 78 22, 88 10, 100 4 C 104 20, 94 34, 78 40 Z" />
+    <path d="M78 66 C 90 64, 102 56, 106 46 C 94 44, 82 52, 78 66 Z" fill="#9bc3a4" fillOpacity=".55" stroke="#07583F" />
+  </svg>
+);
+
+const MissionSection: React.FC = () => {
+  const reduce = useReducedMotion();
+  const reveal = (delay = 0, y = 24) => ({
+    initial: reduce ? false as const : { opacity: 0, y },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-60px' },
+    transition: { duration: 0.6, ease: EASE, delay },
+  });
+
+  return (
+    <section id="mission" className="relative overflow-hidden bg-[#F8F6EC] py-10 lg:py-14" aria-labelledby="mission-heading">
+      {/* Decorative shapes (SVG/CSS only, no photos) */}
+      <div className="pointer-events-none absolute -right-20 -top-24 hidden h-64 w-64 rounded-full bg-[#e7ead9] opacity-80 md:block" aria-hidden="true" />
+
+      <div className="container-pro relative">
+        <div className="grid items-center gap-10 xl:grid-cols-[0.7fr_1.8fr] xl:gap-12">
+          {/* Left: mission copy */}
+          <div className="min-w-0">
+            <motion.div {...reveal(0, 16)} className="flex items-center gap-4">
+              <span className="text-xs font-extrabold uppercase tracking-[0.3em] text-[#B47A12]">Our Mission</span>
+              <span className="h-[2px] w-14 rounded-full bg-[#B47A12]" />
+            </motion.div>
+            <motion.h2 {...reveal(0.1)} id="mission-heading" className="mt-3 text-3xl font-extrabold normal-case leading-[1.12] tracking-tight text-[#07583F] sm:text-4xl">
+              To promote sustainable{' '}
+              <span className="italic text-[#B47A12]">and profitable agriculture.</span>
+            </motion.h2>
+            <motion.p {...reveal(0.2)} className="mt-4 max-w-md text-sm leading-relaxed text-[#7185A3] sm:text-base">
+              We empower farmers, investors and communities with trusted land solutions, modern farming practices and long-term value.
+            </motion.p>
+            <motion.div {...reveal(0.28, 8)} className="mt-4 h-[2px] w-12 rounded-full bg-[#B47A12]" />
+            <motion.div {...reveal(0.34, 12)} className="mt-5 hidden xl:block">
+              <SproutLine className="h-16 w-48" />
+            </motion.div>
+          </div>
+
+          {/* Right: six cards */}
+          <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 xl:gap-4">
+            {CARDS.map(({ n, Icon, title, desc, to }, i) => (
+              <motion.div key={title} {...reveal(0.1 + i * 0.09, 28)} className="h-full">
+                <Link
+                  to={to}
+                  className="group relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-[16px] border border-[#E9D9B5] bg-[#FFFEFA] p-5 shadow-[0_12px_30px_-22px_rgba(7,88,63,0.4)] transition duration-300 hover:-translate-y-1.5 hover:border-[#B47A12]/60 hover:shadow-[0_28px_48px_-24px_rgba(7,88,63,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07583F]"
+                >
+                  <div className="flex items-start justify-between">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[#f5ecd6] text-[#B47A12] transition-colors duration-300 group-hover:bg-[#efe0bb]">
+                      <Icon size={24} strokeWidth={1.5} />
+                    </span>
+                    <span className="select-none text-4xl font-extrabold leading-none text-[#B47A12]/[0.12]" aria-hidden="true">{n}</span>
+                  </div>
+                  <h3 className="mt-4 text-base font-extrabold uppercase tracking-wide text-[#07583F]">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#7185A3]">{desc}</p>
+                  <span className="mt-auto flex justify-end pt-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#e8efe3] text-[#07583F] transition-colors duration-300 group-hover:bg-[#07583F] group-hover:text-white">
+                      <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default MissionSection;

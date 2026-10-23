@@ -158,12 +158,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.igoagriestate.com/ai-report</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.igoagriestate.com/tax-optimizer</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -226,12 +220,6 @@
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.65</priority>
-  </url>
-  <url>
-    <loc>https://www.igoagriestate.com/videos</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.igoagriestate.com/knowledge-hub</loc>

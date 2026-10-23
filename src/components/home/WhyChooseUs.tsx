@@ -1,21 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FileCheck2, HeartHandshake, Sprout, UserCog, MapPin, ShieldCheck, TrendingUp, Handshake } from 'lucide-react';
+import { MapPin, CalendarCheck, UserRoundCheck, TrendingUp, Handshake } from 'lucide-react';
 import './WhyChooseUs.css';
 
 const FEATURES = [
-  { Icon: FileCheck2, title: 'Verified Properties', text: 'Genuine land details, documentation guidance, and transparency.' },
-  { Icon: HeartHandshake, title: 'End-to-End Support', text: 'Support from land purchase to farm development.' },
-  { Icon: Sprout, title: 'Sustainable Farming', text: 'Encouraging eco-friendly and productive farming practices.' },
-  { Icon: UserCog, title: 'Expert Guidance', text: 'Practical guidance for choosing the right farm model.' },
-  { Icon: MapPin, title: 'Pan-India Service', text: 'Assistance across India.' },
-  { Icon: ShieldCheck, title: 'Trusted by Farmers', text: 'A commitment to transparent processes and dependable support.' },
-];
-
-const BENEFITS = [
-  { Icon: MapPin, title: 'Prime Locations', text: 'Fertile, well-connected & high growth potential.' },
-  { Icon: ShieldCheck, title: 'Secure Investment', text: 'Transparent process and verified land titles.' },
-  { Icon: TrendingUp, title: 'Long-Term Value', text: 'Sustainable income and asset growth.' },
-  { Icon: Handshake, title: 'Expert Partnership', text: 'Guidance at every step of your journey.' },
+  { Icon: MapPin, title: 'Prime Location', text: 'Discover agricultural lands in promising locations with convenient access, suitable surroundings, and strong potential for your farming plans.' },
+  { Icon: CalendarCheck, title: 'Site Visit', text: 'Visit your preferred property in person to evaluate the land, accessibility, soil conditions, water availability, and farming suitability.' },
+  { Icon: UserRoundCheck, title: 'Expert Guidance', text: 'Get professional guidance to choose the right agricultural land, understand farming opportunities, and plan your project with confidence.' },
+  { Icon: TrendingUp, title: 'Long-Term Value', text: 'Explore land investment opportunities with long-term potential, helping you plan for future agricultural use and sustainable development.' },
+  { Icon: Handshake, title: 'Trusted by Farm Entrepreneurs', text: 'Build your farming journey with transparent processes, dependable support, and guidance designed around your agricultural goals.' },
 ];
 
 const Leaf: React.FC<{ className?: string }> = ({ className }) => (
@@ -58,11 +50,7 @@ const WhyChooseUs: React.FC = () => {
 
       <div className="wc-inner">
         <figure className="wc-media">
-          <img src="/images/why/why-farmer-rep.webp" alt="An IGO Agri Estate representative discussing farmland with a farmer in a green field" width={1280} height={940} loading="lazy" decoding="async" />
-          <figcaption className="wc-caption">
-            <Leaf className="wc-caption__leaf" />
-            <span>Sustainable Farming for a Better Tomorrow</span>
-          </figcaption>
+          <img src="/images/why/why-growth-hd.webp" alt="A young green seedling growing from rich soil in a sunlit farm field with sustainability icons" width={2244} height={1384} loading="lazy" decoding="async" />
         </figure>
 
         <ul className="wc-grid">
@@ -76,22 +64,6 @@ const WhyChooseUs: React.FC = () => {
         </ul>
       </div>
 
-      <div className="wc-bottom">
-      <ul className="wc-strip">
-        {BENEFITS.map(({ Icon, title, text }, i) => (
-          <li key={title} className="wc-strip__item" style={{ ['--i' as string]: i } as React.CSSProperties}>
-            <span className="wc-strip__icon"><Icon size={22} strokeWidth={2.1} /></span>
-            <div>
-              <h3 className="wc-strip__title">{title}</h3>
-              <p className="wc-strip__text">{text}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <figure className="wc-corner">
-        <img src="/images/why/why-growth.webp" alt="A young plant growing from rich soil in a green farm field at sunrise" width={1122} height={692} loading="lazy" decoding="async" />
-      </figure>
-      </div>
     </section>
   );
 };

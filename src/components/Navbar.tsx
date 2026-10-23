@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Mail } from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
 import './Navbar.css';
-
-const NAV_ITEMS = [
-  { label: 'Home', to: '/' },
-  { label: 'About Us', to: '/about' },
-  { label: 'Services', to: '/#services' },
-  { label: 'Leadership', to: '/leadership' },
-  { label: 'FAQ', to: '/faq' },
-  { label: 'Careers', to: '/#careers' },
-  { label: 'Contact Us', to: '/contact' },
-];
+import { usePublishedCollection } from '../admin/store';
+import { NAV_SEED } from '../data/siteContent';
 
 const Navbar: React.FC = () => {
+  const NAV_ITEMS = usePublishedCollection('nav', NAV_SEED).map((n) => ({ label: String(n.label), to: String(n.to) }));
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
@@ -40,6 +34,7 @@ const Navbar: React.FC = () => {
         <div className="igo-container igo-topbar__inner">
           <a href="tel:+917397789803"><Phone size={14} aria-hidden /> +91 73977 89803</a>
           <a href="mailto:bd1@igogroups.com"><Mail size={14} aria-hidden /> bd1@igogroups.com</a>
+          <LanguageSelector />
         </div>
       </div>
 
@@ -47,10 +42,10 @@ const Navbar: React.FC = () => {
       <nav className="igo-nav" aria-label="Main navigation">
         <div className="igo-container igo-nav__inner">
           <Link to="/" className="igo-logo" onClick={() => { close(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-            <img src="/images/logo.png" alt="IGO Agritech Farms" />
+            <img src="/images/logo.png" alt="IGO Agri Estate" />
             <span className="igo-logo__text">
               <strong>IGO</strong>
-              <small>Agritech Farms</small>
+              <small>Agri Estate</small>
             </span>
           </Link>
 
@@ -62,7 +57,6 @@ const Navbar: React.FC = () => {
             ))}
           </ul>
 
-          <Link to="/contact" className="igo-cta">Free Consultation</Link>
 
           <button
             type="button"
@@ -85,7 +79,6 @@ const Navbar: React.FC = () => {
               </li>
             ))}
           </ul>
-          <Link to="/contact" className="igo-cta igo-cta--block" onClick={close}>Free Consultation</Link>
         </div>
       </nav>
     </header>
