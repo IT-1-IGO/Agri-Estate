@@ -55,7 +55,7 @@ const VerifiedInvestments: React.FC = () => {
             <motion.span {...reveal(0, 16)} className="block text-xs font-extrabold uppercase tracking-[0.3em] text-secondary">Premium Estates in Tamil Nadu</motion.span>
             <motion.h2 {...reveal(0.1)} id="verified-heading" className="mt-3 text-4xl font-extrabold normal-case leading-[1.05] tracking-tight text-[#0b4a2a] sm:text-5xl">
               Verified <br />
-              <span className="italic text-secondary">Agricultural Land Investments</span>
+              <span className="not-italic text-secondary">Agricultural Land Investments</span>
             </motion.h2>
             <motion.p {...reveal(0.2)} className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
               Land offered directly by IGO, starting with Maduranthagam, with verified documents, guided site visits and IGO Agri Tech project support.

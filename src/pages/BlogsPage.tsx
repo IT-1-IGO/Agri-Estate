@@ -38,8 +38,8 @@ const BlogsPage: React.FC = () => {
         }}
       />
       <div className="container-pro">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-2xl">
+        <div className="flex flex-col items-stretch gap-6 md:flex-row md:items-center md:justify-between md:gap-10 mb-12 lg:mb-16">
+          <div className="max-w-2xl min-w-0">
             <motion.span 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ const BlogsPage: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="heading-lg text-primary mb-6"
             >
-              Market <span className="text-secondary italic font-serif">Intelligence</span>
+              Market <span className="text-secondary not-italic font-serif">Intelligence</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -65,7 +65,7 @@ const BlogsPage: React.FC = () => {
             </motion.p>
           </div>
           
-          <div className="w-full md:w-80 relative group">
+          <div className="relative group w-full md:w-80 md:shrink-0">
             <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-secondary transition-colors" size={18} />
             <input 
               type="text"

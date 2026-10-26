@@ -162,7 +162,7 @@ const Home: React.FC = () => {
         <div className="container-pro">
           <div className="max-w-3xl mx-auto text-center mb-10 lg:mb-14">
             <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Agri Estate Models</span>
-            <h2 className="heading-lg !mb-4 lg:!text-5xl text-white">Land Into <br /><span className="text-secondary italic">Farm Income</span></h2>
+            <h2 className="heading-lg !mb-4 lg:!text-5xl text-white">Land Into <br /><span className="text-secondary not-italic">Farm Income</span></h2>
             <p className="text-base md:text-lg text-white/50 font-light leading-relaxed">
               Estate-format agriculture models designed around real crops, water access, market linkage, and owner reporting.
             </p>
@@ -170,9 +170,9 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {[
-              { title: 'Protected Cultivation', desc: 'Shade net and polyhouse vegetable models for high-value recurring harvests.', img: '/images/properties/polyhouse.png', icon: <Sprout />, filter: 'Protected', location: 'Kanchipuram', id: 'polyhouse-project' },
-              { title: 'Horticulture Orchards', desc: 'Fruit plantation estates with drip irrigation, staged harvest, and managed sales potential.', img: '/images/properties/mango-orchard.png', icon: <TrendingUp />, filter: 'Horticulture', location: 'Maduranthagam', id: 'horticulture-project' },
-              { title: 'Agroforestry Farms', desc: 'Timber, spice, and intercrop models for long-term land value and farm income.', img: '/images/properties/teak-estate.png', icon: <Zap />, filter: 'Open Field', location: 'Mahabalipuram', id: 'open-cultivation-project' }
+              { title: 'Protected Cultivation', desc: 'Shade net and polyhouse vegetable models for high-value recurring harvests.', img: '/images/properties/cat-protected-cultivation.webp', icon: <Sprout />, filter: 'Protected', location: 'Kanchipuram', id: 'polyhouse-project' },
+              { title: 'Horticulture Orchards', desc: 'Fruit plantation estates with drip irrigation, staged harvest, and managed sales potential.', img: '/images/properties/cat-horticulture-orchids.webp', icon: <TrendingUp />, filter: 'Horticulture', location: 'Maduranthagam', id: 'horticulture-project' },
+              { title: 'Agroforestry Farms', desc: 'Timber, spice, and intercrop models for long-term land value and farm income.', img: '/images/properties/cat-agroforestry.webp', icon: <Zap />, filter: 'Open Field', location: 'Mahabalipuram', id: 'open-cultivation-project' }
             ].map((cat, i) => (
               <Link
                 key={i}
@@ -199,27 +199,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Recently Added */}
-      <section className="py-16 lg:py-24 bg-[#EAF1F5] border-b border-black/5">
-        <div className="container-pro">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-10 lg:mb-14">
-            <div className="max-w-xl">
-              <span className="text-secondary font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">Ready for Planning</span>
-              <h2 className="heading-lg !mb-0 lg:!text-5xl text-primary">New Agri <span className="text-secondary italic">Estates</span></h2>
-            </div>
-            <Link to="/locations" className="flex items-center text-primary font-black uppercase tracking-widest text-[11px] hover:text-secondary transition-colors">
-              Explore Premium Estates <ArrowRight size={20} className="ml-2" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 [&_.aspect-\[16\/11\]]:aspect-[16/10]">
-            {recentlyAdded.map((prop: Property) => (
-              <PropertyCard key={prop.id} {...prop} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Knowledge */}
       <KnowledgeHubSection />
 
@@ -233,6 +212,45 @@ import LiveContent from './cms/LiveContent';
 
 function App() {
   const location = useLocation();
+
+  // Safety net for in-app links: if a click on an internal link has not changed the page after 1.5s
+  // (e.g. a lazy page chunk is stuck loading), load the destination normally instead of leaving the click dead.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+      const url = new URL(a.href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+      const from = window.location.pathname + window.location.search;
+      const to = url.pathname + url.search;
+      if (to === from || url.hash) return;
+      window.setTimeout(() => {
+        if (window.location.pathname + window.location.search === from) window.location.assign(to);
+      }, 1500);
+    };
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
+
+  // Warm the page chunks users navigate to most, once the browser is idle. Without this, the first click on
+  // Back / a nav link waits for the lazy chunk to download and compile while the old page stays on screen,
+  // which looks like the click did nothing.
+  useEffect(() => {
+    const loaders = [
+      () => import('./pages/Listings'), () => import('./pages/PropertyDetails'), () => import('./pages/Projects'),
+      () => import('./pages/SellLand'), () => import('./pages/Services'), () => import('./pages/Leadership'),
+      () => import('./pages/Faq'), () => import('./pages/Careers'),
+    ];
+    let cancelled = false;
+    const timers: number[] = [];
+    const start = window.setTimeout(() => {
+      loaders.forEach((load, i) => {
+        timers.push(window.setTimeout(() => { if (!cancelled) load().catch(() => undefined); }, i * 500));
+      });
+    }, 1500);
+    return () => { cancelled = true; window.clearTimeout(start); timers.forEach((t) => window.clearTimeout(t)); };
+  }, []);
   const [settings, setSettings] = useState(getLocalSettings);
   // The new admin panel has its own layout, so hide the public header/footer/widgets there.
   const isPanel = /^\/admin(\/|$)/.test(location.pathname) && !/^\/admin\/(dashboard|new|edit)(\/|$)/.test(location.pathname);
@@ -308,8 +326,8 @@ function App() {
             <div className="relative z-10 mx-auto w-full max-w-[1660px] px-5 pb-6 pt-12 sm:px-8 md:pt-[60px] lg:px-10 xl:px-14">
               <div className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr] xl:gap-x-16">
                 <div className="min-w-0">
-                  <Link to="/" aria-label="IGO Agri Estates home" className="inline-block rounded-md bg-white p-1.5 leading-none">
-                    <img src="/images/igo-agri-estate-footer-logo.png" alt="IGO Agri Estate" className="h-14 w-auto max-w-full object-contain" />
+                  <Link to="/" aria-label="IGO Agri Estates home" className="inline-flex items-center justify-center rounded-md bg-white p-2 leading-none">
+                    <img src="/images/logo.png" alt="IGO Agri Estate" className="h-14 w-14 shrink-0 object-contain sm:h-16 sm:w-16" />
                   </Link>
                   <p className="mt-6 max-w-[380px] text-[15px] leading-7 text-white/70">
                     IGO Agri Estates helps you buy, sell and invest in verified agricultural land across India, with legal checks and scientific farm planning.

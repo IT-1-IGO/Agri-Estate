@@ -84,7 +84,7 @@ const LandAndProjects: React.FC = () => {
         </div>
       </section>
 
-      <section className="bg-[#f4f9ee] py-20 lg:py-24" aria-labelledby="offers-heading">
+      <section className="bg-[#E6EDF2] py-20 lg:py-24" aria-labelledby="offers-heading">
         <div className="container-pro">
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1B5E20]">Buy and sell agricultural land</p>
@@ -95,7 +95,7 @@ const LandAndProjects: React.FC = () => {
           <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {OFFERS.map(({ to, Icon, title, text, cta, img, alt, pos }, i) => (
               <motion.li key={to} {...rise(i)} className="sm:last:col-span-2 lg:last:col-span-1">
-                <Link to={to} className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_18px_40px_-26px_rgba(15,77,36,0.45)] ring-1 ring-[#0f4d24]/5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_52px_-26px_rgba(15,77,36,0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]">
+                <Link to={to} className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-[#E8EFEB] shadow-[0_18px_40px_-26px_rgba(15,77,36,0.45)] ring-1 ring-[#0f4d24]/5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_52px_-26px_rgba(15,77,36,0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]">
                   <div className="aspect-[11/4] w-full overflow-hidden bg-[#eaf4e6]">
                     <img
                       src={img}

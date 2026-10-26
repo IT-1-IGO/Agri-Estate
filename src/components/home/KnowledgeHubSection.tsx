@@ -43,7 +43,7 @@ const KnowledgeHubSection: React.FC = () => {
             </motion.div>
             <motion.h2 {...reveal(0.1)} id="knowledge-heading" className="mt-3 text-4xl font-extrabold normal-case leading-[1.05] tracking-tight text-[#07543D] sm:text-5xl">
               Investment <br />
-              <span className="italic text-[#AD740D]">Intelligence</span>
+              <span className="not-italic text-[#AD740D]">Intelligence</span>
             </motion.h2>
             <motion.p {...reveal(0.2)} className="mt-5 max-w-xl text-base leading-relaxed text-slate-500 sm:text-lg">
               Gain valuable insights, expert advice and practical guides to make smarter decisions in agricultural land investment.

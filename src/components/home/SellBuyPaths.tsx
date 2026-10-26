@@ -39,7 +39,7 @@ const SellBuyPaths: React.FC = () => (
       </div>
       <div className="grid md:grid-cols-2 gap-6">
         {PATHS.map(({ to, eyebrow, title, text, points, cta, img, alt, Icon }) => (
-          <Link key={to} to={to} className="group rounded-3xl overflow-hidden bg-white border border-black/5 shadow-md hover:shadow-2xl transition-shadow flex flex-col">
+          <Link key={to} to={to} className="group rounded-3xl overflow-hidden bg-[#EAE6DF] border border-black/5 shadow-md hover:shadow-2xl transition-shadow flex flex-col">
             <TiltImage className="aspect-[16/8]">
               <img src={img} alt={alt} loading="lazy" decoding="async" className="w-full h-full object-cover" />
               <span className="absolute top-4 left-4 inline-flex items-center gap-2 bg-white/95 text-[#0f4d24] text-xs font-bold px-3 py-1.5 rounded-full">

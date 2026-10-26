@@ -30,7 +30,7 @@ const TaxOptimizerContent: React.FC = () => {
             <Landmark size={14} />
             <span>Tax Optimization Suite</span>
           </div>
-          <h2 id="tax-heading" className="mb-4 text-[2.2rem] font-bold normal-case leading-[1.05] tracking-tight text-[#063D30] sm:text-5xl lg:text-6xl">1031 <span className="italic text-[#A86A12]">Exchange</span> Optimizer</h2>
+          <h2 id="tax-heading" className="mb-4 text-[1.9rem] font-bold normal-case leading-[1.1] tracking-tight text-[#063D30] sm:text-[2.6rem] lg:text-[3.5rem]">1031 <span className="not-italic text-[#A86A12]">Exchange</span> Optimizer</h2>
           <p className="max-w-2xl text-[15px] leading-7 text-[#5F6F6A] sm:text-base">
             Leverage Section 1031 to defer capital gains tax by reinvesting in high-yield agricultural land. Our AI suggests the best "Like-Kind" assets.
           </p>

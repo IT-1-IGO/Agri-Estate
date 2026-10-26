@@ -86,6 +86,16 @@ const estateFlow = [
 import { trackVisit, updateVisitDuration } from '../lib/trackingService';
 import { submitLead } from '../lib/leadsService';
 
+const Band: React.FC<{ c: string; children: React.ReactNode }> = ({ c, children }) => (
+  <div
+    style={{ backgroundColor: c }}
+    className="py-8 lg:py-12 [box-shadow:0_0_0_100vmax_var(--band)] [clip-path:inset(0_-100vmax)]"
+    ref={(el) => { if (el) el.style.setProperty('--band', c); }}
+  >
+    {children}
+  </div>
+);
+
 const PropertyDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -168,6 +178,18 @@ const PropertyDetails: React.FC = () => {
     );
     return sameLocation.length > 0 ? sameLocation.slice(0, 3) : getRecommendations(availableProperties, property.id).slice(0, 3);
   }, [property, publicProperties]);
+
+  // Back: return to wherever the visitor came from (e.g. the Farm Types section on Home) when this page was
+  // opened from inside the site; otherwise (direct link / refresh) go to the Estates listing.
+  // If the in-app navigation has not completed shortly after, fall back to a normal page load so the click can never be lost.
+  const goBackToEstates = () => {
+    const fromPath = window.location.pathname;
+    const canGoBack = typeof window.history.state?.idx === 'number' && window.history.state.idx > 0;
+    if (canGoBack) navigate(-1); else navigate('/locations');
+    window.setTimeout(() => {
+      if (window.location.pathname === fromPath) window.location.assign('/locations');
+    }, 1500);
+  };
 
   const handleShare = async () => {
     if (!property) return;
@@ -281,7 +303,11 @@ const PropertyDetails: React.FC = () => {
 
   const [activeImage, setActiveImage] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const galleryImages = property ? (property.images || [property.image]) : [];
+  const isHortiHero = property?.id === 'horticulture-project';
+  const isOpenHero = property?.id === 'open-cultivation-project';
+  const galleryImages = property
+    ? (isHortiHero ? ['/images/properties/cat-horticulture-orchids.webp'] : (property.images || [property.image]))
+    : [];
 
   if (loading) {
     return (
@@ -306,7 +332,7 @@ const PropertyDetails: React.FC = () => {
   const igoSupport = property.igoSupport || defaultIgoSupport;
 
   return (
-    <div className="pt-32 pb-24 bg-background min-h-screen">
+    <div className="pt-32 pb-24 bg-[#FAF6EF] min-h-screen overflow-x-clip">
       <SEO
         title={`${property.title} — ${property.location} | Agricultural Estate for Sale in India`}
         description={`${property.title} in ${property.location}. ${property.size} estate at ${property.price}. ${property.description?.slice(0, 80) || 'Verified agricultural estate with clear title and managed farming support.'}`.slice(0, 160)}
@@ -346,18 +372,19 @@ const PropertyDetails: React.FC = () => {
           }
         ]}
       />
-      <div className="container">
+      <div className="container mx-auto px-5 sm:px-8 lg:px-10 box-border">
           <button
-            onClick={() => navigate('/locations')}
+            type="button"
+            onClick={goBackToEstates}
             className="flex items-center text-text-muted hover:text-primary mb-8 transition-colors"
           >
             <ArrowLeft size={20} className="mr-2" />
             Back to Estates
           </button>
 
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-14 items-start">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
-            <div className="relative rounded-[48px] overflow-hidden shadow-2xl aspect-[4/3] bg-primary/5 group">
+            <div className={`relative rounded-[48px] overflow-hidden shadow-2xl aspect-[4/3] bg-primary/5 group${isHortiHero ? ' w-[92%] sm:w-[90%] lg:w-[88%]' : ''}${isOpenHero ? ' w-[94%] sm:w-[92%] lg:w-[90%] mx-auto max-h-[420px] sm:max-h-[520px] lg:max-h-[min(70vh,640px)]' : ''}`}>
               <AnimatePresence mode="wait">
                 <motion.img 
                   key={activeImage}
@@ -368,7 +395,7 @@ const PropertyDetails: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.6 }}
                   onClick={() => setLightboxIndex(activeImage)}
-                  className="w-full h-full object-cover cursor-zoom-in" 
+                  className="w-full h-full object-cover cursor-zoom-in" style={isHortiHero ? { objectPosition: '30% 55%' } : undefined} 
                 />
               </AnimatePresence>
               <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent pointer-events-none" />
@@ -503,6 +530,8 @@ const PropertyDetails: React.FC = () => {
                 Request Drone Tour
               </button>
               <button
+                type="button"
+                onClick={() => document.getElementById('revenue-model')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                 className="bg-white border border-black/10 px-6 py-4 rounded-2xl font-bold flex items-center gap-2 hover:border-secondary transition-all"
               >
                 <LineChart size={18} className="text-secondary" />
@@ -512,9 +541,10 @@ const PropertyDetails: React.FC = () => {
           </motion.div>
         </div>
 
-        <div className="mt-16 grid xl:grid-cols-[1fr_420px] gap-10 items-start">
-          <main className="space-y-10">
-            <section className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
+        <div className="mt-12 grid xl:grid-cols-[1fr_420px] gap-x-10 gap-y-0 items-start">
+          <main>
+            <Band c="#F5E6C8">
+            <section id="revenue-model" className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl scroll-mt-32">
               <p className="text-xs font-black uppercase tracking-widest text-secondary mb-3">Revenue Model</p>
               <h2 className="text-3xl font-bold mb-4">How This Agri Estate Can Earn</h2>
               <p className="text-text-muted text-lg leading-relaxed mb-8">{property.revenueModel}</p>
@@ -533,7 +563,9 @@ const PropertyDetails: React.FC = () => {
                 </div>
               </div>
             </section>
+            </Band>
 
+            <Band c="#F0E3CE">
             <section className="grid lg:grid-cols-2 gap-8">
               <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
                 <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-3">
@@ -564,8 +596,10 @@ const PropertyDetails: React.FC = () => {
                 </div>
               </div>
             </section>
+            </Band>
             
             {/* NEW CX FEATURES: Soil and Infrastructure */}
+            <Band c="#F1DFD6">
             <section className="grid lg:grid-cols-2 gap-8">
               <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
                 <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-3">
@@ -622,7 +656,9 @@ const PropertyDetails: React.FC = () => {
                 </div>
               </div>
             </section>
+            </Band>
 
+            <Band c="#E7EDF1">
             <section className="bg-primary rounded-[40px] p-8 text-white shadow-xl">
               <p className="text-xs font-black uppercase tracking-widest text-secondary mb-3">Estate Development Process</p>
               <h2 className="text-3xl font-bold mb-8">From Enquiry to Agri Estate Revenue</h2>
@@ -635,7 +671,9 @@ const PropertyDetails: React.FC = () => {
                 ))}
               </div>
             </section>
+            </Band>
 
+            <Band c="#E6EEE4">
             <section className="grid lg:grid-cols-2 gap-8">
               <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
                 <h2 className="text-3xl font-bold mb-6">What Customer Should Keep Ready</h2>
@@ -661,7 +699,9 @@ const PropertyDetails: React.FC = () => {
                 </div>
               </div>
             </section>
+            </Band>
 
+            <Band c="#EAE7F0">
             <section className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
               <h2 className="text-3xl font-bold mb-6">Official IGO Address Details</h2>
               <div className="grid md:grid-cols-2 gap-5">
@@ -686,8 +726,10 @@ const PropertyDetails: React.FC = () => {
                 </a>
               )}
             </section>
+            </Band>
 
             {/* PROFITABILITY & IGO PROJECT EXPLANATION */}
+            <Band c="#DDECE5">
             <section className="bg-gradient-to-br from-primary to-primary-light rounded-[40px] p-8 md:p-12 text-white shadow-2xl overflow-hidden relative">
               <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
               
@@ -730,8 +772,10 @@ const PropertyDetails: React.FC = () => {
                 </div>
               </div>
             </section>
+            </Band>
 
             {/* FAQ Section */}
+            <Band c="#F4EECF">
             <section className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
               <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-3">
                 <AlertCircle size={18} />
@@ -760,9 +804,10 @@ const PropertyDetails: React.FC = () => {
                 ))}
               </div>
             </section>
+            </Band>
           </main>
 
-          <aside ref={leadRef} className="space-y-8 xl:sticky xl:top-28">
+          <aside ref={leadRef} className="space-y-8 py-8 xl:py-12 xl:sticky xl:top-20">
             <LeadCaptureForm propertyTitle={property.title} propertyId={property.id} />
 
             {property.availableUnits && property.totalUnits && (

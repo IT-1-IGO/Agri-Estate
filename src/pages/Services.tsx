@@ -362,8 +362,8 @@ const Services: React.FC = () => {
         <section aria-labelledby="soil-heading">
           <style>{`.si-card{container-type:inline-size}.si-body{display:grid;gap:1.1rem}.si-feats{display:grid;gap:0.85rem}@container (min-width:480px){.si-body{grid-template-columns:1fr 42%;align-items:start}.si-feats{grid-template-columns:repeat(3,1fr)}}`}</style>
           <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.35em] text-[#A86A12]">Agronomic Science</p>
-          <h2 id="soil-heading" className="mt-3 text-[2.2rem] font-bold normal-case leading-[1.05] tracking-tight text-[#063D30] sm:text-5xl lg:text-6xl">
-            Soil <em className="font-bold italic text-[#A86A12]">Intelligence</em>
+          <h2 id="soil-heading" className="mt-3 text-[1.9rem] font-bold normal-case leading-[1.1] tracking-tight text-[#063D30] sm:text-[2.6rem] lg:text-[3.5rem]">
+            Soil <em className="font-bold not-italic text-[#A86A12]">Intelligence</em>
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#5F6F6A] sm:text-base">
             Scientific validation of agricultural assets. We map NPK levels, water table viability, and crop suitability to help customers make informed agricultural investment decisions.

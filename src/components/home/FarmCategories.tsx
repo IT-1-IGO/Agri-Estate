@@ -26,7 +26,7 @@ const FarmCategories: React.FC = () => {
   const reduce = useReducedMotion();
 
   return (
-    <section className="relative bg-[#f4f9ee] py-20 lg:py-28 overflow-hidden" aria-labelledby="categories-heading">
+    <section className="relative bg-[#EDE4D6] py-20 lg:py-28 overflow-hidden" aria-labelledby="categories-heading">
       <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#cfe8c0]/60 blur-3xl" aria-hidden="true"></div>
       <div className="container-pro relative">
         <div className="max-w-2xl">

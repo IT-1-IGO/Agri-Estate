@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Property } from '../types';
 
 const RECENT_VIEWS_KEY = 'igo_recent_views';
@@ -21,7 +21,7 @@ export const useRecentlyViewed = (properties: Property[]) => {
       .slice(0, MAX_RECENT);
   }, [properties, recentIds]);
 
-  const addView = (id: string) => {
+  const addView = useCallback((id: string) => {
     try {
       const existing = localStorage.getItem(RECENT_VIEWS_KEY);
       const ids: string[] = existing ? JSON.parse(existing) : [];
@@ -31,7 +31,7 @@ export const useRecentlyViewed = (properties: Property[]) => {
     } catch (e) {
       // ignore
     }
-  };
+  }, []);
 
   return { recentProperties, addView };
 };

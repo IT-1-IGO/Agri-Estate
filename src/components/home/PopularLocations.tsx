@@ -28,7 +28,7 @@ const PopularLocations: React.FC = () => {
   });
 
   return (
-    <section id="estates" className="relative overflow-hidden bg-[#f4f8f1] py-16 lg:py-24" aria-labelledby="popular-locations-heading">
+    <section id="estates" className="relative overflow-hidden bg-[#F1E5E7] py-16 lg:py-24" aria-labelledby="popular-locations-heading">
       {/* Decorative botanicals (very low opacity) */}
 
       <div className="container-pro relative">
@@ -70,7 +70,7 @@ const PopularLocations: React.FC = () => {
               />
             </div>
 
-            <div className="flex flex-col justify-center p-7 sm:p-9">
+            <div className="flex flex-col justify-center bg-[#E9E7EF] p-7 sm:p-9">
               <div className="flex items-start justify-between">
                 <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#dcecd6] text-[#0b4a2a]"><MapPin size={26} fill="currentColor" /></span>
                 <span className="rounded-full bg-[#0b4a2a] px-4 py-1.5 text-sm font-semibold text-white">Popular</span>

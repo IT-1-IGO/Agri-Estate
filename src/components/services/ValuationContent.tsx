@@ -60,7 +60,7 @@ const ValuationContent: React.FC = () => {
             transition={{ delay: 0.1 }}
             className="mb-5 text-[2.2rem] font-bold normal-case leading-[1.05] tracking-tight text-[#063D30] sm:text-5xl lg:text-6xl"
           >
-            AI Estate <span className="italic text-[#A86A12]">Valuator</span>
+            AI Estate <span className="not-italic text-[#A86A12]">Valuator</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
