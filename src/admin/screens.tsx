@@ -6,7 +6,7 @@ import { LeadData, fetchLeads } from '../lib/leadsService';
 import { isSupabaseConfigured } from '../lib/supabaseClient';
 import { CATEGORY_SEED, LEGAL_SEED, NAV_SEED, PAGES_SEED, SOIL_SEED, WHY_SEED } from '../data/siteContent';
 import CollectionManager from './CollectionManager';
-import DocEditor from './DocEditor';
+import DocEditor, { type Section } from './DocEditor';
 import { FieldDef } from './forms';
 import { MEDIA_COL, MediaItem, getActivity, logActivity, mediaUsage, useCollection } from './store';
 import { Btn, Card, ConfirmDialog, EmptyState, Modal, PageHeader, Pager, inputCls, saveMediaFile, useToast } from './ui';
@@ -20,16 +20,53 @@ const SERVICE_FIELDS: FieldDef[] = [
 ];
 const SERVICE_COLS = [{ key: 'image', label: 'Image', image: true }, { key: 'title', label: 'Title' }, { key: 'text', label: 'Description' }];
 
+const SERVICES_DOC: Section[] = [
+  { title: 'Hero', fields: [
+    { key: 'heroLabel', label: 'Small label', max: 60, placeholder: 'Our Services' },
+    { key: 'heroTitle', label: 'Headline', max: 120, placeholder: 'Comprehensive Support for a Sustainable Tomorrow' },
+    { key: 'heroText', label: 'Intro text', type: 'textarea', max: 300 },
+  ] },
+  { title: 'AMC service', fields: [
+    { key: 'amcLabel', label: 'Small label', max: 60, placeholder: 'AMC Service' },
+    { key: 'amcTitle', label: 'Heading', max: 100, placeholder: 'Annual Maintenance Contract (AMC)' },
+    { key: 'amcText', label: 'Description', type: 'textarea', max: 500 },
+    { key: 'amcImage', label: 'Image', type: 'image' },
+    { key: 'amcButtonText', label: 'Button text', max: 40, placeholder: 'Learn More' },
+    { key: 'amcButtonLink', label: 'Button link', max: 200, placeholder: '/contact', hint: 'A page on this site, e.g. /contact' },
+  ] },
+  { title: 'Buyback service', fields: [
+    { key: 'buybackLabel', label: 'Small label', max: 60, placeholder: 'Buyback Service' },
+    { key: 'buybackTitle', label: 'Heading', max: 100, placeholder: 'Buyback Service' },
+    { key: 'buybackText', label: 'Description', type: 'textarea', max: 500 },
+    { key: 'buybackImage', label: 'Image', type: 'image' },
+    { key: 'buybackButtonText', label: 'Button text', max: 40, placeholder: 'Learn More' },
+    { key: 'buybackButtonLink', label: 'Button link', max: 200, placeholder: '/contact' },
+  ] },
+  { title: 'Soil Intelligence heading', fields: [
+    { key: 'soilLabel', label: 'Small label', max: 60, placeholder: 'Agronomic Science' },
+    { key: 'soilTitle', label: 'Heading', max: 100, placeholder: 'Soil Intelligence' },
+    { key: 'soilText', label: 'Intro text', type: 'textarea', max: 400 },
+  ] },
+  { title: 'Commitment banner', fields: [
+    { key: 'commitLabel', label: 'Small label', max: 60, placeholder: 'Our Commitment' },
+    { key: 'commitTitle', label: 'Heading', max: 100, placeholder: 'Your Growth, Our Commitment' },
+    { key: 'commitText', label: 'Text', type: 'textarea', max: 300 },
+    { key: 'commitButtonText', label: 'Button text', max: 40, placeholder: 'Get in Touch' },
+    { key: 'commitButtonLink', label: 'Button link', max: 200, placeholder: '/contact' },
+  ] },
+];
+
 /* ---------------- services / land & soil ---------------- */
 export const ServicesScreen = () => {
-  const [tab, setTab] = useState<'legal' | 'soil'>('legal');
+  const [tab, setTab] = useState<'page' | 'legal' | 'soil'>('page');
   return (
     <div>
       <div className="mb-4 flex gap-2 border-b border-[#E3E8E1]">
-        {([['legal', 'Legal & documentation'], ['soil', 'Land & Soil Intelligence']] as const).map(([k, l]) => <button key={k} type="button" onClick={() => setTab(k)} className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium normal-case tracking-normal ${tab === k ? 'border-[#124B3B] text-[#124B3B]' : 'border-transparent text-[#5E726B]'}`}>{l}</button>)}
+        {([['page', 'Page content'], ['legal', 'Legal & documentation'], ['soil', 'Land & Soil Intelligence']] as const).map(([k, l]) => <button key={k} type="button" onClick={() => setTab(k)} className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium normal-case tracking-normal ${tab === k ? 'border-[#124B3B] text-[#124B3B]' : 'border-transparent text-[#5E726B]'}`}>{l}</button>)}
         <Link to="/admin/pages" className="ml-auto self-center pb-1 text-sm text-[#124B3B] hover:underline">Edit other Services page content in Pages →</Link>
       </div>
-      {tab === 'legal'
+      {tab === 'page' ? <DocEditor name="services" title="Services page content" crumbs={['Services', 'Page content']} previewPath="/services" sub="Headings, text, images and buttons of the Services page. Leave a field blank to keep the original text." sections={SERVICES_DOC} />
+        : tab === 'legal'
         ? <CollectionManager key="l" name="services.legal" title="Services" singular="Service" crumbs={['Services']} seed={LEGAL_SEED} fields={SERVICE_FIELDS} columns={SERVICE_COLS} previewPath="/services" sub="Legal & documentation service cards shown on the Services page." />
         : <CollectionManager key="s" name="services.soil" title="Land & Soil Intelligence" singular="Soil service" crumbs={['Services', 'Land & Soil Intelligence']} seed={SOIL_SEED} fields={SERVICE_FIELDS} columns={SERVICE_COLS} previewPath="/services" sub="Soil Intelligence cards shown on the Services page." />}
     </div>

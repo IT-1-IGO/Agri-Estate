@@ -18,7 +18,7 @@ import {
   Sun,
 } from 'lucide-react';
 import SEO from '../components/SEO';
-import { usePublishedCollection } from '../admin/store';
+import { usePublishedCollection, usePublishedDoc } from '../admin/store';
 import { resolveMedia } from '../admin/store';
 import { LEGAL_SEED, SOIL_SEED } from '../data/siteContent';
 import { useLanguage } from '../context/LanguageContext';
@@ -199,8 +199,13 @@ const useCards = (name: string, seed: typeof LEGAL_SEED, base: any[], DefaultIco
 const Services: React.FC = () => {
   const legalCards = useCards('services.legal', LEGAL_SEED, LEGAL_SERVICES, ShieldCheck);
   const soilCards = useCards('services.soil', SOIL_SEED, SOIL_SERVICES, Sprout);
+  const doc = usePublishedDoc('services') as Record<string, string | undefined>;
+  const t = (k: string, d: string) => (doc[k] && String(doc[k]).trim() ? String(doc[k]) : d); // blank in admin = built-in text
   const { language } = useLanguage();
   const nonEn = language !== 'en'; // Tamil/Hindi glyphs are taller: scale the overlay type to keep the banner layout
+  const heroTitle = t('heroTitle', 'Comprehensive Support for a Sustainable Tomorrow');
+  const heroText = t('heroText', 'We offer reliable AMC and Buyback services to ensure long-term value and peace of mind for your agricultural investments.');
+  const heroLabel = t('heroLabel', 'Our Services');
   const reduce = useReducedMotion();
   const reveal = (delay = 0, y = 24) =>
     reduce
@@ -227,29 +232,29 @@ const Services: React.FC = () => {
 
       {/* 1. Hero: supplied banner (text is part of the image) on tablet/desktop; live text over a cropped image on mobile */}
       <section className="relative w-full bg-[#F8F8F0]" aria-labelledby="services-heading">
-        <h1 id="services-heading" className="sr-only">Comprehensive Support for a Sustainable Tomorrow</h1>
+        <h1 id="services-heading" className="sr-only">{heroTitle}</h1>
         <HeroStage src="/images/services/services-hero-clean.webp" width={2172} height={724}>
           <div className="absolute" style={{ left: '5.3cqw', top: '5.8cqw', width: '40cqw' }}>
             <p className="flex items-center font-semibold uppercase" style={{ gap: '1.4cqw', fontSize: '1.05cqw', lineHeight: '1.6cqw', letterSpacing: '0.3em', color: GREEN }}>
               <span aria-hidden="true" style={{ width: '3.2cqw', height: 1, background: GREEN }} />
-              Our Services
+              {heroLabel}
             </p>
             <p aria-hidden="true" className="font-normal normal-case" style={{ marginTop: '0.1cqw', maxWidth: '32cqw', fontFamily: SERIF, fontSize: nonEn ? '2.8cqw' : '3.4cqw', lineHeight: nonEn ? 1.2 : 1.08, letterSpacing: '-0.005em', color: GREEN }}>
-              Comprehensive Support for a Sustainable Tomorrow
+              {heroTitle}
             </p>
             <p style={{ marginTop: '1.2cqw', maxWidth: '33cqw', fontSize: '1.27cqw', lineHeight: 1.46, color: MUTED }}>
-              We offer reliable AMC and Buyback services to ensure long-term value and peace of mind for your agricultural investments.
+              {heroText}
             </p>
           </div>
         </HeroStage>
         <div className="md:hidden">
           <div className="px-5 pb-5 pt-9 sm:px-8">
-            <Label>Our Services</Label>
+            <Label>{heroLabel}</Label>
             <p aria-hidden="true" className="mt-4 text-[2rem] font-normal leading-[1.1] tracking-tight" style={{ fontFamily: SERIF, color: GREEN }}>
-              Comprehensive Support for a Sustainable Tomorrow
+              {heroTitle}
             </p>
             <p className="mt-4 text-[15px] leading-7" style={{ color: MUTED }}>
-              We offer reliable AMC and Buyback services to ensure long-term value and peace of mind for your agricultural investments.
+              {heroText}
             </p>
           </div>
           <img src="/images/services/services-hero-clean.webp" alt="" aria-hidden="true" className="block h-[240px] w-full object-cover object-[82%_center] sm:h-[300px]" />
@@ -262,7 +267,7 @@ const Services: React.FC = () => {
           <div className="grid items-stretch gap-6 p-4 sm:p-5 lg:grid-cols-[0.84fr_1.16fr] lg:gap-10">
             <div className="relative overflow-hidden rounded-[22px] lg:min-h-[340px]">
               <img
-                src="/images/services/services-amc.webp"
+                src={resolveMedia(doc.amcImage, '/images/services/services-amc.webp')}
                 alt="Technician inspecting solar panels in a green field"
                 width={740}
                 height={732}
@@ -274,15 +279,15 @@ const Services: React.FC = () => {
               </Badge>
             </div>
             <div className="flex flex-col justify-center pb-3 pr-0 pt-1 lg:py-5 lg:pr-10">
-              <Label>AMC Service</Label>
+              <Label>{t('amcLabel', 'AMC Service')}</Label>
               <h2 id="amc-heading" className={h2.replace('mt-4','mt-2').replace('lg:text-[2.6rem]','lg:text-[2.4rem]').replace('sm:text-4xl','sm:text-[2.1rem]')} style={{ fontFamily: SERIF, color: GREEN }}>
-                Annual Maintenance Contract (AMC)
+                {t('amcTitle', 'Annual Maintenance Contract (AMC)')}
               </h2>
               <p className={body.replace('mt-4','mt-4').replace('text-[15px] leading-7 sm:text-base','text-[15px] leading-7')} style={{ color: MUTED }}>
-                Keep your systems running at their best with our Annual Maintenance Contract (AMC) service. We ensure regular check-ups, timely maintenance and quick support to minimize downtime and maximize performance.
+                {t('amcText', 'Keep your systems running at their best with our Annual Maintenance Contract (AMC) service. We ensure regular check-ups, timely maintenance and quick support to minimize downtime and maximize performance.')}
               </p>
               <Benefits items={AMC_BENEFITS} compact />
-              <div><CtaButton to="/contact" compact>Learn More</CtaButton></div>
+              <div><CtaButton to={t('amcButtonLink', '/contact')} compact>{t('amcButtonText', 'Learn More')}</CtaButton></div>
             </div>
           </div>
         </motion.section>
@@ -291,19 +296,19 @@ const Services: React.FC = () => {
         <motion.section {...reveal(0)} className={card} aria-labelledby="buyback-heading">
           <div className="grid items-stretch gap-6 p-4 sm:p-5 lg:grid-cols-[1.16fr_0.84fr] lg:gap-10">
             <div className="order-2 flex flex-col justify-center pb-3 pt-1 lg:order-1 lg:py-5 lg:pl-10">
-              <Label>Buyback Service</Label>
+              <Label>{t('buybackLabel', 'Buyback Service')}</Label>
               <h2 id="buyback-heading" className={h2.replace('mt-4','mt-2').replace('lg:text-[2.6rem]','lg:text-[2.4rem]').replace('sm:text-4xl','sm:text-[2.1rem]')} style={{ fontFamily: SERIF, color: GREEN }}>
-                Buyback Service
+                {t('buybackTitle', 'Buyback Service')}
               </h2>
               <p className={body.replace('mt-4','mt-4')} style={{ color: MUTED }}>
-                We offer a hassle-free buyback service to help you get the best value for your investment. Whether you’re upgrading or exiting, we ensure a transparent, fair and smooth process.
+                {t('buybackText', 'We offer a hassle-free buyback service to help you get the best value for your investment. Whether you’re upgrading or exiting, we ensure a transparent, fair and smooth process.')}
               </p>
               <Benefits items={BUYBACK_BENEFITS} compact />
-              <div><CtaButton to="/contact" compact>Learn More</CtaButton></div>
+              <div><CtaButton to={t('buybackButtonLink', '/contact')} compact>{t('buybackButtonText', 'Learn More')}</CtaButton></div>
             </div>
             <div className="relative order-1 overflow-hidden rounded-[22px] lg:order-2 lg:min-h-[340px]">
               <img
-                src="/images/services/services-buyback.webp"
+                src={resolveMedia(doc.buybackImage, '/images/services/services-buyback.webp')}
                 alt="A handshake in a green field with a buyback agreement in the foreground"
                 width={728}
                 height={720}
@@ -361,12 +366,12 @@ const Services: React.FC = () => {
         {/* 3c. Soil Intelligence */}
         <section aria-labelledby="soil-heading">
           <style>{`.si-card{container-type:inline-size}.si-body{display:grid;gap:1.1rem}.si-feats{display:grid;gap:0.85rem}@container (min-width:480px){.si-body{grid-template-columns:1fr 42%;align-items:start}.si-feats{grid-template-columns:repeat(3,1fr)}}`}</style>
-          <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.35em] text-[#A86A12]">Agronomic Science</p>
+          <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.35em] text-[#A86A12]">{t('soilLabel', 'Agronomic Science')}</p>
           <h2 id="soil-heading" className="mt-3 text-[1.9rem] font-bold normal-case leading-[1.1] tracking-tight text-[#063D30] sm:text-[2.6rem] lg:text-[3.5rem]">
-            Soil <em className="font-bold not-italic text-[#A86A12]">Intelligence</em>
+            {doc.soilTitle && doc.soilTitle.trim() ? doc.soilTitle : <>Soil <em className="font-bold not-italic text-[#A86A12]">Intelligence</em></>}
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#5F6F6A] sm:text-base">
-            Scientific validation of agricultural assets. We map NPK levels, water table viability, and crop suitability to help customers make informed agricultural investment decisions.
+            {t('soilText', 'Scientific validation of agricultural assets. We map NPK levels, water table viability, and crop suitability to help customers make informed agricultural investment decisions.')}
           </p>
           <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {soilCards.map(({ Icon, title, text, image, alt, features }, i) => (
@@ -426,21 +431,21 @@ const Services: React.FC = () => {
           />
           <div className="flex flex-col gap-6 px-6 py-9 sm:px-10 md:min-h-[200px] md:flex-row md:items-center md:justify-between md:py-10">
             <div className="max-w-md border-l-2 pl-5" style={{ borderColor: GREEN }}>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GREEN }}>Our Commitment</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GREEN }}>{t('commitLabel', 'Our Commitment')}</p>
               <h2 id="commit-heading" className="mt-2 text-[1.9rem] font-normal normal-case leading-[1.15] sm:text-4xl" style={{ fontFamily: SERIF, color: GREEN }}>
-                Your Growth, Our Commitment
+                {t('commitTitle', 'Your Growth, Our Commitment')}
               </h2>
               <p className="mt-3 text-[15px] leading-7" style={{ color: MUTED }}>
-                From ongoing support to future opportunities, our services are designed to add value at every step of your journey.
+                {t('commitText', 'From ongoing support to future opportunities, our services are designed to add value at every step of your journey.')}
               </p>
             </div>
             <div>
               <Link
-                to="/contact"
+                to={t('commitButtonLink', '/contact')}
                 className="group/btn inline-flex items-center gap-3 rounded-full px-7 py-3 text-[15px] font-semibold normal-case tracking-normal text-white shadow-[0_10px_24px_-12px_rgba(18,75,59,0.7)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d3a2d]"
                 style={{ background: GREEN }}
               >
-                Get in Touch
+                {t('commitButtonText', 'Get in Touch')}
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover/btn:translate-x-1" aria-hidden="true" />
               </Link>
             </div>

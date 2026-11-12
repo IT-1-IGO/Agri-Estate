@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Bell, Briefcase, Building2, ChevronDown, Compass, FileText, Globe, Image as ImageIcon, LayoutDashboard, LogOut, Menu, MessageSquare, Search, Settings, Sprout, Wrench, X } from 'lucide-react';
+import { Bell, Briefcase, Building2, ChevronDown, Compass, FileText, Globe, Image as ImageIcon, LayoutDashboard, LogOut, Menu, MessageSquare, Search, Settings, Wrench, X } from 'lucide-react';
 import { adminName, endAdminSession, isAdminSession } from './auth';
 import { ToastProvider } from './ui';
 import { fetchLeads, LeadData } from '../lib/leadsService';
@@ -39,7 +39,7 @@ const AdminLayout: React.FC = () => {
   const logout = () => { endAdminSession(); nav('/admin/login', { replace: true }); };
   const side = (
     <nav aria-label="Admin navigation" className="flex h-full flex-col overflow-y-auto bg-[#0E3A2E] px-3 py-4 text-[#CFE0D8]">
-      <Link to="/admin" className="mb-5 flex items-center gap-2 px-2 text-white"><Sprout size={22} /><span className="text-[15px] font-semibold normal-case tracking-normal">IGO Admin</span></Link>
+      <Link to="/admin" className="mb-5 flex items-center gap-2 px-2 text-white"><img src="/images/admin-logo.png" alt="IGO Agri Estate" className="h-12 w-auto rounded-md bg-white p-1" /></Link>
       {NAV.map((g) => (
         <div key={g.group} className="mb-4">
           <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-[#7FA391]">{g.group}</p>

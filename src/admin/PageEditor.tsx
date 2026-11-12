@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ExternalLink, Eye, EyeOff, RotateCcw, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ExternalLink, Eye, EyeOff, Pencil, RotateCcw, Trash2 } from 'lucide-react';
 import { PAGES_SEED } from '../data/siteContent';
 import { LiveValues, ScanBlock, ScanResult, livePageName } from '../cms/types';
 import { CmsItem, logActivity, resolveMedia, useCollection, useDoc } from './store';
@@ -75,12 +75,12 @@ const SectionEditor: React.FC<{ scan: ScanResult; v: LiveValues; set: Setter; or
           <Card key={k} className={hidden ? 'opacity-70' : ''}>
             <div className="flex flex-wrap items-center gap-2 px-4 py-3">
               <button type="button" onClick={() => setOpen({ ...open, [k]: !isOpen })} className="flex min-w-0 flex-1 items-center gap-2 text-left" aria-expanded={isOpen}>
-                {isOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                 <span className="rounded bg-[#EEF3EF] px-1.5 py-0.5 text-xs text-[#37534A]">{idx + 1}</span>
                 <span className="truncate font-medium normal-case tracking-normal">{s.label}</span>
                 {hidden && <span className="rounded-full bg-[#FFF1D6] px-2 py-0.5 text-xs text-[#8A5A00]">Hidden</span>}
               </button>
               <div className="flex items-center gap-0.5">
+                <button type="button" aria-label={isOpen ? 'Close editor' : 'Edit section'} title={isOpen ? 'Close editor' : 'Edit section'} aria-expanded={isOpen} onClick={() => setOpen({ ...open, [k]: !isOpen })} className={`rounded p-1.5 text-[#124B3B] hover:bg-[#EEF3EF] ${isOpen ? 'bg-[#EEF3EF]' : ''}`}><Pencil size={15} /></button>
                 <button type="button" aria-label="Move section up" title="Move up" disabled={idx === 0} onClick={() => move(k, -1)} className="rounded p-1.5 hover:bg-[#EEF3EF] disabled:opacity-30"><ArrowUp size={15} /></button>
                 <button type="button" aria-label="Move section down" title="Move down" disabled={idx === live.length - 1} onClick={() => move(k, 1)} className="rounded p-1.5 hover:bg-[#EEF3EF] disabled:opacity-30"><ArrowDown size={15} /></button>
                 <button type="button" aria-label={hidden ? 'Show section' : 'Hide section'} title={hidden ? 'Show on website' : 'Hide from website'} onClick={() => set((x) => ({ ...x, hiddenSections: toggle(x.hiddenSections, k, !hidden) }))} className="rounded p-1.5 hover:bg-[#EEF3EF]">{hidden ? <Eye size={15} /> : <EyeOff size={15} />}</button>

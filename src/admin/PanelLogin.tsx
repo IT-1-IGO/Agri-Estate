@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Leaf, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Lock, User } from 'lucide-react';
 import { isAdminSession, startAdminSession, verifyAdmin } from './auth';
 import { inputCls } from './ui';
 
@@ -19,7 +19,7 @@ const PanelLogin: React.FC = () => {
     <main className="flex min-h-screen items-center justify-center bg-[#E9F0E6] px-4 py-10">
       <form onSubmit={submit} noValidate className="w-full max-w-sm rounded-2xl border border-[#D5E0D1] bg-white p-7 shadow-lg">
         <div className="mb-6 flex flex-col items-center text-center">
-          <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#124B3B] text-white"><Leaf size={24} /></span>
+          <img src="/images/admin-logo.png" alt="IGO Agri Estate" className="mb-3 h-16 w-auto" />
           <h1 className="text-xl font-semibold normal-case tracking-tight text-[#10231D]">IGO Agri Estate Admin</h1>
           <p className="mt-1 text-sm text-[#5E726B]">Sign in to manage the website</p>
         </div>

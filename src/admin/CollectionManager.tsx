@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowDown, ArrowUp, Eye, ToggleLeft, ToggleRight, ExternalLink, Pencil, Plus, Search, Trash2 } from 'lucide-react';
-import { CmsItem, logActivity, resolveMedia, uid, useCollection } from './store';
+import { ArrowDown, ArrowUp, Eye, ToggleLeft, ToggleRight, ExternalLink, RotateCcw, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { CmsItem, logActivity, resetCollection, resolveMedia, uid, useCollection } from './store';
 import { Btn, Card, ConfirmDialog, EmptyState, Modal, PageHeader, Pager, StatusBadge, inputCls, useToast } from './ui';
 import { FieldDef, FormFields, Values, cleanValues, validate } from './forms';
 
@@ -34,6 +34,7 @@ const CollectionManager: React.FC<Props> = ({ name, title, singular, crumbs, sub
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [del, setDel] = useState<CmsItem | null>(null);
   const [view, setView] = useState<CmsItem | null>(null);
+  const [restore, setRestore] = useState(false);
 
   const catField = fields.find((f) => f.key === filterKey);
   const filtered = useMemo(() => {
@@ -108,6 +109,7 @@ const CollectionManager: React.FC<Props> = ({ name, title, singular, crumbs, sub
       <PageHeader title={title} crumbs={crumbs} sub={sub}
         actions={<>
           {previewPath && <a href={previewPath} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-[#C9D5CE] bg-white px-3.5 py-2 text-sm font-medium normal-case tracking-normal text-[#10231D] hover:bg-[#F2F6F3]"><ExternalLink size={15} />Preview</a>}
+          {seed.length > 0 && <Btn variant="outline" onClick={() => setRestore(true)}><RotateCcw size={15} />Restore defaults</Btn>}
           <Btn onClick={openNew}><Plus size={16} />Add {singular}</Btn>
         </>} />
       <Card>
@@ -189,6 +191,8 @@ const CollectionManager: React.FC<Props> = ({ name, title, singular, crumbs, sub
           </dl>
         </Modal>
       )}
+      {restore && <ConfirmDialog title="Restore original content?" confirmLabel="Restore" text={`All edits, additions and deletions in “${title}” will be replaced by the original content.`} onCancel={() => setRestore(false)}
+        onConfirm={() => { resetCollection(name); logActivity('Restored defaults', title); toast('Original content restored'); setRestore(false); }} />}
       {del && <ConfirmDialog title={`Delete ${singular.toLowerCase()}?`} text={`“${String(del[fields[0].key] ?? '')}” will be permanently removed. This cannot be undone.`} onConfirm={remove} onCancel={() => setDel(null)} />}
     </div>
   );

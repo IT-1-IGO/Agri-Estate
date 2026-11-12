@@ -70,7 +70,7 @@ const AboutPage: React.FC = () => {
     <main className="overflow-x-hidden bg-[#FAF8EE] pt-[76px] text-[#0f4d24]">
       <SEO
           title="About IGO Agri Estates — India's Premier Agricultural Land Platform"
-          description="IGO Agri Estates is the land arm of IGO Group of Companies. We buy and sell agricultural land directly and offer land with IGO Agri Tech farm projects."
+          description="IGO Agri Estates is the land arm of IGO Group of Companies. We buy and sell agricultural land directly and offer land with IGO Agri Estate projects."
           canonical="/about"
           keywords="IGO Agri Estates about, agricultural land company India, farmland investment company India, agri estate company, managed farmland India, farm land developer Tamil Nadu Karnataka Maharashtra"
           ogImage="https://www.igoagriestate.com/images/team-expert-indian.png"
@@ -81,7 +81,7 @@ const AboutPage: React.FC = () => {
               name: "About IGO Agri Estates",
               url: 'https://www.igoagriestate.com/about',
               mainEntity: { '@id': 'https://www.igoagriestate.com/#organization' },
-              description: "IGO Agri Estates is the land arm of IGO Group of Companies, buying and selling agricultural land directly and offering land with IGO Agri Tech farm projects."
+              description: "IGO Agri Estates is the land arm of IGO Group of Companies, buying and selling agricultural land directly and offering land with IGO Agri Estate projects."
             },
             {
               '@context': 'https://schema.org',

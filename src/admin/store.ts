@@ -66,6 +66,12 @@ export const useCollection = <T extends CmsItem>(name: string, seed: T[]) => {
   return { items, save };
 };
 
+/** Removes the saved copy of a collection so the original built-in content shows again. */
+export const resetCollection = (name: string) => {
+  try { localStorage.removeItem(PREFIX + 'col.' + name); } catch { /* ignore */ }
+  window.dispatchEvent(new Event(CMS_EVENT));
+};
+
 /* ---------------- documents (draft + published) ---------------- */
 export interface CmsDoc { draft: Record<string, unknown>; published: Record<string, unknown>; updatedAt?: string; publishedAt?: string }
 const emptyDoc: CmsDoc = { draft: {}, published: {} };

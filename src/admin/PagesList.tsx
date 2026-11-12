@@ -73,12 +73,12 @@ const PagesList: React.FC = () => {
           <div className="overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm">
             <thead className="bg-[#F5F8F5] text-xs uppercase tracking-wide text-[#5E726B]"><tr><th className="px-4 py-2.5">Page title</th><th className="px-4 py-2.5">URL slug</th><th className="px-4 py-2.5">Status</th><th className="px-4 py-2.5">Last updated</th><th className="px-4 py-2.5 text-right">Actions</th></tr></thead>
             <tbody>{rows.slice((cur - 1) * SIZE, cur * SIZE).map(({ p, c, status, changed, updated }) => (
-              <tr key={p.id} className="border-t border-[#EEF2EE] hover:bg-[#FAFCFA]">
+              <tr key={p.id} tabIndex={0} role="link" title="Click to edit" onClick={() => nav(`/admin/pages/${p.id}`)} onKeyDown={(e) => { if (e.key === 'Enter' && e.target === e.currentTarget) nav(`/admin/pages/${p.id}`); }} className="cursor-pointer border-t border-[#EEF2EE] hover:bg-[#FAFCFA]">
                 <td className="px-4 py-3 font-medium">{String(p.name)}{c && <span className="ml-2 rounded bg-[#EEF3EF] px-1.5 py-0.5 text-xs font-normal">Custom</span>}</td>
                 <td className="px-4 py-3 text-[#5E726B]">{String(p.path)}</td>
                 <td className="px-4 py-3"><span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${status === 'Published' ? 'bg-[#E3F3E8] text-[#17663A]' : status === 'Live (original)' ? 'bg-[#EEF3EF] text-[#37534A]' : 'bg-[#FFF1D6] text-[#8A5A00]'}`}>{status}</span></td>
                 <td className="whitespace-nowrap px-4 py-3 text-[#5E726B]">{fmt(updated)}</td>
-                <td className="px-4 py-3"><div className="flex justify-end gap-0.5">
+                <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}><div className="flex justify-end gap-0.5">
                   <button type="button" aria-label="Edit" title="Edit" onClick={() => nav(`/admin/pages/${p.id}`)} className="rounded p-1.5 text-[#124B3B] hover:bg-[#EEF3EF]"><Pencil size={15} /></button>
                   <a href={`${p.path}?cms_preview=1`} target="_blank" rel="noreferrer" aria-label="Preview draft" title="Preview draft" className="rounded p-1.5 text-[#5E726B] hover:bg-[#EEF3EF]"><Eye size={15} /></a>
                   <a href={String(p.path)} target="_blank" rel="noreferrer" aria-label="View live page" title="View live page" className="rounded p-1.5 text-[#5E726B] hover:bg-[#EEF3EF]"><ExternalLink size={15} /></a>

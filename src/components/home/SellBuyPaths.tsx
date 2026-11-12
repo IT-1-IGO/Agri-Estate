@@ -34,7 +34,7 @@ const SellBuyPaths: React.FC = () => (
       <div className="max-w-3xl mb-10">
         <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#1B5E20] mb-3">IGO Group of Companies</p>
         <h2 id="paths-heading" className="text-3xl md:text-5xl text-[#0f4d24] leading-tight">
-          One group. Two ways to work with land.
+          One source, two paths for your land.
         </h2>
       </div>
       <div className="grid md:grid-cols-2 gap-6">

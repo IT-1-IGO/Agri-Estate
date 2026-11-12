@@ -30,8 +30,7 @@ const FarmCategories: React.FC = () => {
       <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#cfe8c0]/60 blur-3xl" aria-hidden="true"></div>
       <div className="container-pro relative">
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1B5E20]">IGO Agri Tech farms</p>
-          <h2 id="categories-heading" className="mt-3 text-4xl md:text-5xl font-bold text-[#0f4d24] leading-[1.05] tracking-[-0.02em] normal-case [text-wrap:balance]">
+          <h2 id="categories-heading" className="text-4xl md:text-5xl font-bold text-[#0f4d24] leading-[1.05] tracking-[-0.02em] normal-case [text-wrap:balance]">
             Farm types we set up and run with you
           </h2>
           <p className="mt-4 text-lg text-slate-600 [text-wrap:pretty]">
