@@ -289,9 +289,6 @@ const AboutPage: React.FC = () => {
           <motion.div {...reveal(0)} className="relative mx-5 overflow-hidden rounded-[26px] shadow-[0_24px_50px_-28px_rgba(15,77,36,0.5)] sm:mx-8 lg:mx-0 lg:rounded-l-none lg:rounded-r-[32px]">
             <img src="/images/featured/aerial-farmland-16x9.webp" alt="Farmland with a marked land parcel for sale" width={1024} height={576} loading="lazy" className="aspect-[4/3] w-full object-cover" />
             <ParcelOverlay points="12,60 40,40 76,66 40,92" pin={{ left: '40%', top: '56%' }} />
-            <span className="absolute bottom-[14%] right-[10%] rounded-md border-2 border-[#5b3b1b] bg-[#2f6a3a] px-4 py-2 text-sm font-semibold text-white shadow-lg">
-              Land Sale <ArrowRight size={14} className="ml-1 inline" aria-hidden="true" />
-            </span>
           </motion.div>
           <motion.div {...reveal(0.1)} className="container-pro lg:!ml-0 lg:!pl-0">
             <Label>Our Approach</Label>

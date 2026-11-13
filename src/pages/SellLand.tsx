@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { CheckCircle2, ClipboardList, MapPinned, Scale, Banknote, FileSignature, Loader2, ShieldCheck, Handshake, Lock, Sprout } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { CheckCircle2, ClipboardList, MapPinned, Scale, Banknote, FileSignature, Loader2, Handshake, IndianRupee, ShieldCheck, Users, ArrowRight, Sprout, Phone } from 'lucide-react';
 import SEO from '../components/SEO';
-import { useLanguage } from '../context/LanguageContext';
-import HeroStage from '../components/HeroStage';
 import SellProcessSection from '../components/home/SellProcessSection';
 import { submitLead } from '../lib/leadsService';
 
@@ -14,20 +13,19 @@ const STEPS = [
   { Icon: FileSignature, title: 'Agreement and payment', text: 'Registration is completed and payment is made directly to you.' },
 ];
 
+const HERO_BENEFITS = [
+  { Icon: Handshake, label: 'Fair & Transparent Deal' },
+  { Icon: IndianRupee, label: 'Best Market Value' },
+  { Icon: ShieldCheck, label: 'Hassle-Free & Secure Process' },
+  { Icon: Users, label: 'Professional Support End-to-End' },
+];
+
 const LAND_TYPES = ['Agricultural (dry)', 'Agricultural (irrigated)', 'Plantation / orchard', 'Farm with structures', 'Other'];
 
 const inputCls = 'w-full rounded-xl border border-[#cfdcc0] bg-white shadow-sm px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#1B5E20]';
 
-const HERO_FEATURES = [
-  { Icon: ShieldCheck, label: 'Transparent Process' },
-  { Icon: Handshake, label: 'Fair Value' },
-  { Icon: Lock, label: 'Secure Transaction' },
-  { Icon: Sprout, label: 'A Greener Future' },
-];
-
 const SellLand: React.FC = () => {
-  const { language } = useLanguage();
-  const nonEn = language !== 'en'; // Tamil/Hindi glyphs are taller: scale the overlay type so it keeps the banner's layout
+  const reduce = !!useReducedMotion();
   const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   const [form, setForm] = useState({ name: '', phone: '', email: '', location: '', size: '', landType: LAND_TYPES[0], waterSource: '', budget: '', notes: '' });
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
@@ -63,36 +61,63 @@ const SellLand: React.FC = () => {
         description="Sell your agricultural land directly to IGO Group. Free site visit, legal verification and a transparent offer, with no brokers."
         canonical="/sell-land"
       />
-      <HeroStage src="/images/sell-land-hero-clean.webp" width={2048} height={682}>
-        <div className="absolute" style={{ left: '5.3cqw', top: '4.8cqw', width: '52cqw' }}>
-          <p className="flex items-center font-bold uppercase" style={{ marginLeft: '-0.8cqw', gap: '1cqw', fontSize: '0.82cqw', lineHeight: '1.6cqw', letterSpacing: '0.3em', color: '#1B5E20' }}>
-            <span aria-hidden="true" style={{ width: '2.8cqw', height: 1, background: '#1B5E20' }} />
-            IGO Group of Companies
-            <span aria-hidden="true" style={{ width: '2.8cqw', height: 1, background: '#1B5E20' }} />
-          </p>
-          <h1 className="font-extrabold normal-case" style={{ marginTop: '0.4cqw', fontSize: nonEn ? '2.9cqw' : '3.5cqw', lineHeight: 1.15, letterSpacing: '-0.01em', color: '#0f5a2a' }}>
-            <span>Sell your land directly to</span>{' '}
-            <span className="block" style={{ color: '#1b9a3a', fontSize: nonEn ? '3.3cqw' : '4.8cqw', lineHeight: 1.1 }}>IGO.</span>
-          </h1>
-          <p style={{ marginTop: '1.1cqw', maxWidth: nonEn ? '42cqw' : '33cqw', fontSize: nonEn ? '0.92cqw' : '1.03cqw', lineHeight: 1.5, color: '#374151' }}>
-            No brokers and no listing fees. IGO verifies your land, makes an offer and closes the deal with you directly.
-          </p>
+      {/* Hero: the supplied banner is cropped to its artwork (heading, categories, land split) at a controlled height; its benefits bar and button are live below it */}
+      <section aria-labelledby="sell-hero-heading" className="bg-[#F7F8EE] pb-2 md:pb-4">
+        <h1 id="sell-hero-heading" className="sr-only">Sell your land to IGO</h1>
+
+        {/* Tablet and desktop */}
+        <div className="mx-auto hidden w-full max-w-[1415px] overflow-hidden md:block lg:rounded-b-[28px]">
+          <motion.img
+            src="/images/sell-land-hero-top.webp"
+            alt="Sell your land to us. Looking to sell your land? We buy both agricultural land and general land for the right value."
+            width={1600}
+            height={588}
+            fetchPriority="high"
+            className="block h-auto w-full"
+            initial={reduce ? false : { scale: 1.03 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+          />
         </div>
-        <ul className="absolute m-0 flex list-none p-0" style={{ left: '4.9cqw', top: '24.4cqw' }}>
-          {HERO_FEATURES.map(({ Icon, label }, i) => (
-            <li
-              key={label}
-              className="flex flex-col items-center text-center"
-              style={{ width: '9.43cqw', paddingTop: '0.2cqw', borderLeft: i ? '1px solid rgba(15,77,36,0.14)' : undefined, minHeight: '5.6cqw' }}
+
+        {/* Mobile: live text over the land photo so nothing is clipped */}
+        <div className="md:hidden">
+          <div className="px-5 pb-4 pt-7 sm:px-8">
+            <p className="text-[2.15rem] font-extrabold italic normal-case leading-[1.05] tracking-tight text-[#0f4d24]">
+              Sell Your<br />Land{' '}
+              <span className="ml-1 inline-block -skew-x-6 rounded-lg bg-gradient-to-r from-[#0f5a2a] to-[#2a8a3a] px-3 py-0.5 text-white shadow-[0_3px_0_#8bd04a]">to Us</span>
+            </p>
+            <p className="mt-4 text-lg font-bold text-[#10231D]">Looking to sell your Land?</p>
+            <p className="mt-1 border-l-[3px] border-[#4fa83d] pl-3 text-[0.95rem] leading-snug text-[#274a3d]">We buy both Agricultural Land and General Land for the right value.</p>
+            <ul className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-[#F6F1DF] p-2 shadow-sm">
+              <li className="flex items-center gap-2 px-2 py-1.5 text-[0.8rem] font-semibold leading-tight text-[#10231D]"><Sprout size={22} className="shrink-0 text-[#2a8a3a]" aria-hidden="true" />Agricultural Land</li>
+              <li className="flex items-center gap-2 border-l border-[#0f4d24]/15 px-2 py-1.5 text-[0.8rem] font-semibold leading-tight text-[#10231D]"><MapPinned size={22} className="shrink-0 text-[#2a8a3a]" aria-hidden="true" />General / Non-Agricultural Land</li>
+            </ul>
+          </div>
+          <img src="/images/sell-land-hero-top.webp" alt="" aria-hidden="true" width={1600} height={588} className="block h-[190px] w-full object-cover object-[78%_center] sm:h-[240px]" />
+        </div>
+
+        {/* Benefits bar + call to action */}
+        <div className="mx-auto mt-3 w-full max-w-[1440px] px-4 sm:px-6 md:mt-4 lg:px-8">
+          <div className="grid grid-cols-2 items-center gap-x-2 gap-y-4 rounded-[26px] border border-[#e6dfc7] bg-[#FBF8EE] px-3 py-4 shadow-[0_14px_34px_-24px_rgba(15,77,36,0.4)] md:grid-cols-4 lg:grid-cols-[repeat(4,1fr)_auto] lg:gap-x-3 lg:px-6">
+            {HERO_BENEFITS.map(({ Icon, label }, i) => (
+              <div key={label} className={`flex flex-col items-center gap-1.5 px-2 text-center ${i > 0 ? 'lg:border-l lg:border-[#0f4d24]/12' : ''}`}>
+                <Icon size={26} strokeWidth={1.7} className="text-[#2a8a3a]" aria-hidden="true" />
+                <span className="text-[0.82rem] font-semibold leading-tight text-[#0f4d24] sm:text-[0.9rem]">{label}</span>
+              </div>
+            ))}
+            <a
+              href="#sell-form"
+              onClick={(e) => { const f = document.getElementById('sell-form'); if (f) { e.preventDefault(); f.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); } }}
+              className="group col-span-2 mx-auto inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#0f4d24] to-[#1a6b32] py-2 pl-2 pr-2 text-[1rem] font-bold normal-case tracking-normal text-white shadow-[0_10px_24px_-12px_rgba(15,77,36,0.8)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_30px_-12px_rgba(15,77,36,0.85)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#9bd68a] md:col-span-4 lg:col-span-1 lg:mx-0 lg:ml-3"
             >
-              <span className="flex items-center justify-center rounded-full" style={{ width: '2.85cqw', height: '2.85cqw', background: '#E7F4E2', color: '#1f7a3a' }}>
-                <Icon style={{ width: '1.4cqw', height: '1.4cqw' }} strokeWidth={1.7} aria-hidden="true" />
-              </span>
-              <span style={{ marginTop: '0.75cqw', maxWidth: '7.6cqw', fontSize: '0.98cqw', lineHeight: 1.3, color: '#274a3d' }}>{label}</span>
-            </li>
-          ))}
-        </ul>
-      </HeroStage>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0f4d24]"><Phone size={18} aria-hidden="true" /></span>
+              <span className="pr-1">Sell Your Land Now</span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e4f27a] text-[#0f4d24] transition-transform duration-300 group-hover:translate-x-1"><ArrowRight size={18} aria-hidden="true" /></span>
+            </a>
+          </div>
+        </div>
+      </section>
       <SellProcessSection />
       <div className="relative overflow-hidden bg-gradient-to-b from-[#FAF6EA] via-[#F3F4E6] to-[#E6EDD9] pb-20 pt-6 md:pb-24">
       <div className="container-pro relative">

@@ -1,6 +1,6 @@
 import {
   MapPin, ArrowRight, Zap, TrendingUp, Sprout, ShieldCheck, CheckCircle2,
-  LayoutGrid, Newspaper, PlayCircle, Users, Calculator, Globe, MessageCircle, Camera
+  LayoutGrid, Newspaper, PlayCircle, Users, Calculator, MessageCircle, Camera
 } from 'lucide-react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import React from 'react';
@@ -335,8 +335,7 @@ function App() {
                   <div className="mt-6 flex gap-3">
                     {[
                       { icon: FacebookIcon, link: 'https://www.facebook.com/share/173LkV9obs/', label: 'Facebook' },
-                      { icon: InstagramIcon, link: 'https://www.instagram.com/igofarmlandestates/?hl=en', label: 'Instagram' },
-                      { icon: Globe, link: 'https://www.igoagritechfarms.com/', label: 'IGO Agritech Farms website' }
+                      { icon: InstagramIcon, link: 'https://www.instagram.com/igofarmlandestates/?hl=en', label: 'Instagram' }
                     ].map(social => (
                       <a
                         key={social.label}
