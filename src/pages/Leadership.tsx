@@ -20,7 +20,8 @@ const Reveal: React.FC<{ className?: string; children: React.ReactNode }> = ({ c
 };
 
 const Node: React.FC<{ p: Leader; onOpen: (p: Leader) => void; info?: boolean }> = ({ p, onOpen, info }) => (
-  <div className="org-node" onClick={() => onOpen(p)} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onOpen(p)}>
+  <div className={`org-node${p.name === 'Mr. Basha' ? ' org-node-featured' : ''}`} onClick={() => onOpen(p)} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onOpen(p)}>
+    {p.name === 'Mr. Basha' && <span className="org-head-badge"><span aria-hidden="true">★</span> Head of Agri Estate</span>}
     <img className="org-avatar" src={`${IMG}${p.img}`} alt={p.name} loading="lazy" />
     {info ? (
       <div className="org-node-info">

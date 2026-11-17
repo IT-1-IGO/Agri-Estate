@@ -8,7 +8,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const CARDS = [
   { title: 'Browse by Location', desc: 'Explore agricultural land in Maduranthagam.', Icon: MapPin, to: '/locations', cta: 'View Locations', img: '/images/featured/vi-card-location.webp', alt: 'Green agricultural farmland with crop rows and hills in the background' },
   { title: 'Investment Calculator', desc: 'Estimate EMI, rental yield, and crop returns per estate.', Icon: Calculator, to: '/valuation', cta: 'Calculate Now', img: '/images/featured/vi-card-calculator.webp', alt: 'Young plant sprouting from rich soil, symbolising growth and long-term investment' },
-  { title: 'AI-enabled services', desc: "Technology and AI support across IGO Group's land and farm services.", Icon: TrendingUp, to: '/contact', cta: 'Learn More', img: '/images/featured/vi-card-ai.webp', alt: 'Drone surveying farmland, representing technology and AI-supported land services' },
+  { title: 'AI-enabled services', desc: "Technology and AI support across IGO Group's land and farm services.", Icon: TrendingUp, to: '/ai-services', cta: 'Learn More', img: '/images/featured/vi-card-ai.webp', alt: 'Drone surveying farmland, representing technology and AI-supported land services' },
   { title: 'Talk to Advisor', desc: 'Our location experts match your goals with the right estate corridor.', Icon: Users, to: '/contact', cta: 'Contact Us', img: '/images/featured/vi-card-advisor.webp', alt: 'Smiling IGO advisor in a black half-sleeve polo with a green IGO logo, holding a tablet in a farm' },
 ];
 

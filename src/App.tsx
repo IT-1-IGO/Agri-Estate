@@ -24,6 +24,7 @@ const PostRequirement = lazy(() => import('./pages/PostRequirement'));
 const PropertyDetails = lazy(() => import('./pages/PropertyDetails'));
 const ValuationSimulator = lazy(() => import('./pages/ValuationSimulator'));
 const TaxOptimizer = lazy(() => import('./pages/TaxOptimizer'));
+const AIServices = lazy(() => import('./pages/AIServices'));
 const Careers = lazy(() => import('./pages/Careers'));
 const Blog = lazy(() => import('./pages/Blog'));
 const KnowledgeHub = lazy(() => import('./pages/KnowledgeHub'));
@@ -290,6 +291,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/valuation" element={<ValuationSimulator />} />
               <Route path="/tax-optimizer" element={<TaxOptimizer />} />
+              <Route path="/ai-services" element={<AIServices />} />
               <Route path="/careers" element={<Careers />} />
               <Route path="/p/:slug" element={<CustomPage />} />
               <Route path="/post-property" element={<Navigate to="/sell-land" replace />} />

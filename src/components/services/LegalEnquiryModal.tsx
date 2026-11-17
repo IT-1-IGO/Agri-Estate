@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { X, CheckCircle2, Loader2 } from 'lucide-react';
 import { submitLead } from '../../lib/leadsService';
 
-export type LegalEnquiryMode = 'consultation' | 'verify' | 'request' | 'valuation-expert' | 'valuation-request' | 'tax-consult' | 'tax-advisor';
+export type LegalEnquiryMode = 'consultation' | 'verify' | 'request' | 'valuation-expert' | 'valuation-request' | 'tax-consult' | 'tax-advisor' | 'ai-expert';
 
 const COPY: Record<LegalEnquiryMode, { title: string; sub: string; cta: string }> = {
   consultation: { title: 'Get Legal Consultation', sub: 'Tell us about your land and our legal experts will call you back.', cta: 'Request Consultation' },
@@ -11,6 +11,7 @@ const COPY: Record<LegalEnquiryMode, { title: string; sub: string; cta: string }
   'valuation-request': { title: 'Request Professional Valuation', sub: 'Get expert analysis for your land investment.', cta: 'Request a Valuation' },
   'tax-consult': { title: 'Request a Consultation', sub: 'Share your details and our team will contact you about your land tax planning.', cta: 'Request Consultation' },
   'tax-advisor': { title: 'Talk to a Tax Advisor', sub: 'Speak with our team to understand your options before your next property decision.', cta: 'Request a Call Back' },
+  'ai-expert': { title: 'Talk to an Expert', sub: 'Tell us what you need and an IGO expert will get back to you.', cta: 'Request a Call Back' },
   request: { title: 'Request a Consultation', sub: 'Consult with our legal experts for hassle-free land transactions.', cta: 'Request Consultation' },
 };
 
@@ -52,7 +53,7 @@ const LegalEnquiryModal: React.FC<{ mode: LegalEnquiryMode | null; onClose: () =
         email: form.email.trim() || undefined,
         property_title: form.property.trim() || undefined,
         intent: c.title,
-        notes: `${mode.startsWith('valuation') ? 'Land Valuation' : mode.startsWith('tax') ? 'Tax Planning' : 'Legal Services'} enquiry: ${c.title}\nProperty: ${form.property || '-'}\n${form.message}`.trim(),
+        notes: `${mode.startsWith('valuation') ? 'Land Valuation' : mode.startsWith('tax') ? 'Tax Planning' : mode.startsWith('ai') ? 'AI-Enabled Services' : 'Legal Services'} enquiry: ${c.title}\nProperty: ${form.property || '-'}\n${form.message}`.trim(),
       });
     } catch { /* the lead service already falls back to local storage */ }
     setBusy(false);
