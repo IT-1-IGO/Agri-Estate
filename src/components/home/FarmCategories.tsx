@@ -29,8 +29,8 @@ const FarmCategories: React.FC = () => {
     <section className="relative bg-[#EDE4D6] py-20 lg:py-28 overflow-hidden" aria-labelledby="categories-heading">
       <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#cfe8c0]/60 blur-3xl" aria-hidden="true"></div>
       <div className="container-pro relative">
-        <div className="max-w-2xl">
-          <h2 id="categories-heading" className="text-4xl md:text-5xl font-bold text-[#0f4d24] leading-[1.05] tracking-[-0.02em] normal-case [text-wrap:balance]">
+        <div className="max-w-4xl">
+          <h2 id="categories-heading" className="text-4xl md:text-5xl font-bold text-[#0f4d24] leading-[1.05] tracking-[-0.02em] normal-case [text-wrap:wrap]">
             Farm types we set up and run with you
           </h2>
           <p className="mt-4 text-lg text-slate-600 [text-wrap:pretty]">
