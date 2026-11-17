@@ -27,7 +27,7 @@
 .igo-logo__text strong { font-weight: 700; font-size: 22px; letter-spacing: 0.06em; }
 .igo-logo__text small { font-weight: 500; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; }
 
-.igo-menu { display: flex; align-items: center; gap: clamp(10px, 1.3vw, 28px); list-style: none; margin: 0 auto; padding: 0; }
+.igo-menu { display: flex; align-items: center; gap: clamp(10px, 1.3vw, 28px); list-style: none; flex: 1 1 auto; justify-content: flex-start; margin: 0 0 0 clamp(24px, 3.2vw, 64px); padding: 0; }
 .igo-link {
   position: relative; display: inline-block; padding: 8px 0;
   font-family: inherit; font-weight: 600; font-size: 14px;
@@ -130,3 +130,82 @@
 .igo-lang__menu button:hover { background: #eef5ee; }
 .igo-lang__menu button.is-active { color: var(--igo-green); font-weight: 600; }
 @media (max-width: 560px) { .igo-topbar__inner { flex-wrap: wrap; row-gap: 6px; } }
+
+/* Even, roomier spacing between the main menu items */
+@media (min-width: 1381px) { .igo-menu { gap: clamp(26px, 2.4vw, 46px); } .igo-link { font-size: 14px; } }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-menu { gap: clamp(14px, 1.6vw, 22px); } }
+
+/* Pill-style menu: every item, including Contact Us, shares one format; the current page is highlighted */
+@media (min-width: 1101px) {
+  .igo-menu { gap: clamp(10px, 1.1vw, 20px); }
+  .igo-link { font-weight: 600; font-size: 15px; letter-spacing: 0.01em; padding: 10px 16px; border: 1px solid transparent; border-radius: 12px; transition: background .25s, color .25s, border-color .25s; }
+  .igo-link::after { display: none; }
+  .igo-link:hover { background: rgba(27,94,32,.07); color: var(--igo-green); }
+  .igo-link.is-active { background: rgba(27,94,32,.1); border-color: rgba(27,94,32,.28); color: var(--igo-green); }
+}
+@media (min-width: 1101px) and (max-width: 1380px) {
+  .igo-menu { gap: 6px; margin-left: 16px; }
+  .igo-link { padding: 9px 10px; font-size: 13.5px; }
+}
+
+/* Wide screens: the menu spans from the logo to the right corner (Contact Us), with identical gaps between all items */
+@media (min-width: 1381px) {
+  .igo-menu { flex: 1 1 auto; justify-content: space-between; gap: 8px; }
+  .igo-link { font-size: 16px; padding: 11px 18px; }
+}
+
+/* Final desktop menu: plain bold dark links grouped on the right with equal gaps (no pills) */
+@media (min-width: 1101px) {
+  .igo-menu { flex: 0 1 auto; justify-content: flex-end; margin: 0 0 0 auto; gap: clamp(22px, 2.1vw, 38px); }
+  .igo-link { display: inline-flex; padding: 8px 0; border: 0; border-radius: 0; background: transparent; font-size: 15px; font-weight: 700; letter-spacing: 0.01em; color: #10231D; }
+  .igo-link::after { display: block; }
+  .igo-link:hover, .igo-link.is-active { background: transparent; color: var(--igo-green); border: 0; }
+}
+@media (min-width: 1101px) and (max-width: 1380px) {
+  .igo-menu { gap: clamp(14px, 1.5vw, 22px); }
+  .igo-link { font-size: 13.5px; }
+}
+
+/* Home sits close to the logo; equal, comfortable gaps between all items */
+@media (min-width: 1101px) {
+  .igo-menu { justify-content: flex-start; margin: 0 auto 0 clamp(28px, 3vw, 56px); gap: clamp(28px, 2.9vw, 54px); }
+}
+@media (min-width: 1101px) and (max-width: 1380px) {
+  .igo-menu { margin-left: 20px; gap: clamp(14px, 1.5vw, 22px); }
+}
+
+/* A little more room between items */
+@media (min-width: 1381px) { .igo-menu { gap: clamp(40px, 3.6vw, 68px); } }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-menu { gap: clamp(18px, 1.8vw, 26px); } }
+
+/* More room between items (wide screens) */
+@media (min-width: 1381px) { .igo-menu { gap: clamp(52px, 4.6vw, 88px); } }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-menu { gap: clamp(22px, 2.2vw, 32px); } }
+
+/* Spacing scales with the screen width so the widest layout gets the most room and the menu never overflows */
+@media (min-width: 1381px) { .igo-menu { gap: clamp(16px, calc((100vw - 1230px) / 9), 72px); } }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-menu { gap: clamp(10px, calc((100vw - 1060px) / 12), 26px); } }
+
+/* Final: menu centred in the header, bold dark links with compact equal gaps */
+@media (min-width: 1101px) {
+  .igo-menu { flex: 0 1 auto; justify-content: center; margin: 0 auto; gap: clamp(16px, 1.15vw, 24px); }
+  .igo-link { font-size: 15px; font-weight: 700; }
+}
+@media (min-width: 1101px) and (max-width: 1380px) {
+  .igo-menu { gap: clamp(10px, 1.1vw, 16px); }
+  .igo-link { font-size: 13.5px; }
+}
+
+/* Slightly roomier, equal gaps */
+@media (min-width: 1381px) { .igo-menu { gap: clamp(18px, 1.7vw, 34px); } }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-menu { gap: clamp(12px, 1.2vw, 18px); } }
+
+/* A bit more room, still equal */
+@media (min-width: 1381px) { .igo-menu { gap: clamp(22px, 2.3vw, 46px); } }
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-menu { gap: clamp(13px, 1.4vw, 20px); } }
+
+/* Roomier equal gaps that scale with the screen so the menu always fits on one line */
+@media (min-width: 1381px) { .igo-menu { gap: clamp(18px, calc((100vw - 1230px) / 9), 60px); } }
+
+/* Laptop widths (e.g. 1280px, which is a 1920px screen at 150% scaling): larger equal gaps that still fit */
+@media (min-width: 1101px) and (max-width: 1380px) { .igo-menu { gap: clamp(12px, calc((100vw - 975px) / 10), 38px); } }

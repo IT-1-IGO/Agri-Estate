@@ -1,195 +1,184 @@
 import React, { useState } from 'react';
 import SEO from '../components/SEO';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Landmark, ArrowRightLeft, Calculator, ShieldCheck, TrendingUp, Info, AlertTriangle, Sparkles } from 'lucide-react';
+import LegalEnquiryModal, { LegalEnquiryMode } from '../components/services/LegalEnquiryModal';
+import {
+  Scale, MapPinned, FileText, RefreshCw, Leaf, CalendarCheck, Headset, ArrowRight, Check, Sprout,
+  FileSearch, TrendingUp, CircleCheck, Info,
+} from 'lucide-react';
+
+const SERIF = '"DM Serif Display","Playfair Display",Georgia,"Times New Roman",serif';
+const GREEN = '#0f3d28';
+
+const categories = [
+  { icon: Scale, label: ['Capital Gains', 'Review'] },
+  { icon: MapPinned, label: ['Agricultural Land', 'Classification'] },
+  { icon: FileText, label: ['Ownership &', 'Documentation'] },
+  { icon: RefreshCw, label: ['Tax-Smart', 'Reinvestment'] },
+];
+
+const cards = [
+  { title: 'Understand Your Tax Position', img: '/images/services/tax-card-1.jpg', alt: 'Green agricultural land with a location marker and boundary lines',
+    items: ['Land location and classification', 'Ownership and holding period', 'Purchase and improvement costs', 'Sale consideration and expenses'] },
+  { title: 'Tax Planning Areas', img: '/images/services/tax-card-2.jpg', alt: 'Calculator, TAX wooden blocks and a small indoor plant',
+    items: ['Capital gains assessment', 'Agricultural land eligibility review', 'Reinvestment options where eligible', 'Timing and compliance planning'] },
+  { title: 'Documents to Prepare', img: '/images/services/tax-card-3.jpg', alt: 'Stack of property documents and files with a pen',
+    items: ['Sale deed and title documents', 'Patta / Chitta / Adangal or relevant land records', 'Purchase and improvement receipts', 'Survey details and transaction records'] },
+  { title: 'Professional Tax Review', img: '/images/services/tax-card-4.jpg', alt: 'IGO advisor in a black igo T-shirt reviewing documents with a farmer',
+    items: ['Eligibility assessment', 'Scenario comparison', 'Documentation checklist', 'Action plan with a qualified tax professional'] },
+];
+
+const steps = [
+  { icon: Sprout, label: ['Understand', 'Your Land'] },
+  { icon: FileSearch, label: ['Review', 'Documents'] },
+  { icon: Scale, label: ['Assess Applicable', 'Rules'] },
+  { icon: TrendingUp, label: ['Compare Planning', 'Options'] },
+  { icon: CircleCheck, label: ['Receive Your', 'Action Plan'] },
+];
 
 const TaxOptimizer: React.FC = () => {
-  const [salePrice, setSalePrice] = useState(50000000); // 5 Cr
-  const [costBasis, setCostBasis] = useState(20000000); // 2 Cr
-  const [showPlan, setShowPlan] = useState(false);
-
-  const calculateSavings = () => {
-    const gain = salePrice - costBasis;
-    const taxRate = 0.20; // 20% Capital Gains
-    const potentialTax = gain * taxRate;
-    
-    return {
-      capitalGain: gain,
-      estimatedTax: potentialTax,
-      deferredAmount: potentialTax,
-      reinvestmentPower: salePrice
-    };
-  };
-
-  const results = calculateSavings();
+  const [modal, setModal] = useState<LegalEnquiryMode | null>(null);
 
   return (
-    <div className="pt-32 pb-20 bg-background min-h-screen">
+    <div className="min-h-screen pb-16 pt-[76px]" style={{ background: '#fbf6e9' }}>
       <SEO
-        title="Agricultural Land Tax Calculator India — Capital Gains & Section 54B Exemption"
-        description="Optimize your agricultural land tax in India. Simulate capital gains exemptions under Section 54B, calculate LTCG tax on farmland sale, and plan your reinvestment strategy across Tamil Nadu, Karnataka, Maharashtra & all states."
+        title="Agricultural Land Tax Planning India — Capital Gains Guidance | IGO Agri Estate"
+        description="Clear, compliant tax planning guidance for agricultural land and estate investments in India: capital gains review, land classification, documentation and reinvestment options."
         canonical="/tax-optimizer"
-        keywords="agricultural land tax India, Section 54B exemption India, capital gains agri land India, LTCG tax farm land, farm land tax calculator India, land sale tax India, agri investment tax planning, is agricultural income tax free India, capital gains exemption on farmland sale"
+        keywords="agricultural land tax planning India, capital gains farmland, Section 54B guidance, land tax advisor, agricultural land classification tax, reinvestment planning farmland"
         schema={{
           '@context': 'https://schema.org',
-          '@type': 'SoftwareApplication',
-          name: 'IGO Agricultural Land Tax Optimizer',
-          applicationCategory: 'FinanceApplication',
+          '@type': 'Service',
+          name: 'IGO Land Tax Planning Guidance',
           url: 'https://www.igoagriestate.com/tax-optimizer',
-          description: 'Calculate capital gains tax exemptions for agricultural land sales in India under Section 54B',
-          offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' }
+          description: 'Compliant tax planning guidance for agricultural land and estate investments',
+          provider: { '@type': 'Organization', name: 'IGO Agri Estates', url: 'https://www.igoagriestate.com' },
         }}
       />
-      <div className="container max-w-5xl">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-clay/10 text-clay rounded-full text-[10px] font-bold uppercase tracking-widest mb-6">
-            <Landmark size={14} />
-            <span>Tax Optimization Suite</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl mb-6">1031 <span className="text-clay italic">Exchange</span> Optimizer</h1>
-          <p className="text-xl text-text-muted max-w-2xl mx-auto">
-            Leverage Section 1031 to defer capital gains tax by reinvesting in high-yield agricultural land. Our AI suggests the best "Like-Kind" assets.
-          </p>
-        </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Form Side */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="space-y-8"
-          >
-            <div className="bg-white rounded-[40px] p-10 border border-black/5 shadow-xl">
-              <h3 className="text-2xl font-bold mb-8 flex items-center">
-                <Calculator size={24} className="mr-3 text-clay" />
-                Asset Particulars
-              </h3>
-              
-              <div className="space-y-8">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-text-muted mb-3">Estimated Sale Price (Current Asset)</label>
-                  <div className="relative">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-bold text-primary">₹</span>
-                    <input 
-                      type="number" 
-                      value={salePrice}
-                      onChange={(e) => setSalePrice(parseInt(e.target.value))}
-                      className="w-full bg-gray-50 border border-black/5 rounded-2xl py-5 pl-12 pr-6 outline-none focus:ring-2 focus:ring-clay/20 font-bold text-xl"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-text-muted mb-3">Original Purchase Price (Cost Basis)</label>
-                  <div className="relative">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-bold text-primary">₹</span>
-                    <input 
-                      type="number" 
-                      value={costBasis}
-                      onChange={(e) => setCostBasis(parseInt(e.target.value))}
-                      className="w-full bg-gray-50 border border-black/5 rounded-2xl py-5 pl-12 pr-6 outline-none focus:ring-2 focus:ring-clay/20 font-bold text-xl"
-                    />
-                  </div>
-                </div>
-
-                <div className="p-6 bg-orange-50 rounded-3xl border border-orange-100 flex items-start space-x-4">
-                  <AlertTriangle size={24} className="text-orange-500 flex-shrink-0" />
-                  <p className="text-xs text-orange-800 leading-relaxed italic">
-                    Note: A 1031 Exchange requires identifying a replacement property within 45 days of sale and closing within 180 days.
-                  </p>
-                </div>
-
-                <button 
-                  onClick={() => setShowPlan(true)}
-                  className="w-full bg-clay text-white py-5 rounded-2xl font-bold text-lg hover:opacity-90 transition-all flex items-center justify-center space-x-3 group"
-                >
-                  <Sparkles size={20} />
-                  <span>Analyze Tax Strategy</span>
-                </button>
-              </div>
+      {/* HERO */}
+      <section className="relative isolate overflow-hidden" aria-labelledby="tax-hero-heading"
+        style={{ background: 'radial-gradient(ellipse at 8% 10%,#fde9b8 0%,rgba(253,233,184,0) 52%),linear-gradient(180deg,#e7f0f3 0%,#e7efc9 45%,#a6cf5e 100%)' }}>
+        <img
+          src="/images/services/tax-page-hero-photo.jpg"
+          alt="IGO advisor in a black igo T-shirt reviewing land tax documents with a farmer in a turquoise turban, with a laptop on the table"
+          width={978}
+          height={790}
+          fetchPriority="high"
+          className="absolute inset-y-0 right-0 -z-10 h-full w-full object-cover object-[80%_center] md:w-[50%] md:object-right"
+          style={{ WebkitMaskImage: 'linear-gradient(90deg,transparent 0%,#000 12%)', maskImage: 'linear-gradient(90deg,transparent 0%,#000 14%)' }}
+        />
+        <div className="absolute inset-0 -z-10 md:hidden" style={{ background: 'linear-gradient(180deg,rgba(251,246,233,.95),rgba(251,246,233,.88))' }} />
+        <div className="mx-auto max-w-[1280px] px-5 py-10 sm:px-8 md:py-12 lg:px-10 lg:py-14">
+          <div className="max-w-[600px]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#e4efc7]/95 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-800 shadow-sm sm:text-xs">
+              <Leaf size={17} style={{ color: '#1f6b3a' }} className="shrink-0" /> Smart • Compliant • Land-Focused Tax Planning
+            </span>
+            <h1 id="tax-hero-heading" className="mt-5 font-semibold normal-case leading-[1.05] tracking-tight"
+              style={{ fontFamily: SERIF, fontSize: 'clamp(2.3rem, 4.2vw, 3.7rem)', color: GREEN }}>
+              Plan Your Land Taxes<br />with Confidence
+            </h1>
+            <p className="mt-4 max-w-[480px] text-base font-medium leading-snug text-slate-900 md:text-[1.1rem]">
+              Make informed property decisions with clear, compliant tax guidance for agricultural land and estate investments.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button onClick={() => setModal('tax-consult')} className="inline-flex items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-125" style={{ background: GREEN }}>
+                <CalendarCheck size={18} /> Request a Consultation <ArrowRight size={16} />
+              </button>
+              <a href="#tax-planning" className="inline-flex items-center gap-2.5 rounded-full border border-[#1f6b3a] bg-white/90 px-6 py-3 text-sm font-semibold text-slate-900 shadow-md transition hover:-translate-y-0.5 hover:bg-white">
+                <Headset size={18} /> Explore Tax Planning
+              </a>
             </div>
-          </motion.div>
-
-          {/* Results Side */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            <AnimatePresence mode="wait">
-              {!showPlan ? (
-                <div className="h-full min-h-[400px] flex flex-col items-center justify-center bg-clay/5 rounded-[40px] border-2 border-dashed border-clay/20 p-12 text-center">
-                  <ArrowRightLeft size={48} className="text-clay/40 mb-6" />
-                  <h4 className="text-xl font-bold mb-2">Simulate Reinvestment</h4>
-                  <p className="text-sm text-text-muted">Enter your asset values to see how much tax you can defer with IGO Agri Estates.</p>
-                </div>
-              ) : (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="space-y-6"
-                >
-                  <div className="bg-primary p-10 rounded-[40px] text-white shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
-                      <Landmark size={300} className="-mr-32 -mt-32" />
-                    </div>
-                    
-                    <div className="relative z-10">
-                      <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-2">Tax Deferral Potential</p>
-                      <h2 className="text-6xl font-bold mb-8">₹{(results.deferredAmount / 10000000).toFixed(2)} Cr</h2>
-                      
-                      <div className="grid grid-cols-2 gap-6">
-                        <div className="bg-white/10 p-5 rounded-2xl backdrop-blur-md">
-                          <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-1">Total Capital Gain</p>
-                          <p className="text-xl font-bold">₹{(results.capitalGain / 10000000).toFixed(2)} Cr</p>
-                        </div>
-                        <div className="bg-white/10 p-5 rounded-2xl backdrop-blur-md">
-                          <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-1">Reinvestment Power</p>
-                          <p className="text-xl font-bold">₹{(results.reinvestmentPower / 10000000).toFixed(2)} Cr</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-8 rounded-[40px] border border-black/5 shadow-xl">
-                    <h4 className="font-bold text-primary mb-6 flex items-center">
-                      <Sparkles size={20} className="mr-2 text-clay" />
-                      AI Recommended Replacement Estates
-                    </h4>
-                    <div className="space-y-4">
-                      {[
-                        { title: 'The Royal Teak Plantation', price: '3.8 Cr', match: '98%', region: 'Karnataka' },
-                        { title: 'Golden Harvest Vineyards', price: '5.2 Cr', match: '94%', region: 'Maharashtra' }
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl hover:bg-clay hover:text-white transition-all cursor-pointer group">
-                          <div>
-                            <p className="text-xs font-bold uppercase tracking-widest group-hover:text-white/60 text-text-muted mb-1">{item.region}</p>
-                            <h5 className="font-bold">{item.title}</h5>
-                            <p className="text-sm">Value: {item.price}</p>
-                          </div>
-                          <div className="text-right">
-                            <span className="bg-clay/10 text-clay group-hover:bg-white/20 group-hover:text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase">
-                              {item.match} Match
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4 p-6 bg-primary/5 rounded-[32px] border border-primary/10">
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <ShieldCheck size={18} className="text-secondary" />
-                    </div>
-                    <p className="text-xs text-text-muted leading-relaxed">
-                      By deferring <span className="font-bold text-primary">₹{(results.deferredAmount / 100000).toFixed(1)} Lakhs</span> in taxes, you increase your long-term compounding base by <span className="font-bold text-primary">24%</span> over a 10-year period.
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+          </div>
         </div>
+      </section>
+
+      <div id="tax-planning" className="mx-auto max-w-[1280px] scroll-mt-24 px-5 sm:px-8 lg:px-8">
+        {/* CATEGORIES */}
+        <div className="grid grid-cols-1 gap-3 pt-6 sm:grid-cols-2 lg:grid-cols-4">
+          {categories.map(({ icon: Icon, label }) => (
+            <div key={label[0]} className="group flex items-center gap-4 rounded-xl bg-[#e8f0d8] px-5 py-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md">
+              <Icon size={38} strokeWidth={1.4} style={{ color: GREEN }} className="shrink-0 transition-transform duration-300 group-hover:scale-110" />
+              <span className="text-[1.05rem] leading-tight text-slate-800" style={{ fontFamily: SERIF }}>{label[0]}<br />{label[1]}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* FOUR CARDS */}
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {cards.map((c) => (
+            <article key={c.title} className="group flex flex-col overflow-hidden rounded-xl border border-[#ece4cf] bg-[#fdf9ee] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <div className="overflow-hidden">
+                <img src={c.img} alt={c.alt} width={460} height={344} loading="lazy" className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" />
+              </div>
+              <div className="flex-1 p-4">
+                <h2 className="text-[1.15rem] font-semibold normal-case leading-tight" style={{ fontFamily: SERIF, color: GREEN }}>{c.title}</h2>
+                <span aria-hidden className="mt-2 block h-0.5 w-6 rounded bg-[#2e9b3f]" />
+                <ul className="mt-3 space-y-2.5">
+                  {c.items.map((t) => (
+                    <li key={t} className="flex items-start gap-2.5 text-[13px] leading-snug text-slate-700">
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full" style={{ background: '#4aa84f' }}>
+                        <Check size={10} strokeWidth={3.5} className="text-white" />
+                      </span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* PROCESS */}
+        <section className="mt-9">
+          <div className="flex items-center justify-center gap-3">
+            <span aria-hidden className="hidden h-px flex-1 bg-[#0f3d28]/30 sm:block" />
+            <Sprout size={20} style={{ color: '#2e7d32' }} />
+            <h2 className="text-center text-2xl font-medium normal-case md:text-[2rem]" style={{ fontFamily: SERIF, color: GREEN }}>Our Tax Planning Process</h2>
+            <span aria-hidden className="hidden h-px flex-1 bg-[#0f3d28]/30 sm:block" />
+          </div>
+          <ol className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:flex lg:items-start lg:justify-between lg:gap-0">
+            {steps.map(({ icon: Icon, label }, i) => (
+              <React.Fragment key={i}>
+                <li className="flex flex-col items-center text-center lg:w-[150px]">
+                  <span className="relative flex h-[84px] w-[84px] items-center justify-center rounded-full bg-[#e3efcf]">
+                    <span className="absolute -top-2 left-1/2 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full text-sm font-bold text-white ring-2 ring-[#fbf6e9]" style={{ background: GREEN }}>{i + 1}</span>
+                    <Icon size={34} strokeWidth={1.5} style={{ color: '#2e7d32' }} />
+                  </span>
+                  <span className="mt-3 text-[1rem] leading-tight" style={{ fontFamily: SERIF, color: GREEN }}>{label[0]}<br />{label[1]}</span>
+                </li>
+                {i < steps.length - 1 && <ArrowRight aria-hidden size={20} className="mt-8 hidden shrink-0 text-slate-700 lg:block" />}
+              </React.Fragment>
+            ))}
+          </ol>
+        </section>
+
+        {/* CTA */}
+        <section className="relative isolate mt-9 overflow-hidden rounded-2xl text-white shadow-xl" style={{ background: 'linear-gradient(100deg,#0c3b21 0%,#12502c 60%,#2c6a30 100%)' }}>
+          <img
+            src="/images/services/tax-cta-photo.jpg"
+            alt=""
+            aria-hidden="true"
+            width={444}
+            height={448}
+            loading="lazy"
+            className="absolute inset-y-0 right-0 -z-10 hidden h-full w-[48%] object-cover object-center md:block"
+            style={{ WebkitMaskImage: 'linear-gradient(90deg,transparent 0%,#000 45%)', maskImage: 'linear-gradient(90deg,transparent 0%,#000 45%)' }}
+          />
+          <div className="max-w-[640px] px-6 py-8 sm:px-8 md:py-9">
+            <h2 className="text-2xl font-medium normal-case leading-tight md:text-[2rem]" style={{ fontFamily: SERIF }}>Need Clarity on Your Land Tax Matters?</h2>
+            <p className="mt-2 text-sm text-white/95 md:text-base">Speak with our team to understand your options before making your next property decision.</p>
+            <button onClick={() => setModal('tax-advisor')} className="mt-5 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-[#2a1e00] shadow-md transition hover:-translate-y-0.5 hover:brightness-110" style={{ background: '#f5b82e' }}>
+              Talk to a Tax Advisor <ArrowRight size={16} />
+            </button>
+            <p className="mt-6 flex items-start gap-2 text-[11px] leading-snug text-white/85 md:text-xs">
+              <Info size={15} className="mt-px shrink-0" />
+              Tax outcomes depend on individual facts and applicable law. Eligibility and benefits must be verified by a qualified tax professional.
+            </p>
+          </div>
+        </section>
       </div>
+
+      <LegalEnquiryModal mode={modal} onClose={() => setModal(null)} />
     </div>
   );
 };

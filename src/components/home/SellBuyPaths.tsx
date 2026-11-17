@@ -18,9 +18,9 @@ const PATHS = [
   {
     to: '/projects',
     eyebrow: 'For buyers and investors',
-    title: 'Buy Land with IGO Agri Tech Projects',
-    text: 'Choose verified land, or land developed together with an IGO Agri Tech project: polyhouse, hydroponic, horticulture and more.',
-    points: ['Verified title and documents', 'Project setup by IGO Agri Tech', 'Guided site visits and handover'],
+    title: 'Buy Land with IGO Agri Estate Projects',
+    text: 'Choose verified land, or land developed together with an IGO Agri Estate project: polyhouse, hydroponic, horticulture and more.',
+    points: ['Verified title and documents', 'Project setup by IGO Agri Estate', 'Guided site visits and handover'],
     cta: 'Explore projects',
     img: '/images/featured/greenhouse-farm-hd.webp',
     Icon: Sprout,

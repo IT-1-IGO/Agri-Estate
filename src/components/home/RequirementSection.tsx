@@ -40,7 +40,7 @@ const RequirementSection: React.FC = () => {
         preferred_state: get('location') || undefined,
         size: get('acres') || undefined,
         budget: get('budget') || undefined,
-        intent: wants === 'land' ? 'Buy land only' : 'Buy land with IGO Agri Tech project',
+        intent: wants === 'land' ? 'Buy land only' : 'Buy land with IGO Agri Estate project',
         notes: get('notes') || undefined,
       });
       if (result.success) {
@@ -64,11 +64,11 @@ const RequirementSection: React.FC = () => {
             Can't find the right land or project?
           </h2>
           <p className="mt-5 max-w-md text-lg text-slate-600 leading-relaxed [text-wrap:pretty]">
-            Share what you are looking for. Choose land only, or land with any IGO Agri Tech project, and the IGO team will come back to you.
+            Share what you are looking for. Choose land only, or land with any IGO Agri Estate project, and the IGO team will come back to you.
           </p>
           <ul className="mt-8 space-y-4 text-slate-700">
             <li className="flex items-start gap-3"><Landmark className="mt-0.5 shrink-0 text-[#1B5E20]" size={20} /> Land only, if you already have your own plan</li>
-            <li className="flex items-start gap-3"><Sprout className="mt-0.5 shrink-0 text-[#1B5E20]" size={20} /> Land with any of our farm projects, set up by IGO Agri Tech</li>
+            <li className="flex items-start gap-3"><Sprout className="mt-0.5 shrink-0 text-[#1B5E20]" size={20} /> Land with any of our farm projects, set up by IGO Agri Estate</li>
             <li className="flex items-start gap-3"><MapPin className="mt-0.5 shrink-0 text-[#1B5E20]" size={20} /> Tell us your preferred location and size</li>
           </ul>
         </div>

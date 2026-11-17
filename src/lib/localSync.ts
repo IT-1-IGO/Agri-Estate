@@ -122,7 +122,7 @@ const defaultBlogs: BlogItem[] = [
   {
     id: '2',
     title: "Sustainable Irrigation: Maximizing Yield in Arid Regions",
-    category: "Agri-Tech",
+    category: "Agri Estate",
     author: "Sarah Chen",
     date: "May 08, 2026",
     image: "/images/blog/irrigation.png"

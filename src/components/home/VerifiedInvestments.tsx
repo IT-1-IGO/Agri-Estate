@@ -58,7 +58,7 @@ const VerifiedInvestments: React.FC = () => {
               <span className="not-italic text-secondary">Agricultural Land Investments</span>
             </motion.h2>
             <motion.p {...reveal(0.2)} className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              Land offered directly by IGO, starting with Maduranthagam, with verified documents, guided site visits and IGO Agri Tech project support.
+              Land offered directly by IGO, starting with Maduranthagam, with verified documents, guided site visits and IGO Agri Estate project support.
             </motion.p>
             <motion.div {...reveal(0.28, 8)} className="mt-5 h-[2px] w-16 rounded-full bg-secondary" />
 

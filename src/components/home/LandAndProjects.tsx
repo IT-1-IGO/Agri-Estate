@@ -5,7 +5,7 @@ import { ArrowRight, Landmark, Sprout, KeyRound, HandCoins, ClipboardList, Build
 
 const PATHS = [
   { Icon: Sprout, title: 'Have a plan', img: '/images/featured/organic-farmland-hd.webp', alt: 'Cultivated farmland with green crop rows and an irrigation channel', text: 'Buy the land and build your own farm. IGO helps with site review, documents and setup.' },
-  { Icon: KeyRound, title: 'No plan yet', img: '/images/featured/greenhouse-farm-hd.webp', alt: 'Turnkey polyhouse farm with organised crop cultivation', text: 'Choose a turnkey IGO Agri Tech project and we set up and guide the farm with you.' },
+  { Icon: KeyRound, title: 'No plan yet', img: '/images/featured/greenhouse-farm-hd.webp', alt: 'Turnkey polyhouse farm with organised crop cultivation', text: 'Choose a turnkey IGO Agri Estate project and we set up and guide the farm with you.' },
   { Icon: Landmark, title: 'Just hold', img: '/images/blog/farmland.png', alt: 'Aerial view of a bounded agricultural land parcel surrounded by green orchards', text: 'Keep the land as an asset. Verified documents and clear boundaries from day one.' },
 ];
 
@@ -39,7 +39,7 @@ const LandAndProjects: React.FC = () => {
               Buy land. Build a project. Or just hold.
             </h2>
             <p className="mt-5 max-w-md text-lg text-slate-600 leading-relaxed [text-wrap:pretty]">
-              Every IGO land purchase can come with an IGO Agri Tech project, or stand on its own. The choice is yours.
+              Every IGO land purchase can come with an IGO Agri Estate project, or stand on its own. The choice is yours.
             </p>
             <Link to="/projects" className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#1B5E20] px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.08em] text-white transition hover:bg-[#144a18] hover:gap-4 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]">
               View all projects <ArrowRight size={18} />

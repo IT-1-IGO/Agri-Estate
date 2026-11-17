@@ -36,6 +36,7 @@ const SellLand = lazy(() => import('./pages/SellLand'));
 const Projects = lazy(() => import('./pages/Projects'));
 const SellerDashboard = lazy(() => import('./pages/SellerDashboard'));
 const BlogsPage = lazy(() => import('./pages/BlogsPage'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
 import { motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -295,8 +296,9 @@ function App() {
               <Route path="/sell-land" element={<SellLand />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/seller-dashboard" element={<SellerDashboard />} />
-              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog" element={<Navigate to="/blogs" replace />} />
               <Route path="/blogs" element={<BlogsPage />} />
+              <Route path="/blogs/:slug" element={<BlogDetail />} />
               <Route path="/videos" element={<Navigate to="/" replace />} />
               <Route path="/knowledge-hub" element={<KnowledgeHub />} />
               <Route path="/dashboard" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />

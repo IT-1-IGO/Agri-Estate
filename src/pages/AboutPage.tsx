@@ -156,54 +156,6 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Founder */}
-      <section
-        className="relative grid grid-cols-1 overflow-hidden bg-[linear-gradient(90deg,#EEEFF3,#EAF3F8_50%,#E8F2F9)] min-[901px]:min-h-[clamp(380px,29vw,560px)] min-[901px]:grid-cols-[46%_1fr] min-[901px]:items-center"
-        aria-labelledby="founder-heading"
-      >
-        <div className="relative aspect-[921/591] w-full min-[901px]:aspect-auto min-[901px]:h-full min-[901px]:min-h-[380px]">
-          <img
-            src="/images/leadership/ceo-john-yesudhas.webp"
-            alt="Dr. John Yesudhas, Founder and CEO of IGO Group of Companies"
-            width={1254}
-            height={1254}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 block h-full w-full object-contain object-[center_bottom] [mask-image:linear-gradient(0deg,transparent_0,#000_22%)] min-[901px]:object-[62%_bottom] min-[901px]:[mask-image:linear-gradient(270deg,transparent_0,#000_22%)]"
-          />
-        </div>
-        <motion.div
-          {...reveal(0)}
-          className="w-full max-w-[640px] px-5 pb-10 pt-6 sm:px-8 min-[901px]:py-12 min-[901px]:pl-[2vw] min-[901px]:pr-[max(2rem,5vw)]"
-        >
-          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-[#2d6a3e]">
-            Our Founder <span className="h-px w-12 bg-[#2d6a3e]" aria-hidden="true" />
-          </p>
-          <h2
-            id="founder-heading"
-            className="mt-3 text-[28px] font-extrabold normal-case leading-[1.12] tracking-tight text-[#0B2233] min-[901px]:text-[clamp(28px,2.8vw,46px)]"
-          >
-            A Vision Led by Its Founder
-          </h2>
-          <blockquote className="mt-5 flex items-start gap-4">
-            <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#2d6a3e]/10 text-[#2d6a3e]" aria-hidden="true">
-              <Quote size={18} />
-            </span>
-            <p className="text-[clamp(15px,1.2vw,20px)] font-medium italic leading-[1.5] text-[#12303F]">
-              Progress means nothing if it costs the planet. Our goal is to power growth in a way that leaves the world better than we found it.
-            </p>
-          </blockquote>
-          <p className="mt-5 flex flex-col">
-            <b className="text-base font-bold text-[#0B2233]">Dr. John Yesudhas</b>
-            <span className="text-sm text-[#44565F]">Founder &amp; CEO</span>
-            <span className="text-sm text-[#44565F]">IGO Group of Companies</span>
-          </p>
-          <p className="mt-4 text-[clamp(14px,1vw,17px)] leading-[1.65] text-[#44565F]">
-            Under the leadership of Dr. John Yesudhas, the IGO Group has earned a reputation for trust, quality and commitment.
-          </p>
-        </motion.div>
-      </section>
-
       {/* 4. Who we are */}
       <section className="bg-[#F1F5E6] py-14 md:py-20">
         <div className="container-pro grid items-center gap-10 lg:grid-cols-[0.85fr_1.25fr] lg:gap-14">

@@ -5,7 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 import TiltImage from '../interactive/TiltImage';
 
 interface FarmType {
-  id: string; // property id of the IGO Agri Tech project
+  id: string; // property id of the IGO Agri Estate project
   label: string;
   text: string;
   img: string;

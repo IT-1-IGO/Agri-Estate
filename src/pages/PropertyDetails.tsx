@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import SEO from '../components/SEO';
 import { useNavigate, useParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -31,7 +31,17 @@ import {
   Download,
   Percent,
   ArrowRight,
-  Calculator
+  Calculator,
+  Handshake,
+  Timer,
+  FileCheck2,
+  Settings,
+  Coins,
+  Search,
+  BarChart3,
+  ClipboardCheck,
+  Users,
+  Building2
 } from 'lucide-react';
 import { useProperties } from '../hooks/useProperties';
 import LeadCaptureForm from '../components/LeadCaptureForm';
@@ -108,6 +118,13 @@ const PropertyDetails: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMessage, setAuthMessage] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion();
+  const [flowStep, setFlowStep] = useState(0);
+  useEffect(() => {
+    if (reduceMotion) return;
+    const t = window.setInterval(() => setFlowStep((n) => (n + 1) % 5), 2200);
+    return () => window.clearInterval(t);
+  }, [reduceMotion]);
   const leadRef = useRef<HTMLDivElement>(null);
 
   // Visitor Tracking
@@ -429,10 +446,6 @@ const PropertyDetails: React.FC = () => {
                 </div>
               )}
 
-              <div className="absolute bottom-8 left-10 right-10 text-white">
-                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-secondary mb-3">{property.type}</p>
-                <p className="text-4xl md:text-5xl font-black leading-tight tracking-tighter">{property.title}</p>
-              </div>
             </div>
 
             {/* Thumbnails */}
@@ -543,64 +556,184 @@ const PropertyDetails: React.FC = () => {
 
         <div className="mt-12 grid xl:grid-cols-[1fr_420px] gap-x-10 gap-y-0 items-start">
           <main>
-            <Band c="#F5E6C8">
-            <section id="revenue-model" className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl scroll-mt-32">
-              <p className="text-xs font-black uppercase tracking-widest text-secondary mb-3">Revenue Model</p>
-              <h2 className="text-3xl font-bold mb-4">How This Agri Estate Can Earn</h2>
-              <p className="text-text-muted text-lg leading-relaxed mb-8">{property.revenueModel}</p>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="p-5 rounded-3xl bg-primary text-white">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-secondary mb-2">Development Cost</p>
-                  <p className="text-sm leading-relaxed text-white/70">{property.costRange}</p>
+            <Band c="#F4F0E2">
+            <div className="space-y-8">
+              {/* Benefits strip */}
+              <section aria-label="Why IGO" className="rounded-[32px] bg-gradient-to-br from-[#0f4d24] to-[#14602d] px-5 py-7 text-white shadow-xl sm:px-8">
+                <ul className="grid grid-cols-2 gap-y-6 md:grid-cols-4">
+                  {[
+                    { Icon: Handshake, a: 'Fair &', b: 'Transparent Valuation' },
+                    { Icon: Timer, a: 'Quick &', b: 'Hassle-Free Process' },
+                    { Icon: FileCheck2, a: 'Legal &', b: 'Secure Transfer' },
+                    { Icon: Sprout, a: 'Purpose-Driven', b: 'Land Development' },
+                  ].map(({ Icon, a, b }, i) => (
+                    <li key={a} className={`flex flex-col items-center gap-2 px-3 text-center ${i > 0 ? 'md:border-l md:border-white/15' : ''}`}>
+                      <Icon size={30} strokeWidth={1.6} className="text-[#f3d03e]" aria-hidden="true" />
+                      <span className="text-sm font-semibold leading-snug text-white/95">{a}<br />{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              {/* Revenue model */}
+              <section id="revenue-model" className="scroll-mt-32 overflow-hidden rounded-[36px] border border-[#e3ddc6] bg-[#FBF8EE] shadow-xl">
+                <div className="grid md:grid-cols-[0.9fr_1.1fr]">
+                  <div className="p-7 sm:p-9">
+                    <p className="text-xs font-black uppercase tracking-[0.25em] text-secondary">Revenue Model</p>
+                    <h2 className="mt-3 text-3xl font-black leading-tight text-primary sm:text-4xl">How This Can Create Value</h2>
+                    <p className="mt-4 text-base leading-relaxed text-text-muted">{property.revenueModel}</p>
+                  </div>
+                  <div className="relative min-h-[260px]">
+                    <img src={galleryImages[0]} alt={`${property.title} landscape`} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#FBF8EE] via-[#FBF8EE]/30 to-transparent" aria-hidden="true" />
+                    <div className="absolute inset-x-3 bottom-4 flex items-end justify-center gap-2 sm:gap-4">
+                      {[
+                        { Icon: Sprout, t: 'Land Acquisition', up: 0 },
+                        { Icon: Settings, t: 'Development & Infrastructure', up: 18 },
+                        { Icon: Coins, t: 'Operational Revenue', up: 36 },
+                      ].map(({ Icon, t, up }) => (
+                        <div key={t} style={{ marginBottom: up }} className="flex h-[104px] w-[104px] flex-col items-center justify-center rounded-full border border-white/70 bg-[#fbf8ee]/95 p-2 text-center shadow-lg sm:h-[120px] sm:w-[120px]">
+                          <Icon size={26} strokeWidth={1.6} className="text-[#1f7a35]" aria-hidden="true" />
+                          <span className="mt-1 text-[11px] font-bold leading-tight text-primary sm:text-xs">{t}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="p-5 rounded-3xl bg-gray-50 border border-black/5">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Break-even View</p>
-                  <p className="text-sm font-semibold leading-relaxed text-primary">{property.breakEven}</p>
+              </section>
+
+              {/* Development process */}
+              <section className="rounded-[36px] border border-[#e3ddc6] bg-[#FBF8EE] p-7 shadow-xl sm:p-9">
+                <p className="text-xs font-black uppercase tracking-[0.25em] text-primary">Estate Development Process</p>
+                <h2 className="mt-2 text-3xl font-black text-primary sm:text-4xl">From Enquiry to Revenue</h2>
+                <ol className="relative mt-8 grid gap-7 md:grid-cols-5 md:gap-3">
+                  <motion.span
+                    className="pointer-events-none absolute left-[10%] right-[10%] top-[28px] hidden h-[2px] origin-left rounded-full bg-gradient-to-r from-[#2a8a3a]/30 via-[#2a8a3a] to-[#2a8a3a]/30 md:block"
+                    aria-hidden="true"
+                    initial={reduceMotion ? false : { scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                  {!reduceMotion && (
+                    <span className="pointer-events-none absolute left-[10%] right-[10%] top-[28px] hidden md:block" aria-hidden="true">
+                      <motion.span
+                        className="absolute -top-[5px] h-3 w-3 -translate-x-1/2 rounded-full bg-[#9bd68a] shadow-[0_0_14px_5px_rgba(74,168,61,0.55)]"
+                        animate={{ left: ['0%', '100%'] }}
+                        transition={{ duration: 4.4, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.8 }}
+                      />
+                    </span>
+                  )}
+                  {estateFlow.map((step, i) => {
+                    const Icon = [MessageCircle, Search, FileText, Settings, BarChart3][i] || FileText;
+                    return (
+                      <motion.li
+                        key={step.title}
+                        className="group relative flex cursor-default flex-col items-center rounded-3xl p-3 text-center transition-colors duration-300 hover:bg-white/80 hover:shadow-[0_18px_36px_-26px_rgba(15,77,36,0.5)]"
+                        initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.2 + i * 0.18 }}
+                        whileHover={reduceMotion ? undefined : { y: -6 }}
+                      >
+                        <motion.span
+                          className={`relative z-10 flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#2a8a3a] shadow-md transition-[box-shadow,background-color,color,transform] duration-500 group-hover:bg-[#1f7a35] ${!reduceMotion && flowStep === i ? 'scale-110 bg-[#1f7a35] text-white shadow-[0_0_0_6px_rgba(42,138,58,0.18),0_12px_24px_-10px_rgba(31,122,53,0.6)]' : 'bg-white text-[#1f7a35]'} group-hover:text-white group-hover:text-white group-hover:shadow-[0_0_0_6px_rgba(42,138,58,0.18),0_12px_24px_-10px_rgba(31,122,53,0.6)]`}
+                          initial={reduceMotion ? false : { scale: 0.4 }}
+                          whileInView={{ scale: 1 }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={{ type: 'spring', stiffness: 260, damping: 15, delay: reduceMotion ? 0 : 0.3 + i * 0.18 }}
+                        >
+                          {!reduceMotion && <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#2a8a3a]/20 [animation-duration:2.8s] [animation-iteration-count:2] [animation-delay:1s]" aria-hidden="true" />}
+                          <Icon size={24} strokeWidth={1.7} className="transition-transform duration-500 group-hover:rotate-[12deg] group-hover:scale-110" aria-hidden="true" />
+                        </motion.span>
+                        <h3 className={`mt-3 text-sm font-bold transition-colors duration-500 group-hover:text-[#1f7a35] ${!reduceMotion && flowStep === i ? 'text-[#1f7a35]' : 'text-primary'}`}>{step.title}</h3>
+                        <p className="mt-1.5 text-xs leading-relaxed text-text-muted">{step.detail}</p>
+                      </motion.li>
+                    );
+                  })}
+                </ol>
+              </section>
+
+              {/* Keep ready + IGO support */}
+              <section className="overflow-hidden rounded-[36px] border border-[#e3ddc6] bg-[#FBF8EE] shadow-xl">
+                <div className="grid lg:grid-cols-[0.8fr_1.2fr]">
+                  <div className="relative min-h-[220px] lg:min-h-full">
+                    <img src={galleryImages[1] || galleryImages[0]} alt={`${property.title} farm view`} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                    <span className="absolute inset-0 hidden bg-gradient-to-r from-transparent via-transparent to-[#FBF8EE] lg:block" aria-hidden="true" />
+                  </div>
+                  <div className="grid gap-8 p-7 sm:p-9 md:grid-cols-2 md:gap-0">
+                    <div className="md:pr-7">
+                      <h2 className="flex items-start gap-3 text-2xl font-black leading-tight text-primary"><ClipboardCheck size={30} className="mt-0.5 shrink-0 text-[#1f7a35]" aria-hidden="true" />What Customer Should Keep Ready?</h2>
+                      <ul className="mt-5 divide-y divide-[#e3ddc6]">
+                        {customerNeeds.map((item: string) => (
+                          <li key={item} className="flex items-start gap-3 py-3 text-sm font-medium text-primary"><CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#2a8a3a]" aria-hidden="true" />{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="md:border-l md:border-[#e3ddc6] md:pl-7">
+                      <h2 className="flex items-center gap-3 text-2xl font-black text-primary"><Users size={30} className="shrink-0 text-[#1f7a35]" aria-hidden="true" />IGO Support</h2>
+                      <ul className="mt-5 divide-y divide-[#e3ddc6]">
+                        {igoSupport.map((item: string) => (
+                          <li key={item} className="flex items-start gap-3 py-3 text-sm font-medium text-primary"><CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#2a8a3a]" aria-hidden="true" />{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-5 rounded-3xl bg-gray-50 border border-black/5">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Estate Type</p>
-                  <p className="text-sm font-semibold leading-relaxed text-primary">{property.type}</p>
+              </section>
+
+              {/* Logistics */}
+              <section className="rounded-[30px] border border-[#e3ddc6] bg-white/80 p-6 shadow-xl sm:p-8">
+                <div className="grid items-center gap-6 lg:grid-cols-[auto_1fr]">
+                  <h2 className="flex items-center gap-4 text-2xl font-black leading-tight text-primary"><MapPin size={40} strokeWidth={1.5} className="shrink-0 text-[#1f7a35]" aria-hidden="true" />Logistics &amp;<br className="hidden lg:block" /> Connectivity</h2>
+                  <ul className="grid grid-cols-2 gap-y-5 md:grid-cols-4">
+                    {[
+                      { label: 'Nearest Highway', value: property.infrastructure?.highwayDistance || '2-5 km', Icon: Truck },
+                      { label: 'Primary Market', value: property.infrastructure?.marketDistance || '10-15 km', Icon: Warehouse },
+                      { label: 'Cold Storage', value: property.infrastructure?.coldStorageDistance || 'Within 20 km', Icon: Warehouse },
+                      { label: 'Power Supply', value: property.infrastructure?.powerAvailability || '3-Phase Agri', Icon: Zap },
+                    ].map(({ label, value, Icon }, i) => (
+                      <li key={label} className={`flex flex-col items-center gap-1.5 px-2 text-center ${i > 0 ? 'md:border-l md:border-[#e3ddc6]' : ''}`}>
+                        <Icon size={24} strokeWidth={1.6} className="text-[#1f7a35]" aria-hidden="true" />
+                        <span className="text-xs font-bold text-primary">{label}</span>
+                        <span className="rounded-full bg-[#dcf0b8] px-3 py-1 text-xs font-bold text-primary">{value}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            </section>
+              </section>
+
+              {/* Address */}
+              <section className="rounded-[30px] border border-[#e3ddc6] bg-[#FBF8EE] p-7 shadow-xl sm:p-9">
+                <h2 className="flex items-center gap-3 text-2xl font-black text-primary"><MapPin size={28} className="text-[#1f7a35]" aria-hidden="true" />Official IGO Address Details</h2>
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  <div className="rounded-3xl border border-[#e3ddc6] bg-white p-5">
+                    <p className="mb-2 flex items-center gap-2 text-sm font-bold text-primary"><Building2 size={18} className="text-[#2a8a3a]" aria-hidden="true" />Registered / Main Office</p>
+                    <p className="text-sm font-medium leading-relaxed text-text-muted">{property.projectAddress}</p>
+                  </div>
+                  <div className="rounded-3xl border border-[#e3ddc6] bg-white p-5">
+                    <p className="mb-2 flex items-center gap-2 text-sm font-bold text-primary"><MapPin size={18} className="text-[#2a8a3a]" aria-hidden="true" />Estate Support Office</p>
+                    <p className="text-sm font-medium leading-relaxed text-text-muted">{property.projectOffice}</p>
+                  </div>
+                </div>
+                {property.latitude != null && property.longitude != null && (
+                  <a
+                    href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-secondary transition-colors hover:text-primary"
+                  >
+                    <MapPin size={16} />
+                    View Estate Location on Map ({property.latitude.toFixed(4)}, {property.longitude.toFixed(4)})
+                  </a>
+                )}
+              </section>
+            </div>
             </Band>
 
-            <Band c="#F0E3CE">
-            <section className="grid lg:grid-cols-2 gap-8">
-              <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
-                <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-3">
-                  <Sprout size={18} />
-                  Crop Plan
-                </div>
-                <h2 className="text-3xl font-bold mb-6">Recommended Crops</h2>
-                <div className="space-y-3">
-                  {(property.crops || []).map((crop: string) => (
-                    <div key={crop} className="flex items-center gap-3 p-4 rounded-2xl bg-gray-50 border border-black/5">
-                      <CheckCircle2 size={18} className="text-secondary" />
-                      <span className="font-bold text-primary">{crop}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
-                <p className="text-xs font-black uppercase tracking-widest text-secondary mb-3">Setup Scope</p>
-                <h2 className="text-3xl font-bold mb-6">What IGO Will Develop</h2>
-                <div className="space-y-3">
-                  {(property.setupScope || []).map((item: string) => (
-                    <div key={item} className="flex items-center gap-3 p-4 rounded-2xl bg-gray-50 border border-black/5">
-                      <CheckCircle2 size={18} className="text-secondary" />
-                      <span className="font-bold text-primary">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-            </Band>
             
-            {/* NEW CX FEATURES: Soil and Infrastructure */}
             <Band c="#F1DFD6">
-            <section className="grid lg:grid-cols-2 gap-8">
+            <section className="grid gap-8">
               <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
                 <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-3">
                   <Droplets size={18} />
@@ -629,121 +762,25 @@ const PropertyDetails: React.FC = () => {
                   </div>
                 )}
               </div>
-
-              <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
-                <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-3">
-                  <Truck size={18} />
-                  Logistics & Connectivity
-                </div>
-                <h2 className="text-3xl font-bold mb-6">Infrastructure</h2>
-                <div className="space-y-4">
-                  {[
-                    { label: 'Nearest Highway', value: property.infrastructure?.highwayDistance || '2-5 km', icon: MapPin },
-                    { label: 'Primary Market', value: property.infrastructure?.marketDistance || '10-15 km', icon: Warehouse },
-                    { label: 'Cold Storage', value: property.infrastructure?.coldStorageDistance || 'Within 20 km', icon: Truck },
-                    { label: 'Power Supply', value: property.infrastructure?.powerAvailability || '3-Phase Agri', icon: Zap }
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-black/5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-secondary shadow-sm">
-                          <item.icon size={16} />
-                        </div>
-                        <span className="text-sm font-bold text-primary">{item.label}</span>
-                      </div>
-                      <span className="text-sm font-black text-secondary">{item.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-            </Band>
-
-            <Band c="#E7EDF1">
-            <section className="bg-primary rounded-[40px] p-8 text-white shadow-xl">
-              <p className="text-xs font-black uppercase tracking-widest text-secondary mb-3">Estate Development Process</p>
-              <h2 className="text-3xl font-bold mb-8">From Enquiry to Agri Estate Revenue</h2>
-              <div className="grid md:grid-cols-5 gap-4">
-                {estateFlow.map((step) => (
-                  <div key={step.title} className="p-5 rounded-3xl bg-white/5 border border-white/10">
-                    <h3 className="font-bold mb-3">{step.title}</h3>
-                    <p className="text-sm text-white/60 leading-relaxed">{step.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-            </Band>
-
-            <Band c="#E6EEE4">
-            <section className="grid lg:grid-cols-2 gap-8">
-              <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
-                <h2 className="text-3xl font-bold mb-6">What Customer Should Keep Ready</h2>
-                <div className="space-y-3">
-                  {customerNeeds.map((item: string) => (
-                    <div key={item} className="flex gap-3 p-4 rounded-2xl bg-gray-50 border border-black/5">
-                      <FileText size={18} className="text-secondary flex-shrink-0 mt-0.5" />
-                      <span className="font-semibold text-primary">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
-                <h2 className="text-3xl font-bold mb-6">IGO Estate Support</h2>
-                <div className="space-y-3">
-                  {igoSupport.map((item: string) => (
-                    <div key={item} className="flex gap-3 p-4 rounded-2xl bg-gray-50 border border-black/5">
-                      <CheckCircle2 size={18} className="text-secondary flex-shrink-0 mt-0.5" />
-                      <span className="font-semibold text-primary">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-            </Band>
-
-            <Band c="#EAE7F0">
-            <section className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
-              <h2 className="text-3xl font-bold mb-6">Official IGO Address Details</h2>
-              <div className="grid md:grid-cols-2 gap-5">
-                <div className="p-5 rounded-3xl bg-gray-50 border border-black/5">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Registered / Main Office</p>
-                  <p className="font-semibold text-primary leading-relaxed">{property.projectAddress}</p>
-                </div>
-                <div className="p-5 rounded-3xl bg-gray-50 border border-black/5">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-text-muted mb-2">Estate Support Office</p>
-                  <p className="font-semibold text-primary leading-relaxed">{property.projectOffice}</p>
-                </div>
-              </div>
-              {property.latitude != null && property.longitude != null && (
-                <a
-                  href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-secondary hover:text-primary transition-colors"
-                >
-                  <MapPin size={16} />
-                  View Estate Location on Map ({property.latitude.toFixed(4)}, {property.longitude.toFixed(4)})
-                </a>
-              )}
             </section>
             </Band>
 
             {/* PROFITABILITY & IGO PROJECT EXPLANATION */}
             <Band c="#DDECE5">
-            <section className="bg-gradient-to-br from-primary to-primary-light rounded-[40px] p-8 md:p-12 text-white shadow-2xl overflow-hidden relative">
+            <section className="bg-gradient-to-br from-primary to-primary-light rounded-[32px] p-6 md:p-8 text-white shadow-xl overflow-hidden relative">
               <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
               
               <div className="relative z-10">
-                <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-4">
-                  <TrendingUp size={18} />
+                <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-2">
+                  <TrendingUp size={16} />
                   Investment Roadmap
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight tracking-tighter">Why Choose IGO Managed Farms?</h2>
-                <p className="text-white/70 text-lg mb-10 max-w-3xl">
-                  IGO Agritech Farms doesn't just sell land; we build high-yielding agricultural assets. Our turnkey "Managed Farm" model ensures your land generates profit while you stay stress-free.
+                <h2 className="text-2xl md:text-3xl font-black mb-3 leading-tight tracking-tight">Why Choose IGO Managed Farms?</h2>
+                <p className="text-white/70 text-sm md:text-base mb-6 max-w-3xl">
+                  IGO Agri Estate doesn't just sell land; we build high-yielding agricultural assets. Our turnkey "Managed Farm" model ensures your land generates profit while you stay stress-free.
                 </p>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-3 gap-4">
                   {[
                     {
                       title: 'Scientific Setup',
@@ -761,12 +798,12 @@ const PropertyDetails: React.FC = () => {
                       icon: Truck
                     },
                   ].map((item, i) => (
-                    <div key={i} className="p-6 rounded-3xl bg-white/10 border border-white/10 hover:bg-white/15 transition-all">
-                      <div className="w-12 h-12 bg-secondary rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                        <item.icon size={24} className="text-white" />
+                    <div key={i} className="p-4 rounded-2xl bg-white/10 border border-white/10 hover:bg-white/15 transition-all">
+                      <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center mb-3 shadow-lg">
+                        <item.icon size={20} className="text-white" />
                       </div>
-                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+                      <h3 className="text-base font-bold mb-1">{item.title}</h3>
+                      <p className="text-white/60 text-xs leading-relaxed">{item.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -774,37 +811,6 @@ const PropertyDetails: React.FC = () => {
             </section>
             </Band>
 
-            {/* FAQ Section */}
-            <Band c="#F4EECF">
-            <section className="bg-white rounded-[40px] p-8 border border-black/5 shadow-xl">
-              <div className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-xs mb-3">
-                <AlertCircle size={18} />
-                Frequently Asked Questions
-              </div>
-              <h2 className="text-3xl font-bold mb-8">Estate Details & Policy</h2>
-              <div className="space-y-4">
-                {(property.faqs || [
-                  { question: 'Is the property title clear?', answer: 'Yes, all our properties have clear, marketable titles with 30-year documentation.' },
-                  { question: 'What is the maintenance cost?', answer: 'Managed farming maintenance typically costs ₹2,000 - ₹5,000 per month depending on the crop.' }
-                ]).map((faq, i) => (
-                  <div key={i} className="border border-black/5 rounded-3xl overflow-hidden">
-                    <button 
-                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                      className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
-                    >
-                      <span className="font-bold text-primary">{faq.question}</span>
-                      {openFaq === i ? <Minus size={18} /> : <Plus size={18} />}
-                    </button>
-                    {openFaq === i && (
-                      <div className="px-6 pb-6 text-text-muted leading-relaxed">
-                        {faq.answer}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-            </Band>
           </main>
 
           <aside ref={leadRef} className="space-y-8 py-8 xl:py-12 xl:sticky xl:top-20">

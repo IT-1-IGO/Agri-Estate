@@ -62,43 +62,70 @@ const SellLand: React.FC = () => {
         canonical="/sell-land"
       />
       {/* Hero: the supplied banner is cropped to its artwork (heading, categories, land split) at a controlled height; its benefits bar and button are live below it */}
-      <section aria-labelledby="sell-hero-heading" className="bg-[#F7F8EE] pb-2 md:pb-4">
+      <section aria-labelledby="sell-hero-heading" className="bg-[#F7F8EE] pb-2 lg:pb-0">
         <h1 id="sell-hero-heading" className="sr-only">Sell your land to IGO</h1>
 
-        {/* Tablet and desktop */}
-        <div className="mx-auto hidden w-full max-w-[1415px] overflow-hidden md:block lg:rounded-b-[28px]">
+        {/* Desktop: live text on the left over a soft sky backdrop; the two-scene banner photograph fades in on the right */}
+        <div className="relative hidden w-full overflow-hidden lg:block" style={{ minHeight: 'clamp(470px, 27vw, 520px)', background: 'linear-gradient(100deg,#eef3f4 0%,#f6f1e2 40%,#e9f1dc 100%)' }}>
           <motion.img
-            src="/images/sell-land-hero-top.webp"
-            alt="Sell your land to us. Looking to sell your land? We buy both agricultural land and general land for the right value."
-            width={1600}
-            height={588}
+            src="/images/sell-land-hero-scene.webp"
+            alt="Farmland with green crop rows on one side and a surveyed residential plot with boundary markers on the other"
+            width={910}
+            height={595}
             fetchPriority="high"
-            className="block h-auto w-full"
-            initial={reduce ? false : { scale: 1.03 }}
+            className="absolute right-0 top-0 h-full w-[60%] object-cover object-[30%_45%]"
+            style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, #000 32%)', maskImage: 'linear-gradient(to right, transparent, #000 32%)' }}
+            initial={reduce ? false : { scale: 1.04 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
           />
+          <div className="relative mx-auto flex w-full max-w-[1400px] flex-col justify-center px-10 pb-10 pt-[4.5rem] xl:px-14" style={{ minHeight: 'inherit' }}>
+            <div className="max-w-[620px]">
+              <p className="text-[clamp(2.2rem,3.4vw,3.1rem)] font-extrabold italic normal-case leading-[1.05] tracking-tight text-[#0f4d24]">
+                Sell Your Land{' '}
+                <span className="ml-1 inline-block -skew-x-6 rounded-xl bg-gradient-to-r from-[#0f5a2a] to-[#2a8a3a] px-3.5 py-0.5 text-white shadow-[0_4px_0_#8bd04a]">to Us</span>
+              </p>
+              <p className="mt-3 text-[1.15rem] font-bold text-[#10231D]">Looking to sell your Land?</p>
+              <p className="mt-1 border-l-[3px] border-[#4fa83d] pl-3 text-[0.98rem] leading-snug text-[#274a3d]">We buy both Agricultural Land and General Land for the right value.</p>
+              <ul className="mt-3.5 inline-flex gap-1 rounded-full bg-white/85 px-2 py-1 shadow-[0_10px_26px_-20px_rgba(15,77,36,0.5)]">
+                <li className="flex items-center gap-2.5 px-4 py-1.5 text-[0.9rem] font-semibold leading-tight text-[#10231D]"><Sprout size={26} className="shrink-0 text-[#2a8a3a]" aria-hidden="true" />Agricultural Land</li>
+                <li className="flex items-center gap-2.5 border-l border-[#0f4d24]/15 px-4 py-1.5 text-[0.9rem] font-semibold leading-tight text-[#10231D]"><MapPinned size={26} className="shrink-0 text-[#2a8a3a]" aria-hidden="true" />General / Non-Agricultural Land</li>
+              </ul>
+              <div className="mt-3.5 grid grid-cols-[repeat(4,auto)] items-start gap-x-1 rounded-[24px] bg-white/90 px-2 py-2.5 shadow-[0_14px_34px_-24px_rgba(15,77,36,0.5)] backdrop-blur-sm xl:gap-x-2">
+                {HERO_BENEFITS.map(({ Icon, label }, i) => (
+                  <div key={label} className={`flex flex-col items-center gap-1 px-3 text-center ${i > 0 ? 'border-l border-[#0f4d24]/12' : ''}`}>
+                    <Icon size={24} strokeWidth={1.7} className="text-[#2a8a3a]" aria-hidden="true" />
+                    <span className="text-[0.78rem] font-semibold leading-tight text-[#0f4d24]">{label}</span>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="#sell-form"
+                onClick={(e) => { const f = document.getElementById('sell-form'); if (f) { e.preventDefault(); f.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); } }}
+                className="group mt-3.5 inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#0f4d24] to-[#1a6b32] py-2 pl-2 pr-2 text-[1rem] font-bold normal-case tracking-normal text-white shadow-[0_10px_24px_-12px_rgba(15,77,36,0.8)] transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#9bd68a]"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0f4d24]"><Phone size={18} aria-hidden="true" /></span>
+                <span className="pr-1">Sell Your Land Now</span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e4f27a] text-[#0f4d24] transition-transform duration-300 group-hover:translate-x-1"><ArrowRight size={18} aria-hidden="true" /></span>
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* Mobile: live text over the land photo so nothing is clipped */}
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <div className="px-5 pb-4 pt-7 sm:px-8">
-            <p className="text-[2.15rem] font-extrabold italic normal-case leading-[1.05] tracking-tight text-[#0f4d24]">
-              Sell Your<br />Land{' '}
-              <span className="ml-1 inline-block -skew-x-6 rounded-lg bg-gradient-to-r from-[#0f5a2a] to-[#2a8a3a] px-3 py-0.5 text-white shadow-[0_3px_0_#8bd04a]">to Us</span>
+            <p className="text-[2rem] font-extrabold normal-case leading-[1.08] tracking-tight text-[#0f4d24]" style={{ fontFamily: '"DM Serif Display","Playfair Display",Georgia,serif' }}>
+              Sell Your Land{' '}
+              <span className="ml-0.5 inline-block -skew-x-6 rounded-lg bg-gradient-to-r from-[#0f5a2a] to-[#2a8a3a] px-3 py-0.5 italic text-white shadow-[0_3px_0_#8bd04a]">to Us</span>
             </p>
-            <p className="mt-4 text-lg font-bold text-[#10231D]">Looking to sell your Land?</p>
-            <p className="mt-1 border-l-[3px] border-[#4fa83d] pl-3 text-[0.95rem] leading-snug text-[#274a3d]">We buy both Agricultural Land and General Land for the right value.</p>
-            <ul className="mt-4 grid grid-cols-2 gap-2 rounded-2xl bg-[#F6F1DF] p-2 shadow-sm">
-              <li className="flex items-center gap-2 px-2 py-1.5 text-[0.8rem] font-semibold leading-tight text-[#10231D]"><Sprout size={22} className="shrink-0 text-[#2a8a3a]" aria-hidden="true" />Agricultural Land</li>
-              <li className="flex items-center gap-2 border-l border-[#0f4d24]/15 px-2 py-1.5 text-[0.8rem] font-semibold leading-tight text-[#10231D]"><MapPinned size={22} className="shrink-0 text-[#2a8a3a]" aria-hidden="true" />General / Non-Agricultural Land</li>
-            </ul>
+            <p className="mt-4 border-l-[3px] border-[#4fa83d] pl-3 text-[0.98rem] leading-snug text-[#274a3d]">Looking to sell your land? We buy both Agricultural Land and General Land for the right value.</p>
           </div>
-          <img src="/images/sell-land-hero-top.webp" alt="" aria-hidden="true" width={1600} height={588} className="block h-[190px] w-full object-cover object-[78%_center] sm:h-[240px]" />
+          <img src="/images/sell-land-hero-mobile-v3.webp" alt="" aria-hidden="true" width={1040} height={590} className="block h-[220px] w-full object-cover object-center sm:h-[300px]" />
         </div>
 
         {/* Benefits bar + call to action */}
-        <div className="mx-auto mt-3 w-full max-w-[1440px] px-4 sm:px-6 md:mt-4 lg:px-8">
+        <div className="mx-auto mt-3 w-full max-w-[1440px] px-4 sm:px-6 lg:hidden">
           <div className="grid grid-cols-2 items-center gap-x-2 gap-y-4 rounded-[26px] border border-[#e6dfc7] bg-[#FBF8EE] px-3 py-4 shadow-[0_14px_34px_-24px_rgba(15,77,36,0.4)] md:grid-cols-4 lg:grid-cols-[repeat(4,1fr)_auto] lg:gap-x-3 lg:px-6">
             {HERO_BENEFITS.map(({ Icon, label }, i) => (
               <div key={label} className={`flex flex-col items-center gap-1.5 px-2 text-center ${i > 0 ? 'lg:border-l lg:border-[#0f4d24]/12' : ''}`}>
@@ -119,7 +146,7 @@ const SellLand: React.FC = () => {
         </div>
       </section>
       <SellProcessSection />
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#FAF6EA] via-[#F3F4E6] to-[#E6EDD9] pb-20 pt-6 md:pb-24">
+      <div className="relative overflow-hidden bg-gradient-to-b from-[#FAF6EA] via-[#F3F4E6] to-[#E6EDD9] pb-20 pt-14 md:pb-24 md:pt-24">
       <div className="container-pro relative">
         <section id="sell-form" aria-labelledby="form-heading" className="max-w-3xl mx-auto rounded-3xl bg-gradient-to-br from-[#F4F7EA] via-[#EEF3E1] to-[#E5EDD4] border border-[#d5e1c3] shadow-[0_30px_60px_-30px_rgba(15,77,36,0.35)] p-6 md:p-10">
           <h2 id="form-heading" className="text-2xl md:text-3xl text-[#0f4d24]">Tell us about your land</h2>

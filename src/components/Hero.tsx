@@ -78,7 +78,7 @@ const Hero: React.FC = () => {
               </motion.h1>
 
               <motion.p variants={rise} className="mt-6 max-w-[34rem] text-lg text-white/85 leading-relaxed [text-wrap:pretty]">
-                Buy verified agricultural land with IGO Agri Tech projects, or sell your land directly to IGO with a free site visit and a clear offer.
+                Buy verified agricultural land with IGO Agri Estate projects, or sell your land directly to IGO with a free site visit and a clear offer.
               </motion.p>
             </motion.div>
 

@@ -10,10 +10,10 @@ const Projects: React.FC = () => {
   const projects = publicProperties.filter((p) => p.projectUrl);
 
   return (
-    <main className="bg-background pb-20 pt-[76px]">
+    <main className="bg-background pb-0 pt-[76px]">
       <SEO
-        title="IGO Agri Tech Projects | Land with Farm Projects"
-        description="Buy verified land together with an IGO Agri Tech project: polyhouse, hydroponic, horticulture, mushroom, microgreens and more."
+        title="IGO Agri Estate Projects | Land with Farm Projects"
+        description="Buy verified land together with an IGO Agri Estate project: polyhouse, hydroponic, horticulture, mushroom, microgreens and more."
         canonical="/projects"
       />
       {/* Hero banner: the supplied artwork already carries its own text, so it is shown as-is at every width */}
@@ -29,7 +29,14 @@ const Projects: React.FC = () => {
         />
       </section>
 
-      <div className="container-pro pt-12">
+      <section className="bg-gradient-to-b from-[#EDF4DF] via-[#F3F8E8] to-[#EAF2DA] pb-16 md:pb-20" aria-label="Our farming projects">
+      <div className="container-pro pb-10 pt-16 text-center md:pb-12 md:pt-24">
+        <p className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#2d6a3e]"><span className="h-px w-8 bg-[#2d6a3e]" aria-hidden="true" />IGO Agri Estate<span className="h-px w-8 bg-[#2d6a3e]" aria-hidden="true" /></p>
+        <h2 className="mt-3 text-3xl normal-case tracking-tight text-[#0f4d24] sm:text-4xl">Our Farming Projects</h2>
+        <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-slate-600">Explore our agricultural land and farm projects.</p>
+      </div>
+
+      <div className="container-pro">
         <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((p) => (
             <li key={p.id} className="rounded-3xl overflow-hidden bg-white border border-black/5 shadow-md flex flex-col">
@@ -44,7 +51,7 @@ const Projects: React.FC = () => {
                 <div className="mt-auto pt-5 flex items-center justify-between gap-3">
                   <Link to={`/properties/${p.id}`} className="inline-flex items-center gap-2 font-semibold text-[#1B5E20]">View details <ArrowRight size={16} /></Link>
                   <a href={p.projectUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-[#1B5E20]">
-                    IGO Agri Tech <ExternalLink size={14} />
+                    IGO Agri Estate <ExternalLink size={14} />
                   </a>
                 </div>
               </div>
@@ -55,6 +62,7 @@ const Projects: React.FC = () => {
           <Link to="/contact" className="inline-block rounded-full bg-[#1B5E20] text-white px-8 py-3 font-semibold">Talk to the project team</Link>
         </div>
       </div>
+      </section>
     </main>
   );
 };

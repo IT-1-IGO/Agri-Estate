@@ -119,8 +119,8 @@ const SellProcessSection: React.FC = () => {
                 <motion.li
                   key={title}
                   {...(reduce ? {} : { variants: cardV, custom: i })}
-                  whileHover={reduce ? undefined : { y: -10, scale: 1.03, rotateX: 3 }}
-                  style={{ transformPerspective: 900, ['--sp-d' as string]: `${(i * STAGGER + 0.5).toFixed(2)}s` }}
+                  whileHover={reduce ? undefined : { y: -10 }}
+                  style={{ ['--sp-d' as string]: `${(i * STAGGER + 0.5).toFixed(2)}s` }}
                   className={`group relative z-0 flex min-h-[300px] flex-col rounded-[22px] border bg-gradient-to-br px-6 pb-9 pt-7 shadow-[0_14px_34px_-24px_rgba(15,77,36,0.35)] transition-shadow duration-500 hover:z-20 hover:shadow-[0_30px_60px_-22px_rgba(15,77,36,0.5)] ${
                     sage ? 'border-[#dfe5d0] from-[#F2F5E9] to-[#E8EDDB]' : 'border-[#ece4d0] from-[#FDFBF3] to-[#F7F1E0]'
                   }`}
@@ -189,18 +189,6 @@ const SellProcessSection: React.FC = () => {
             })}
           </motion.ol>
         </div>
-      </div>
-
-      <div className="mx-auto mt-6 w-full max-w-[1672px]">
-        <img
-          src="/images/sell-land-process-farmland-v3.webp"
-          alt=""
-          aria-hidden="true"
-          width={1672}
-          height={211}
-          loading="lazy"
-          className="block h-auto w-full min-h-[110px] object-cover object-left"
-        />
       </div>
     </section>
   );
