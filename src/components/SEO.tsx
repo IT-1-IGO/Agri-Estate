@@ -15,7 +15,7 @@ interface SEOProps {
 
 const SITE_NAME = 'IGO Agri Estates';
 const BASE_URL = 'https://www.igoagriestate.com';
-const DEFAULT_IMAGE = `${BASE_URL}/images/hero-bg.png`;
+const DEFAULT_IMAGE = `${BASE_URL}/images/og-share.jpg`;
 
 const SEO: React.FC<SEOProps> = ({
   title,
