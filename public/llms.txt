@@ -14,10 +14,13 @@ IGO Agri Estates is a real estate and managed-farmland investment marketplace. C
 - [Home](https://www.igoagriestate.com/): Overview of managed agricultural land investment in India.
 - [Estates by Location](https://www.igoagriestate.com/locations): Browse verified estates by region (Mahabalipuram, Maduranthagam, Chennai, Kanchipuram, Chennai Suburban).
 - [About](https://www.igoagriestate.com/about): Company background, mission, and track record.
+- [Projects](https://www.igoagriestate.com/projects): Land with farm projects (polyhouse, hydroponic, horticulture, vertical farming and more).
+- [Sell Your Land](https://www.igoagriestate.com/sell-land): Sell land directly to IGO with a free site visit.
+- [FAQ](https://www.igoagriestate.com/faq): Answers on buying, selling and managing agricultural land.
 - [Contact](https://www.igoagriestate.com/contact): Advisor contact details and enquiry form.
 - [Valuation Simulator](https://www.igoagriestate.com/valuation): Estimate land/estate value.
 - [Tax Optimizer](https://www.igoagriestate.com/tax-optimizer): Agricultural land tax planning tool.
-- [Knowledge Hub](https://www.igoagriestate.com/knowledge-hub) and [Blog](https://www.igoagriestate.com/blog): Guides on farmland investment, land law, and managed farming.
+- [Knowledge Hub](https://www.igoagriestate.com/knowledge-hub) and [Blog](https://www.igoagriestate.com/blogs): Guides on farmland investment, land law, and managed farming.
 - [Legal Services](https://www.igoagriestate.com/services/legal) and [Soil Intelligence](https://www.igoagriestate.com/services/soil): Supporting advisory services.
 
 ## Frequently Cited Facts
