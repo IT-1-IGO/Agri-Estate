@@ -1,12 +1,13 @@
+# Build context = repository root (Dokploy: Build Path "/", Docker File "server/Dockerfile", Context ".")
 FROM node:20-alpine
 
 ENV NODE_ENV=production
 WORKDIR /app
 
-COPY package*.json ./
+COPY server/package*.json ./
 RUN npm ci --omit=dev
 
-COPY . .
+COPY server/ ./
 
 RUN mkdir -p /app/uploads
 
