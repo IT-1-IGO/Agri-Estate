@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MessageSquare, IndianRupee, ShieldCheck, FileText, CheckCircle2 } from 'lucide-react';
-import { submitLead } from '../lib/leadsService';
+import { crmEnabled, submitLead } from '../lib/leadsService';
 import { useAuth } from '../context/AuthContext';
 import AuthRequiredModal from './modals/AuthRequiredModal';
 import { identifyVisitor, addInterest, VisitorSession } from '../lib/trackingService';
@@ -18,6 +18,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ propertyTitle, proper
    const [showAuthModal, setShowAuthModal] = useState(false);
    const [activeTab, setActiveTab] = useState<'visit' | 'offer' | 'callback'>('visit');
    const [isSubmitting, setIsSubmitting] = useState(false);
+   const [submitError, setSubmitError] = useState('');
    const [submitted, setSubmitted] = useState(false);
    const [formData, setFormData] = useState({
      name: user?.user_metadata?.name || '',
@@ -59,6 +60,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ propertyTitle, proper
       return;
     }
 
+    setSubmitError('');
     setIsSubmitting(true);
     
     const timeValue = formData.time === 'Custom' ? formData.customTime : formData.time;
@@ -82,7 +84,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ propertyTitle, proper
 
     // Safety timeout: stop showing "Sending" after 4 seconds regardless of server response
     let hasTimedOut = false;
-    const safetyTimeout = setTimeout(() => {
+    const safetyTimeout = crmEnabled ? undefined : setTimeout(() => {
       hasTimedOut = true;
       setIsSubmitting(false);
       setSubmitted(true);
@@ -90,6 +92,9 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ propertyTitle, proper
     }, 4000);
 
     const result = await submitLead({
+      crm_source: activeTab === 'callback' ? 'callback' : 'property',
+      form_name: `Property Details – ${activeTab === 'visit' ? 'Schedule site visit' : activeTab === 'offer' ? 'Request estate proposal' : 'Request callback'}`,
+      enquiry_type: activeTab === 'visit' ? 'Site Visit Request' : activeTab === 'offer' ? 'Estate Proposal Request' : 'Callback Request',
       type: activeTab,
       name: formData.name,
       phone: formData.phone,
@@ -108,6 +113,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ propertyTitle, proper
     if (hasTimedOut) return;
 
     setIsSubmitting(false);
+    if (crmEnabled && !result.success) { setSubmitError(result.error || 'We could not save your request. Please try again.'); return; }
     if (result.success) {
       setSubmitted(true);
       window.open(`https://wa.me/+${igoPhone.replace('+', '')}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
@@ -315,6 +321,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ propertyTitle, proper
             </div>
           </div>
 
+          {submitError && <p role="alert" className="text-sm font-medium text-red-600">{submitError}</p>}
           <button type="submit" disabled={isSubmitting} className="w-full bg-primary text-secondary px-8 py-4 rounded-[20px] font-black text-[11px] uppercase tracking-widest hover:bg-primary-light transition-all shadow-xl shadow-primary/20 disabled:opacity-60">
             {isSubmitting ? 'Sending to Admin...' : activeTab === 'visit' ? 'Schedule Site Visit' : activeTab === 'offer' ? 'Request Estate Proposal' : 'Request Callback'}
           </button>

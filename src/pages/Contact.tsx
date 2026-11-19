@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Send, MessageSquare, User, FileText, ArrowRight, Sprout } from 'lucide-react';
 import './Contact.css';
-import { submitLead } from '../lib/leadsService';
+import { crmEnabled, submitLead } from '../lib/leadsService';
 import SEO from '../components/SEO';
 interface ContactProps {
   /** false when this component is embedded as a section inside another page (e.g. the homepage),
@@ -45,20 +45,22 @@ const Contact: React.FC<ContactProps> = ({ standalone = true }) => {
   const [focusId, setFocusId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setIsSubmitting(true); setSubmitError('');
     try {
-      await submitLead({
+      const r = await submitLead({
+        crm_source: 'contact', form_name: 'Contact Us', enquiry_type: 'Contact Us', extra: { Subject: formData.subject },
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         notes: `Subject: ${formData.subject}\n\n${formData.message}`,
         type: 'contact'
       });
-      setIsSuccess(true);
+      if (r.success || !crmEnabled) setIsSuccess(true); else setSubmitError(r.error || 'We could not send your message. Please try again.');
     } catch (error) {
-      console.error('Submission failed', error);
+      console.error('Submission failed', error); setSubmitError('We could not send your message. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -205,6 +207,7 @@ const Contact: React.FC<ContactProps> = ({ standalone = true }) => {
                 </label>
 
                 <div className="ct-actions">
+                  {submitError && <p role="alert" className="text-sm font-medium text-red-600">{submitError}</p>}
                   <button type="submit" disabled={isSubmitting} className="ct-btn">
                     {isSubmitting ? <span>Sending...</span> : (<><span>Send Message</span><ArrowRight size={16} /></>)}
                   </button>

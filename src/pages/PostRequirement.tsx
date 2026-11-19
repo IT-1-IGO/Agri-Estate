@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
 import { Send, MapPin, LandPlot, Phone, Mail, User } from 'lucide-react';
-import { submitLead } from '../lib/leadsService';
+import { crmEnabled, submitLead } from '../lib/leadsService';
 
 const PostRequirement: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,19 +20,21 @@ const PostRequirement: React.FC = () => {
     notes: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setIsSubmitting(true); setSubmitError('');
     try {
-      await submitLead({
+      const r = await submitLead({
         ...formData,
+        crm_source: 'buy_land', form_name: 'Post Your Requirement', enquiry_type: 'Land Requirement',
         type: 'requirement'
       });
-      setIsSuccess(true);
+      if (r.success || !crmEnabled) setIsSuccess(true); else setSubmitError(r.error || 'We could not post your requirement. Please try again.');
     } catch (error) {
-      console.error('Submission failed', error);
+      console.error('Submission failed', error); setSubmitError('We could not post your requirement. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -68,7 +70,7 @@ const PostRequirement: React.FC = () => {
           <div className="lg:col-span-5 space-y-10">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
               <p className="text-[10px] font-black text-[#00814a] uppercase tracking-[0.5em] mb-6">Concierge Service</p>
-              <h1 className="text-6xl font-black text-primary uppercase tracking-tighter leading-[0.9] mb-8">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-primary uppercase tracking-tighter leading-[0.95] mb-8 break-words">
                 Tell Us Your <br />Agri Estate <br /><span className="text-secondary italic font-serif">Requirement</span>
               </h1>
               <p className="text-lg text-text-muted font-light leading-relaxed">
@@ -231,6 +233,7 @@ const PostRequirement: React.FC = () => {
                 />
               </div>
 
+              {submitError && <p role="alert" className="text-sm font-medium text-red-600">{submitError}</p>}
               <button 
                 type="submit"
                 disabled={isSubmitting}

@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { CheckCircle2, ClipboardList, MapPinned, Scale, Banknote, FileSignature, Loader2, Handshake, IndianRupee, ShieldCheck, Users, ArrowRight, Sprout, Phone } from 'lucide-react';
 import SEO from '../components/SEO';
 import SellProcessSection from '../components/home/SellProcessSection';
-import { submitLead } from '../lib/leadsService';
+import { crmEnabled, submitLead } from '../lib/leadsService';
 
 const STEPS = [
   { Icon: ClipboardList, title: 'Share your land', text: 'Tell us location, size and survey details through the form below.' },
@@ -35,7 +35,8 @@ const SellLand: React.FC = () => {
     e.preventDefault();
     setState('sending');
     try {
-      await submitLead({
+      const r = await submitLead({
+        crm_source: 'sell_land', form_name: 'Sell Land – Submit your land', enquiry_type: 'Sell Land',
         type: 'requirement',
         intent: 'Sell Land to IGO',
         name: form.name,
@@ -48,7 +49,7 @@ const SellLand: React.FC = () => {
         budget: form.budget || undefined,
         notes: `[SELL LAND TO IGO] ${form.notes}`.trim(),
       });
-      setState('done');
+      setState(r.success || !crmEnabled ? 'done' : 'error');
     } catch {
       setState('error');
     }

@@ -32,6 +32,7 @@ const RequirementSection: React.FC = () => {
     setStatus('sending');
     try {
       const result = await submitLead({
+        crm_source: 'buy_land', form_name: 'Home – Share your land requirement', enquiry_type: 'Buy Land Requirement', project: wants === 'land' ? undefined : project,
         type: 'requirement',
         name,
         phone,

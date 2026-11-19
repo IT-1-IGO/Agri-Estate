@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getDoc, resolveMedia, subscribeCms } from '../admin/store';
+import { getCollection, getDoc, resolveMedia, subscribeCms } from '../admin/store';
+import { PAGES_SEED } from '../data/siteContent';
 import { setTextOverrides } from '../i18n/domTranslator';
 import { applyAll, scanPage } from './dom';
 import { livePageName, type LiveValues } from './types';
@@ -20,6 +21,8 @@ const LiveContent = () => {
     const params = new URLSearchParams(search);
     const preview = params.has('cms_preview');
     const name = livePageName(pathname);
+    const hiddenPage = !preview && pathname !== '/' && getCollection('pages', PAGES_SEED).some((p) => String(p.path) === pathname && p.hidden === true);
+    if (hiddenPage) { navigate('/', { replace: true }); return; }
     let values: LiveValues = {};
     let raf = 0;
     const run = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { try { applyAll(values, (r) => resolveMedia(r, r)); } catch { /* never break the page */ } }); };
@@ -27,6 +30,7 @@ const LiveContent = () => {
       const d = getDoc(name);
       const useDraft = preview && Object.keys(d.draft || {}).length > 0;
       values = ((useDraft ? d.draft : d.published) || {}) as LiveValues;
+      if (!preview && values.addedSections) values = { ...values, addedSections: values.addedSections.filter((x) => x.status !== 'draft') }; // draft sections are never public
       setTextOverrides(values.text || {});
       run();
     };

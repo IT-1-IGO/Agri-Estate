@@ -18,7 +18,7 @@ const ICONS: Record<string, React.ComponentType<{ size?: number; strokeWidth?: n
 /** Real site photographs, captioned only with what the picture shows. */
 const PROJECT_PHOTOS = [
   { src: '/images/featured/maduranthagam-aerial.webp', alt: 'Aerial view of agricultural land in the Maduranthagam region', caption: 'Aerial view, Maduranthagam region' },
-  { src: '/images/properties/maduranthagam-parcel-1.webp', alt: 'Maduranthagam agricultural land, Parcel 1', caption: 'Maduranthagam Agricultural Land: Parcel 1' },
+  { src: '/images/properties/maduranthagam-parcel-1-v2.jpg', alt: 'Maduranthagam agricultural land, Parcel 1', caption: 'Maduranthagam Agricultural Land: Parcel 1' },
   { src: '/images/properties/maduranthagam-parcel-2-sale.webp', alt: 'Maduranthagam agricultural land, Parcel 2, with a land for sale sign', caption: 'Maduranthagam Agricultural Land: Parcel 2' },
 ];
 

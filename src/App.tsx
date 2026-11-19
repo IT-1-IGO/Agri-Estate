@@ -405,7 +405,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="mt-12 flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-white/10 pt-6 text-sm text-white/70">
+              <div className="mt-12 flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-white/10 pt-6 pr-20 text-sm text-white/70">
                 <p>© 2026 IGO Group Units. All rights reserved.</p>
                 <div className="flex gap-6">
                   <Link to="/policy" className="transition-colors hover:text-white">Privacy Policy</Link>

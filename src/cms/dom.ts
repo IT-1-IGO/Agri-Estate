@@ -1,7 +1,8 @@
 import { getOrigText } from '../i18n/domTranslator';
 import { normalizeKey } from '../i18n';
-import type { LiveValues, ScanBlock, ScanGroup, ScanResult, ScanSection } from './types';
+import type { AddedCard, LiveValues, ScanBlock, ScanGroup, ScanResult, ScanSection } from './types';
 import { resolveMedia } from '../admin/store';
+import { applyAddedSections } from './renderSection';
 
 const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'OPTION', 'SELECT', 'svg', 'SVG']);
 const HEAD = 'h1,h2,h3,h4,h5,h6';
@@ -49,7 +50,7 @@ const isCardLike = (k: Element): boolean => {
 export const findGroups = (section: Element): { parent: HTMLElement; items: HTMLElement[] }[] => {
   const groups: { parent: HTMLElement; items: HTMLElement[] }[] = [];
   const visit = (el: HTMLElement) => {
-    const kids = (Array.from(el.children) as HTMLElement[]).filter((k) => !SKIP.has(k.tagName));
+    const kids = (Array.from(el.children) as HTMLElement[]).filter((k) => !SKIP.has(k.tagName) && !k.dataset.cmsAdded);
     const bySig = new Map<string, HTMLElement[]>();
     for (const k of kids) {
       const sig = k.tagName + '|' + ((k.getAttribute('class') || '').split(/\s+/)[0] || '');
@@ -70,6 +71,7 @@ export const stampAll = (main: HTMLElement) => {
   const secs = getSections(main);
   const used = new Set(secs.map((s) => s.dataset.cmsKey).filter(Boolean) as string[]);
   secs.forEach((s, i) => {
+    if (s.dataset.cmsAddedSection) return;
     if (!s.dataset.cmsKey) {
       let base = s.id || slug(firstText(s)) || 'section';
       let key = base, n = 2;
@@ -88,6 +90,75 @@ export const stampAll = (main: HTMLElement) => {
         while (seen.has(key) || document.querySelector(`[data-cms-card="${CSS.escape(key)}"]`)) key = `${base}-${n++}`;
         seen.add(key); it.dataset.cmsCard = key;
       });
+    });
+  });
+};
+
+/* ---------------- cards added in the admin ---------------- */
+const tKey = new WeakMap<Node, string>();        // cloned text node -> template text
+const iKey = new WeakMap<Element, string>();     // cloned image / background element -> template src
+const lKey = new WeakMap<Element, string>();     // cloned anchor -> template href
+const BG_SEL = '[data-cms-bg],[style*="background-image"]';
+const within = (root: HTMLElement, sel: string): HTMLElement[] => [root, ...Array.from(root.querySelectorAll<HTMLElement>(sel))].filter((e) => e.matches(sel));
+const scanable = (k: string) => k.length >= 2 && hasLetter(k);
+
+const stripCms = (root: HTMLElement) => {
+  [root, ...Array.from(root.querySelectorAll<HTMLElement>('*'))].forEach((n) => {
+    if (n.dataset.cmsHid) n.style.removeProperty('display');
+    if (n.dataset.cmsOrd) n.style.removeProperty('order');
+    Object.keys(n.dataset).filter((k) => k.startsWith('cms')).forEach((k) => delete n.dataset[k]);
+  });
+};
+
+const fillAdded = (el: HTMLElement, a: AddedCard, resolve: (r: string) => string) => {
+  textNodes(el).forEach((n) => {
+    const k = tKey.get(n); if (k === undefined || !scanable(k)) return;
+    const want = a.texts?.[k] ?? '';
+    if (n.nodeValue !== want) n.nodeValue = want;
+  });
+  Array.from(el.querySelectorAll<HTMLImageElement>('img')).forEach((im) => {
+    const orig = iKey.get(im); if (orig === undefined) return;
+    const ov = a.img?.[orig];
+    if (ov?.src) { im.setAttribute('src', resolve(ov.src)); im.removeAttribute('srcset'); im.style.display = ''; } else im.style.display = 'none';
+    im.setAttribute('alt', ov?.alt || '');
+  });
+  within(el, BG_SEL).forEach((b) => {
+    if (b.tagName === 'IMG') return; const orig = iKey.get(b); if (orig === undefined) return;
+    const ov = a.img?.[orig]; b.style.backgroundImage = ov?.src ? `url("${resolve(ov.src)}")` : 'none';
+  });
+  within(el, 'a').forEach((x) => {
+    const orig = lKey.get(x); if (orig === undefined) return;
+    const val = a.link?.[orig];
+    if (val) { x.setAttribute('href', val); x.dataset.cmsNew = '1'; } else { x.removeAttribute('href'); delete x.dataset.cmsNew; }
+  });
+};
+
+const applyAdded = (main: HTMLElement, v: LiveValues, resolve: (r: string) => string) => {
+  main.querySelectorAll<HTMLElement>('[data-cms-group]').forEach((parent) => {
+    const list = v.addedCards?.[parent.dataset.cmsGroup || ''] || [];
+    const kids = Array.from(parent.children) as HTMLElement[];
+    const clones = kids.filter((c) => c.dataset.cmsAdded);
+    clones.forEach((c) => { if (!list.some((a) => a.id === c.dataset.cmsAdded)) c.remove(); });
+    const originals = kids.filter((c) => c.dataset.cmsCard && !c.dataset.cmsAdded);
+    list.forEach((a) => {
+      let el = clones.find((c) => c.dataset.cmsAdded === a.id);
+      if (!el) {
+        const tpl = originals.find((o) => o.dataset.cmsCard === a.tpl) || originals[0]; if (!tpl) return;
+        el = tpl.cloneNode(true) as HTMLElement;
+        const tn = textNodes(tpl), cn = textNodes(el);
+        cn.forEach((n, i) => { if (tn[i]) tKey.set(n, normalizeKey(getOrigText(tn[i]))); });
+        const pairEls = (sel: string, map: WeakMap<Element, string>, orig: (t: HTMLElement) => string) => {
+          const a1 = within(tpl, sel), a2 = within(el!, sel); a2.forEach((n, i) => { if (a1[i]) map.set(n, orig(a1[i])); });
+        };
+        pairEls('img', iKey, (t) => t.dataset.cmsSrc ?? t.getAttribute('src') ?? '');
+        pairEls(BG_SEL, iKey, (t) => bgUrl(t));
+        pairEls('a[href]', lKey, (t) => t.dataset.cmsHref ?? t.getAttribute('href') ?? '');
+        stripCms(el);
+        el.dataset.cmsAdded = a.id; el.dataset.cmsCard = 'added:' + a.id; el.setAttribute('data-no-translate', '1');
+        const lastCard = (Array.from(parent.children) as HTMLElement[]).filter((c) => c.dataset.cmsCard).pop() || tpl;
+        lastCard.after(el);
+      }
+      fillAdded(el, a, resolve);
     });
   });
 };
@@ -126,6 +197,8 @@ const applyOrder = (parent: HTMLElement, items: HTMLElement[], keyOf: (e: HTMLEl
 export const applyAll = (v: LiveValues, resolve: (r: string) => string = (x) => x) => {
   const main = getMain(); if (!main) return;
   stampAll(main);
+  applyAdded(main, v, resolve);
+  applyAddedSections(main, v.addedSections || [], resolve, getSections(main).filter((x) => !x.dataset.cmsAddedSection));
   const secs = getSections(main);
   const hs = new Set([...(v.hiddenSections || []), ...(v.deletedSections || [])]);
   secs.forEach((s) => setHidden(s, hs.has(s.dataset.cmsKey || '')));
@@ -138,6 +211,7 @@ export const applyAll = (v: LiveValues, resolve: (r: string) => string = (x) => 
   });
   // images
   main.querySelectorAll<HTMLImageElement>('img').forEach((im) => {
+    if (im.closest('[data-cms-added],[data-cms-added-section]')) return;
     if (im.dataset.cmsSrc === undefined) { im.dataset.cmsSrc = im.getAttribute('src') || ''; im.dataset.cmsAlt = im.getAttribute('alt') || ''; if (im.hasAttribute('srcset')) im.dataset.cmsSrcset = im.getAttribute('srcset') || ''; }
     else if (im.getAttribute('src') !== im.dataset.cmsApplied && im.getAttribute('src') !== im.dataset.cmsSrc) { im.dataset.cmsSrc = im.getAttribute('src') || ''; } // React set a new source
     const ov = v.img?.[`${ownerKey(im)}::${im.dataset.cmsSrc}`];
@@ -149,7 +223,7 @@ export const applyAll = (v: LiveValues, resolve: (r: string) => string = (x) => 
     if (im.getAttribute('alt') !== wantAlt) im.setAttribute('alt', wantAlt);
   });
   main.querySelectorAll<HTMLElement>('[style*="background-image"],[data-cms-bg]').forEach((el) => {
-    if (el.tagName === 'IMG') return;
+    if (el.tagName === 'IMG' || el.closest('[data-cms-added],[data-cms-added-section]')) return;
     if (el.dataset.cmsBg === undefined) el.dataset.cmsBg = el.style.backgroundImage;
     const orig = bgUrl(el);
     const ov = v.img?.[`${ownerKey(el)}::${orig}`];
@@ -158,6 +232,7 @@ export const applyAll = (v: LiveValues, resolve: (r: string) => string = (x) => 
   });
   // links
   main.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
+    if (a.closest('[data-cms-added],[data-cms-added-section]')) return;
     if (a.dataset.cmsHref === undefined) a.dataset.cmsHref = a.getAttribute('href') || '';
     const ov = v.link?.[`${ownerKey(a)}::${a.dataset.cmsHref}`];
     if (ov) { if (a.getAttribute('href') !== ov) a.setAttribute('href', ov); a.dataset.cmsNew = '1'; }
@@ -205,12 +280,12 @@ export const scanPage = (): ScanResult => {
   if (!main) return { sections: [], page: emptyBlock(), usage: {}, hasMain: false };
   stampAll(main);
   const usage: Record<string, number> = {};
-  const sections: ScanSection[] = getSections(main).map((s) => {
+  const sections: ScanSection[] = getSections(main).filter((s) => !s.dataset.cmsAddedSection).map((s) => {
     const general = emptyBlock();
     collect(s, (el) => !el.closest('[data-cms-card]'), general, usage);
     const groups: ScanGroup[] = [];
     s.querySelectorAll<HTMLElement>('[data-cms-group]').forEach((p) => {
-      const items = (Array.from(p.children) as HTMLElement[]).filter((c) => c.dataset.cmsCard);
+      const items = (Array.from(p.children) as HTMLElement[]).filter((c) => c.dataset.cmsCard && !c.dataset.cmsAdded);
       if (items.length < 2) return;
       groups.push({
         key: p.dataset.cmsGroup!,

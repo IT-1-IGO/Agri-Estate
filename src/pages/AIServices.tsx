@@ -11,7 +11,7 @@ const DARK = '#0b3d22';
 const LIME = '#b6f23c';
 const GREEN = '#0f4d24';
 
-type Svc = { title: string; img: string; icon: React.ElementType; bullets: string[]; to?: string; cta: string };
+type Svc = { title: string; img: string; icon: import('lucide-react').LucideIcon; bullets: string[]; to?: string; cta: string };
 const services: Svc[] = [
   { title: 'AI Land Valuation', img: '/images/services/ai-land.jpg', icon: Layers, to: '/valuation', cta: 'Request a valuation',
     bullets: ['AI-assisted land price estimation', 'Location and market trend analysis', 'Land area and classification insights', 'Valuation report preview'] },

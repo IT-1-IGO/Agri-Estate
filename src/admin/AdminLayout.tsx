@@ -28,6 +28,13 @@ const AdminLayout: React.FC = () => {
   const [q, setQ] = useState(''); const [leads, setLeads] = useState<LeadData[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
   useEffect(() => { setOpen(false); }, [loc.pathname]);
+  const [syncErr, setSyncErr] = useState('');
+  useEffect(() => {
+    const onSync = (e: Event) => { const d = (e as CustomEvent).detail as { ok: boolean; message: string }; setSyncErr(d.ok ? '' : d.message); };
+    const onOut = () => nav('/admin/login', { replace: true });
+    window.addEventListener('igo:cms-remote', onSync); window.addEventListener('crm-logout', onOut);
+    return () => { window.removeEventListener('igo:cms-remote', onSync); window.removeEventListener('crm-logout', onOut); };
+  }, [nav]);
   useEffect(() => { fetchLeads().then(setLeads).catch(() => undefined); }, []);
   useEffect(() => {
     const c = (e: MouseEvent) => { if (menuRef.current && !menuRef.current.contains(e.target as Node)) { setMenu(false); setBell(false); } };
@@ -80,7 +87,7 @@ const AdminLayout: React.FC = () => {
               </div>
             </div>
           </header>
-          <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6"><Outlet /></main>
+          <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">{syncErr && <p role="alert" className="mb-4 rounded-lg border border-[#F2C9C4] bg-[#FDECEA] px-4 py-2.5 text-sm text-[#B42318]">Not saved to the server: {syncErr} Your change is kept in this browser and will be retried on your next save.</p>}<Outlet /></main>
         </div>
       </div>
     </ToastProvider>

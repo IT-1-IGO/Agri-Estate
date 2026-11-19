@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { X, CheckCircle2, Loader2 } from 'lucide-react';
-import { submitLead } from '../../lib/leadsService';
+import { crmEnabled, submitLead, type SubmitResult } from '../../lib/leadsService';
 
 export type LegalEnquiryMode = 'consultation' | 'verify' | 'request' | 'valuation-expert' | 'valuation-request' | 'tax-consult' | 'tax-advisor' | 'ai-expert';
 
@@ -20,6 +20,7 @@ const LegalEnquiryModal: React.FC<{ mode: LegalEnquiryMode | null; onClose: () =
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     if (!mode) return;
@@ -44,9 +45,12 @@ const LegalEnquiryModal: React.FC<{ mode: LegalEnquiryMode | null; onClose: () =
     if (mode === 'verify' && form.property.trim().length < 3) er.property = 'Enter the survey number or location.';
     setErrors(er);
     if (Object.keys(er).length) return;
-    setBusy(true);
+    setSubmitError(''); setBusy(true);
+    let r: SubmitResult = { success: true };
     try {
-      await submitLead({
+      r = await submitLead({
+        crm_source: 'services', form_name: c.title,
+        enquiry_type: mode.startsWith('valuation') ? 'Land Valuation' : mode.startsWith('tax') ? 'Tax Planning' : mode.startsWith('ai') ? 'AI-Enabled Services' : 'Legal Services',
         type: 'contact',
         name: form.name.trim(),
         phone: form.phone.trim(),
@@ -57,6 +61,7 @@ const LegalEnquiryModal: React.FC<{ mode: LegalEnquiryMode | null; onClose: () =
       });
     } catch { /* the lead service already falls back to local storage */ }
     setBusy(false);
+    if (crmEnabled && !r.success) { setSubmitError(r.error || 'We could not submit your request. Please try again.'); return; }
     setDone(true);
   };
 
@@ -97,6 +102,7 @@ const LegalEnquiryModal: React.FC<{ mode: LegalEnquiryMode | null; onClose: () =
               </div>
             )}
             <textarea className={input()} rows={3} placeholder="Message (optional)" value={form.message} onChange={(e) => set('message', e.target.value)} />
+            {submitError && <p role="alert" className="text-sm font-medium text-red-600">{submitError}</p>}
             <button type="submit" disabled={busy} className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0f3d28] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#165235] disabled:opacity-70">
               {busy && <Loader2 size={16} className="animate-spin" />} {busy ? 'Submitting…' : c.cta}
             </button>

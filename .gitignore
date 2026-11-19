@@ -32,3 +32,6 @@ dist-ssr
 *.sw?
 
 .fuse_hidden*
+
+# self-hosted Supabase secrets/data
+supabase-selfhost/supabase-project/

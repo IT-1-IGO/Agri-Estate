@@ -21,7 +21,7 @@ const CustomPage: React.FC = () => {
   const { items } = useCollection<CmsItem>('customPages', []);
   const [, tick] = React.useState(0);
   React.useEffect(() => subscribeCms(() => tick((n) => n + 1)), []);
-  const page = items.find((p) => p.slug === slug && (preview || p.status === 'published'));
+  const page = items.find((p) => p.slug === slug && (preview || (p.status === 'published' && !p.hidden)));
   if (!page) {
     return <main className="flex min-h-[60vh] items-center justify-center bg-[#E4EEDC] px-6 pt-[76px]"><div className="text-center"><h1 className="text-3xl" style={{ fontFamily: SERIF, color: DARK }}>Page not found</h1><Link to="/" className="mt-4 inline-block text-[#24593A] underline">Back to home</Link></div></main>;
   }

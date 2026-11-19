@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, CheckCircle2, Loader2 } from 'lucide-react';
-import { submitLead } from '../../lib/leadsService';
+import { crmEnabled, submitLead } from '../../lib/leadsService';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -17,8 +17,8 @@ const NewsletterSection: React.FC = () => {
     if (!EMAIL_RE.test(v)) { setError('Please enter a valid email address, like name@example.com.'); return; }
     setError(''); setState('sending');
     try {
-      await submitLead({ type: 'contact', name: 'Blog newsletter request', phone: '', email: v, intent: 'Blog updates', notes: '[BLOG NEWSLETTER] Please send agricultural insights and IGO Agri Estate updates.' });
-      setState('done');
+      const r = await submitLead({ crm_source: 'newsletter', form_name: 'Blog newsletter signup', enquiry_type: 'Newsletter Request', type: 'contact', name: 'Blog newsletter request', phone: '', email: v, intent: 'Blog updates', notes: '[BLOG NEWSLETTER] Please send agricultural insights and IGO Agri Estate updates.' });
+      setState(r.success || !crmEnabled ? 'done' : 'error');
     } catch { setState('error'); }
   };
 

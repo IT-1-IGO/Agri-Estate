@@ -158,7 +158,7 @@ const SignUp: React.FC = () => {
           <div className="w-20 h-20 bg-white rounded-[28px] flex items-center justify-center mx-auto mb-6 shadow-2xl overflow-hidden border border-white/20 p-2">
             <img src="/images/logo.png" alt="IGO Logo" className="w-full h-full object-contain" />
           </div>
-          <h2 className="text-3xl mb-2 font-black text-white uppercase tracking-tighter">Create Account</h2>
+          <h1 className="text-3xl mb-2 font-black text-white uppercase tracking-tighter">Create Account</h1>
           <p className="text-white/60 text-[10px] font-black uppercase tracking-widest">Join IGO Agriestates and start your investment journey.</p>
         </div>
 

@@ -6,9 +6,11 @@ import Dashboard from './Dashboard';
 import * as S from './screens';
 import PagesList from './PagesList';
 import PageEditor from './PageEditor';
+import CrmApp from './crm/CrmApp';
 
 const AdminApp: React.FC = () => (
   <Routes>
+    <Route path="crm/*" element={<CrmApp />} />
     <Route path="login" element={<PanelLogin />} />
     <Route element={<AdminLayout />}>
       <Route index element={<Dashboard />} />

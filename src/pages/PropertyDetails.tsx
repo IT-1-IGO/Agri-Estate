@@ -248,9 +248,10 @@ const PropertyDetails: React.FC = () => {
     // This ensures "send the request to admin" happens without "opening this page only"
     try {
       await submitLead({
+        crm_source: 'property', form_name: 'Property Details – WhatsApp click', enquiry_type: 'WhatsApp Enquiry',
         type: 'contact',
-        name: user.user_metadata?.name || 'Anonymous User',
-        phone: user.user_metadata?.phone || 'Captured via WhatsApp click',
+        name: user.user_metadata?.name || (user.email ? String(user.email).split('@')[0] : 'Website visitor'),
+        phone: user.user_metadata?.phone || '',
         email: user.email || '',
         property_id: property?.id,
         property_title: property?.title,

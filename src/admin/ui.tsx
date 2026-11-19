@@ -6,7 +6,7 @@ import { MEDIA_COL, MediaItem, getCollection, resolveMedia, uid, writeJson } fro
 export const G = '#124B3B';
 
 export const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <div className={`rounded-xl border border-[#E3E8E1] bg-white shadow-sm ${className}`}>{children}</div>
+  <div className={`min-w-0 rounded-xl border border-[#E3E8E1] bg-white shadow-sm ${className}`}>{children}</div>
 );
 
 export const PageHeader: React.FC<{ title: string; crumbs?: string[]; actions?: React.ReactNode; sub?: string }> = ({ title, crumbs = [], actions, sub }) => (

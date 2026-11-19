@@ -237,12 +237,12 @@ const Login: React.FC = () => {
                 <div className="w-24 h-24 bg-white rounded-[32px] flex items-center justify-center mx-auto mb-6 shadow-2xl overflow-hidden border border-white/20 p-2">
                   <img src="/images/logo.png" alt="IGO Logo" className="w-full h-full object-contain" />
                 </div>
-                <h2 className="text-4xl mb-2 font-black text-white tracking-tighter uppercase leading-none">
+                <h1 className="text-4xl mb-2 font-black text-white tracking-tighter uppercase leading-none">
                   {mode === 'login' ? 'Investor Access' : 
                    mode === 'signup' ? 'Join Network' : 
                    mode === 'otp' ? 'Verify Identity' : 
                    'Secure Account'}
-                </h2>
+                </h1>
                 <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mt-3">
                   {mode === 'login' ? 'Institutional Grade Agri-Investment' :
                    mode === 'signup' ? 'Initialize your estate portfolio' :

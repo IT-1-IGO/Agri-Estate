@@ -54,7 +54,7 @@ const CustomPageEditor: React.FC<{ page: CmsItem; onSaveMeta: (v: Partial<CmsIte
         <Field label="SEO title" htmlFor="cp-seo"><input id="cp-seo" className={inputCls} value={meta.seoTitle} onChange={(e) => { setMeta({ ...meta, seoTitle: e.target.value }); setDirty(true); }} /></Field>
         <div className="sm:col-span-2"><Field label="SEO description" htmlFor="cp-seod"><textarea id="cp-seod" rows={2} className={inputCls} value={meta.seoDescription} onChange={(e) => { setMeta({ ...meta, seoDescription: e.target.value }); setDirty(true); }} /></Field></div>
       </div></Card>
-      <div className="mb-3 flex items-center justify-between"><h2 className="text-base font-semibold normal-case tracking-normal">Sections</h2><Btn onClick={() => setAdding(true)}><Plus size={16} />Add section</Btn></div>
+      <div className="mb-3 flex items-center justify-between"><h2 className="text-base font-semibold normal-case tracking-normal">Sections</h2><Btn onClick={() => setAdding(true)}><Plus size={16} />Add New Section</Btn></div>
       {sections.length === 0 ? <Card><EmptyState title="No sections yet" text="Add a hero, text block, cards or call to action." /></Card> : (
         <div className="grid gap-3">{sections.map((s, i) => (
           <Card key={s.id} className={`flex flex-wrap items-center gap-2 px-4 py-3 ${s.hidden ? 'opacity-70' : ''}`}>

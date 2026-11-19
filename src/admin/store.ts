@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { queuePush } from './cmsSync';
 
 /**
  * Content store for the admin panel.
@@ -19,6 +20,7 @@ const rawSet = (name: string, value: unknown) => {
     throw new Error('Storage is full or unavailable. Remove some media files and try again.');
   }
   window.dispatchEvent(new Event(CMS_EVENT));
+  queuePush(name, value);
 };
 
 export const readJson = <T,>(name: string, fallback: T): T => {

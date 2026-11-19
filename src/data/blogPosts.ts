@@ -25,7 +25,7 @@ export interface BlogPost {
 
 export interface BlogCategory { name: string; slug: string; description: string; icon: string; image: string; imageAlt: string }
 export const BLOG_CATEGORIES: BlogCategory[] = [
-  { name: 'Land Investment', slug: 'land-investment', icon: 'landmark', description: 'Understanding farmland, documents and long-term considerations.', image: '/images/properties/maduranthagam-parcel-1.webp', imageAlt: 'Farmland at sunset with fields and hills' },
+  { name: 'Land Investment', slug: 'land-investment', icon: 'landmark', description: 'Understanding farmland, documents and long-term considerations.', image: '/images/properties/maduranthagam-parcel-1-v2.jpg', imageAlt: 'Farmland at sunset with fields and hills' },
   { name: 'Organic Farming', slug: 'organic-farming', icon: 'leaf', description: 'Natural inputs, composting and chemical-free practices.', image: '/images/properties/open-cultivation.png', imageAlt: 'Rows of vegetable crops in an open field' },
   { name: 'Horticulture', slug: 'horticulture', icon: 'apple', description: 'Fruit, vegetable and plantation crops for Tamil Nadu.', image: '/images/properties/proj-horticulture.webp', imageAlt: 'Mango trees laden with fruit in an orchard' },
   { name: 'Crop Cultivation', slug: 'crop-cultivation', icon: 'wheat', description: 'Choosing crops and looking after them through the season.', image: '/images/properties/paddy-field.png', imageAlt: 'Paddy field with palm trees' },

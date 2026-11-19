@@ -6,6 +6,9 @@ import App from './App.tsx'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import ScrollToTop from './components/ScrollToTop'
 import './index.css'
+import { initCmsSync } from './admin/cmsSync'
+
+void initCmsSync()
 
 // Global error handlers
 window.addEventListener('error', (event) => {

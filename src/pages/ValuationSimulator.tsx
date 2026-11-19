@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SEO from '../components/SEO';
 import LegalEnquiryModal, { LegalEnquiryMode } from '../components/services/LegalEnquiryModal';
-import { submitLead } from '../lib/leadsService';
+import { crmEnabled, submitLead, type SubmitResult } from '../lib/leadsService';
 import {
   Calculator, Headset, MapPin, Layers, Milestone, Building2, Sprout, TrendingUp, Droplet, FileText, Maximize,
   Home, Search, BarChart3, Leaf, ArrowRight, ChartColumn, Check, CheckCircle2, Loader2, UserRound, BadgeCheck, ListChecks,
@@ -60,6 +60,7 @@ const ValuationSimulator: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const set = (k: string, v: string) => { setF((p) => ({ ...p, [k]: v, ...(k === 'state' ? { district: '' } : {}) })); setErrors((e) => ({ ...e, [k]: '' })); };
 
   const submit = async (e: React.FormEvent) => {
@@ -75,9 +76,11 @@ const ValuationSimulator: React.FC = () => {
     if (!/^[6-9]\d{9}$/.test(f.phone.replace(/[\s-]/g, '').replace(/^(\+91|91)/, ''))) er.phone = 'Enter a valid 10-digit mobile number.';
     setErrors(er);
     if (Object.keys(er).length) return;
-    setBusy(true);
+    setSubmitError(''); setBusy(true);
+    let r: SubmitResult = { success: true };
     try {
-      await submitLead({
+      r = await submitLead({
+        crm_source: 'services', form_name: 'Land Valuation – Calculate land value', enquiry_type: 'Land Valuation',
         type: 'requirement',
         name: f.name.trim(),
         phone: f.phone.trim(),
@@ -92,6 +95,7 @@ const ValuationSimulator: React.FC = () => {
       });
     } catch { /* lead service falls back to local storage */ }
     setBusy(false);
+    if (crmEnabled && !r.success) { setSubmitError(r.error || 'We could not submit your request. Please try again.'); return; }
     setSent(true);
   };
 
@@ -208,6 +212,7 @@ const ValuationSimulator: React.FC = () => {
                 <label><Label>Mobile Number</Label>
                   <input className={field(errors.phone)} placeholder="10-digit mobile" inputMode="tel" value={f.phone} onChange={(e) => set('phone', e.target.value)} autoComplete="tel" /><Err k="phone" /></label>
                 <div className="col-span-2 mt-1 flex justify-center">
+                  {submitError && <p role="alert" className="text-sm font-medium text-red-600">{submitError}</p>}
                   <button type="submit" disabled={busy} className="inline-flex items-center gap-2 rounded-full px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-125 disabled:opacity-70" style={{ background: GREEN }}>
                     {busy ? <Loader2 size={17} className="animate-spin" /> : <ChartColumn size={17} />} {busy ? 'Submitting…' : 'Calculate Land Value'}
                   </button>
