@@ -1,3 +1,4 @@
+import { allEstates } from '../data/locationEstates';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import SEO from '../components/SEO';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -167,6 +168,12 @@ const PropertyDetails: React.FC = () => {
 
   useEffect(() => {
     if (!id) return;
+    // Show the page instantly from local data; the live fetch below refreshes it when it arrives.
+    const local = properties.find((p) => p.id === id) || allEstates.find((p) => p.id === id);
+    if (local) {
+      setProperty((cur) => cur && cur.id === id ? cur : (local as Property));
+      setLoading(false);
+    }
     getProperty(id).then((data) => {
       if (data) {
         setProperty(data);
