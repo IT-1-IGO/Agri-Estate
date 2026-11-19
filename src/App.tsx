@@ -85,6 +85,7 @@ const RouteLoader: React.FC = () => (
 
 const NotFound: React.FC = () => (
   <div className="min-h-screen bg-background flex items-center justify-center p-6">
+    <SEO title="Page Not Found | IGO Agri Estates" description="The page you are looking for does not exist or has been moved." canonical="/" noIndex />
     <div className="text-center max-w-lg">
       <div className="text-[120px] font-black text-primary/10 leading-none mb-4">404</div>
       <h1 className="text-4xl font-black text-primary uppercase tracking-tighter mb-4">Page Not Found</h1>
