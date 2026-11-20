@@ -28,6 +28,23 @@
 }
 .pr-card:hover { transform: translateY(-8px); border-color: rgba(46,158,31,.5); box-shadow: 0 26px 52px rgba(27,94,32,.18), 0 0 0 4px rgba(46,158,31,.07); }
 
+/* Step numbers and arrows are derived from position, so cards added in the admin are numbered and linked correctly. */
+.pr-track { counter-reset: pr-step; row-gap: 132px; }
+.pr-card { counter-increment: pr-step; }
+.pr-badge::before { content: counter(pr-step, decimal-leading-zero); }
+.pr-card:last-child .pr-arrow { display: none; }
+/* More than 6 steps: balance the rows instead of leaving one card alone on a second row. */
+@media (min-width: 1200px) {
+  .pr-track:has(> .pr-card:nth-child(7)) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pr-track:has(> .pr-card:nth-child(7)) > .pr-card:nth-child(4n) .pr-arrow { display: none; }
+  .pr-track:has(> .pr-card:nth-child(9)) { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .pr-track:has(> .pr-card:nth-child(9)) > .pr-card:nth-child(4n) .pr-arrow { display: block; }
+  .pr-track:has(> .pr-card:nth-child(9)) > .pr-card:nth-child(5n) .pr-arrow { display: none; }
+  .pr-track:has(> .pr-card:nth-child(11)) { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .pr-track:has(> .pr-card:nth-child(11)) > .pr-card:nth-child(5n) .pr-arrow { display: block; }
+  .pr-track:has(> .pr-card:nth-child(11)) > .pr-card:nth-child(6n) .pr-arrow { display: none; }
+}
+
 /* circular photo + orbit */
 .pr-photo { position: relative; width: 86%; aspect-ratio: 1; margin-top: -86px; }
 .pr-photo img { position: absolute; inset: 8%; width: 84%; height: 84%; border-radius: 50%; object-fit: cover; border: 5px solid #fff; box-shadow: 0 14px 30px rgba(27,94,32,.25); background: #eaf4e6; }
@@ -89,7 +106,7 @@
 /* Tablet & mobile: swipe layout */
 @media (max-width: 1199px) {
   .pr-head { margin-bottom: 96px; }
-  .pr-track { display: flex; gap: 20px; overflow-x: auto; padding: 100px 20px 28px; margin: -100px -20px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .pr-track { display: flex; gap: 20px; row-gap: 20px; overflow-x: auto; padding: 100px 20px 28px; margin: -100px -20px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .pr-track::-webkit-scrollbar { display: none; }
   .pr-card { flex: 0 0 min(270px, 74vw); scroll-snap-align: center; }
   .pr-arrow { display: none; }

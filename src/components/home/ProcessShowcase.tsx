@@ -80,7 +80,7 @@ const ProcessShowcase: React.FC = () => {
                 <span className="pr-orbit" />
                 <span className="pr-orbit pr-orbit--2" />
                 <img src={`/images/process/${s.img}.webp`} alt={s.title.join(' ')} width={360} height={360} loading="lazy" />
-                <span className="pr-badge">{String(i + 1).padStart(2, '0')}</span>
+                <span className="pr-badge" aria-hidden="true" />
                 <Leaf className="pr-float" style={{ ['--d' as string]: `${i * 0.7}s` } as React.CSSProperties} />
               </div>
               <h3 className="pr-card__title">
@@ -89,7 +89,7 @@ const ProcessShowcase: React.FC = () => {
               <span className="pr-card__rule" />
               <p className="pr-card__text">{s.text}</p>
               <span className="pr-card__icon"><s.Icon size={26} strokeWidth={2.2} /></span>
-              {i < STEPS.length - 1 && <Arrow />}
+              <Arrow />
             </li>
           ))}
         </ol>

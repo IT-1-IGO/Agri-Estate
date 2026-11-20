@@ -106,6 +106,9 @@ const stripCms = (root: HTMLElement) => {
   [root, ...Array.from(root.querySelectorAll<HTMLElement>('*'))].forEach((n) => {
     if (n.dataset.cmsHid) n.style.removeProperty('display');
     if (n.dataset.cmsOrd) n.style.removeProperty('order');
+    // A card copied while its entrance animation (framer-motion: opacity 0 + translate) is still at its start state would stay invisible forever, leaving an empty grid slot.
+    if (n.style.opacity === '0') n.style.removeProperty('opacity');
+    if (/translate/.test(n.style.transform)) n.style.removeProperty('transform');
     Object.keys(n.dataset).filter((k) => k.startsWith('cms')).forEach((k) => delete n.dataset[k]);
   });
 };
@@ -135,7 +138,8 @@ const fillAdded = (el: HTMLElement, a: AddedCard, resolve: (r: string) => string
 
 const applyAdded = (main: HTMLElement, v: LiveValues, resolve: (r: string) => string) => {
   main.querySelectorAll<HTMLElement>('[data-cms-group]').forEach((parent) => {
-    const list = v.addedCards?.[parent.dataset.cmsGroup || ''] || [];
+    // Never render a card that has no usable content (it would show as an empty box in the grid).
+    const list = (v.addedCards?.[parent.dataset.cmsGroup || ''] || []).filter((a) => Object.values(a.texts || {}).some((t) => String(t).trim()) || Object.values(a.img || {}).some((i) => i?.src));
     const kids = Array.from(parent.children) as HTMLElement[];
     const clones = kids.filter((c) => c.dataset.cmsAdded);
     clones.forEach((c) => { if (!list.some((a) => a.id === c.dataset.cmsAdded)) c.remove(); });
