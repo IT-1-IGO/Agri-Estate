@@ -86,9 +86,11 @@
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar: hidden, the page still scrolls with mouse, touch and keyboard */
+html { scrollbar-width: none; -ms-overflow-style: none; }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 0;
+  height: 0;
 }
 
 ::-webkit-scrollbar-track {
