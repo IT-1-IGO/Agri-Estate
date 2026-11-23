@@ -205,6 +205,7 @@ const Home: React.FC = () => {
       {/* Knowledge */}
       <KnowledgeHubSection />
 
+      <div id="mira-intro-slot"></div>
       <RequirementSection />
     </main>
   );
