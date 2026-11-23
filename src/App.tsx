@@ -321,8 +321,6 @@ function App() {
             </Suspense>
            </AnimatePresence>
 
-          {!isPanel && settings.enableAI && <AIAssistant />}
-          {!isPanel && settings.enableChat && <LiveChatWidget />}
 
           {/* 26 Verticals Brands Marquee - Home page only */}
           {!isPanel && location.pathname === '/' && <BrandsMarquee />}
