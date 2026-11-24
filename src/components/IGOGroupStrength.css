@@ -1,0 +1,94 @@
+/* Powered by the Strength of IGO Group (Contact Us, above the footer). Everything is scoped with .igs */
+.igs { overflow-x: clip; background: #f8f5ec; border-top: 1px solid rgba(15, 77, 36, 0.08); padding: 40px 0 46px; }
+.igs__inner { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+.igs__head { text-align: center; max-width: 920px; margin: 0 auto 30px; }
+.igs__eyebrow { display: inline-flex; align-items: center; gap: 14px; margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: #0f4d24; }
+.igs__eyebrow span { width: 34px; height: 1px; background: #0f4d24; opacity: 0.6; }
+.igs__title { margin: 10px 0 0; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.12; font-weight: 700; letter-spacing: -0.01em; text-transform: none; color: #0b3b1c; }
+.igs__title em { font-style: italic; font-weight: 600; color: #1b7a34; }
+.igs__swoosh { display: block; width: 190px; height: 12px; margin: 8px auto 0; color: #b8892b; }
+.igs__lead { margin: 14px auto 0; max-width: 760px; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.6; color: #475569; }
+
+/* same format as the design: stats bar, then the two photos side by side, then the button */
+.igs__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+
+.igs__stats { position: relative; list-style: none; margin: 0 auto; padding: 10px 10px; width: 100%; max-width: 880px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: rgba(255, 255, 255, 0.55); border: 1.5px solid #c9a24a; border-radius: 999px; }
+.igs__stats::before, .igs__stats::after { content: ""; position: absolute; top: 50%; width: 9%; height: 1px; background: linear-gradient(90deg, transparent, #c9a24a); }
+.igs__stats::before { right: 100%; }
+.igs__stats::after { left: 100%; transform: scaleX(-1); }
+.igs__stat { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 2px 12px; position: relative; }
+.igs__stat + .igs__stat::before { content: ""; position: absolute; left: 0; top: 50%; height: 40px; width: 1px; transform: translateY(-50%); background: #c9a24a; }
+.igs__stat-icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 13px; background: #0f4d24; color: #e2b24a; }
+.igs__stat-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.igs__stat-value { font-size: clamp(24px, 2.4vw, 32px); line-height: 1; font-weight: 700; color: #0b3b1c; letter-spacing: -0.01em; }
+.igs__stat-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; white-space: nowrap; text-transform: uppercase; color: #1f3a2a; line-height: 1.3; }
+
+.igs__photos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.igs__photo { display: flex; flex-direction: column; overflow: hidden; background: #0f4d24; border-radius: 16px; box-shadow: 0 12px 26px -16px rgba(11, 59, 28, 0.55); border: 1px solid rgba(15, 77, 36, 0.15); }
+.igs__photo img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: center; }
+.igs__photo:first-child img { object-position: center; }
+.igs__photo-label { display: flex; align-items: center; justify-content: flex-start; gap: 12px; margin: 0; min-height: 42px; padding: 6px 18px; color: #fff; font-size: 14.5px; font-weight: 500; line-height: 1.25; background: #0f4d24; }
+.igs__photo-label svg { flex: none; width: 20px; height: 20px; color: #fff; }
+.igs__photo-label i { flex: none; width: 1px; height: 18px; background: rgba(255, 255, 255, 0.45); }
+
+.igs__cta { display: flex; justify-content: center; }
+.igs__btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 28px; border-radius: 999px; background: #0f4d24; color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; box-shadow: 0 12px 24px -12px rgba(11, 59, 28, 0.7); transition: transform 0.2s ease, background 0.2s ease; }
+.igs__btn svg { color: #e2b24a; transition: transform 0.2s ease; }
+.igs__btn:hover { background: #0b3b1c; transform: translateY(-1px); }
+.igs__btn:hover svg { transform: translateX(3px); }
+.igs__btn:focus-visible { outline: 3px solid #e2b24a; outline-offset: 3px; }
+
+/* laptop: slightly smaller icons so every label stays on one line */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .igs__stats::before, .igs__stats::after { display: none; }
+  .igs__stat { padding: 4px 8px; gap: 12px; }
+  .igs__stat-icon { width: 48px; height: 48px; }
+  .igs__stat-label { font-size: 10.5px; letter-spacing: 0.08em; }
+}
+/* tablet: tighter bar and photos */
+@media (max-width: 1023px) {
+  .igs { padding: 36px 0 42px; }
+  .igs__grid { gap: 20px; }
+  .igs__stats { border-radius: 40px; padding: 16px 8px; }
+  .igs__stats::before, .igs__stats::after { display: none; }
+  .igs__stat { gap: 12px; padding: 4px 10px; }
+  .igs__stat-icon { width: 46px; height: 46px; border-radius: 12px; }
+  .igs__stat-icon svg { width: 22px; height: 22px; }
+  .igs__stat-label { font-size: 10px; letter-spacing: 0.08em; white-space: normal; }
+  .igs__photos { gap: 18px; }
+  .igs__photo img { aspect-ratio: 3 / 2; }
+  .igs__photo-label { font-size: 13.5px; padding: 6px 12px; gap: 10px; min-height: 40px; }
+}
+/* mobile: stats and photos stacked */
+@media (max-width: 639px) {
+  .igs__inner { padding: 0 16px; }
+  .igs__head { margin-bottom: 20px; }
+  .igs__stats { grid-template-columns: minmax(0, 1fr); border-radius: 24px; padding: 6px 16px; }
+  .igs__stat { justify-content: flex-start; padding: 9px 4px; }
+  .igs__stat + .igs__stat::before { left: 0; right: 0; top: 0; width: auto; height: 1px; transform: none; }
+  .igs__stat-icon { width: 42px; height: 42px; }
+  .igs__stat-value { font-size: 24px; }
+  .igs__stat-label { white-space: normal; }
+  .igs__photos { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .igs__photo img { aspect-ratio: 3 / 2; }
+  .igs__btn { width: 100%; justify-content: center; }
+  .igs__cta { width: 100%; }
+}
+
+/* Typewriter effect on the stats (number types first, then the label; green cursor; hold; delete; repeat).
+   Only runs while the section is on screen (.igs--live) and never with reduced motion. */
+.igs__stat-value, .igs__stat-label { position: relative; width: max-content; max-width: 100%; }
+.igs__type { display: inline-block; }
+@keyframes igs-v-clip { 0% { clip-path: inset(0 100% 0 0); animation-timing-function: steps(var(--n), end); } 7% { clip-path: inset(0 0 0 0); } 80% { clip-path: inset(0 0 0 0); animation-timing-function: steps(var(--n), end); } 86%, 100% { clip-path: inset(0 100% 0 0); } }
+@keyframes igs-v-cur { 0% { left: 0; visibility: visible; animation-timing-function: steps(var(--n), end); } 7% { left: 100%; visibility: visible; } 7.01%, 79.99% { left: 100%; visibility: hidden; } 80% { left: 100%; visibility: visible; animation-timing-function: steps(var(--n), end); } 86% { left: 0; visibility: visible; } 86.01%, 100% { left: 0; visibility: hidden; } }
+@keyframes igs-l-clip { 0%, 7% { clip-path: inset(0 100% 0 0); animation-timing-function: steps(var(--n), end); } 19% { clip-path: inset(0 0 0 0); } 74% { clip-path: inset(0 0 0 0); animation-timing-function: steps(var(--n), end); } 80%, 100% { clip-path: inset(0 100% 0 0); } }
+@keyframes igs-l-cur { 0%, 7% { left: 0; animation-timing-function: steps(var(--n), end); } 19% { left: 100%; } 74% { left: 100%; animation-timing-function: steps(var(--n), end); } 80%, 100% { left: 0; } }
+@keyframes igs-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .igs--live .igs__stat-value .igs__type { animation: igs-v-clip 7s var(--d, 0s) infinite both; }
+  .igs--live .igs__stat-label .igs__type { animation: igs-l-clip 7s var(--d, 0s) infinite both; }
+  .igs--live .igs__stat-value::after, .igs--live .igs__stat-label::after { content: ""; position: absolute; top: 6%; bottom: 6%; width: 2px; margin-left: 2px; border-radius: 1px; background: #22a447; pointer-events: none; }
+  .igs--live .igs__stat-value::after { animation: igs-v-cur 7s var(--d, 0s) infinite both, igs-blink 0.9s steps(1) infinite; }
+  .igs--live .igs__stat-label::after { animation: igs-l-cur 7s var(--d, 0s) infinite both, igs-blink 0.9s steps(1) infinite; }
+}

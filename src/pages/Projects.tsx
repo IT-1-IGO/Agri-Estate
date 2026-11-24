@@ -30,7 +30,7 @@ const Projects: React.FC = () => {
       </section>
 
       <section className="bg-gradient-to-b from-[#EDF4DF] via-[#F3F8E8] to-[#EAF2DA] pb-16 md:pb-20" aria-label="Our farming projects">
-      <div className="container-pro pb-10 pt-16 text-center md:pb-12 md:pt-24">
+      <div className="pb-10 pt-16 text-center md:pb-12 md:pt-24 container-pro">
         <p className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#2d6a3e]"><span className="h-px w-8 bg-[#2d6a3e]" aria-hidden="true" />IGO Agri Estate<span className="h-px w-8 bg-[#2d6a3e]" aria-hidden="true" /></p>
         <h2 className="mt-3 text-3xl normal-case tracking-tight text-[#0f4d24] sm:text-4xl">Our Farming Projects</h2>
         <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-slate-600">Explore our agricultural land and farm projects.</p>

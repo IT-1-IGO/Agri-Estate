@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Send, MessageSquare, User, FileText, ArrowRight, Sprout } from 'lucide-react';
 import './Contact.css';
 import { crmEnabled, submitLead } from '../lib/leadsService';
+import IGOGroupStrength from '../components/IGOGroupStrength';
 import SEO from '../components/SEO';
 interface ContactProps {
   /** false when this component is embedded as a section inside another page (e.g. the homepage),
@@ -219,6 +220,7 @@ const Contact: React.FC<ContactProps> = ({ standalone = true }) => {
         </motion.div>
       </div>
     </section>
+    {standalone && <IGOGroupStrength />}
     </>
   );
 };

@@ -107,8 +107,8 @@ const stripCms = (root: HTMLElement) => {
     if (n.dataset.cmsHid) n.style.removeProperty('display');
     if (n.dataset.cmsOrd) n.style.removeProperty('order');
     // A card copied while its entrance animation (framer-motion: opacity 0 + translate) is still at its start state would stay invisible forever, leaving an empty grid slot.
-    if (n.style.opacity === '0') n.style.removeProperty('opacity');
-    if (/translate/.test(n.style.transform)) n.style.removeProperty('transform');
+    if (n.style.opacity) n.style.removeProperty('opacity');          // any value: the copy may be taken part-way through the fade-in
+    if (/translate|scale/.test(n.style.transform)) n.style.removeProperty('transform');
     Object.keys(n.dataset).filter((k) => k.startsWith('cms')).forEach((k) => delete n.dataset[k]);
   });
 };
@@ -288,7 +288,8 @@ export const scanPage = (): ScanResult => {
     const general = emptyBlock();
     collect(s, (el) => !el.closest('[data-cms-card]'), general, usage);
     const groups: ScanGroup[] = [];
-    s.querySelectorAll<HTMLElement>('[data-cms-group]').forEach((p) => {
+    // The section itself can be the card group (cards are its direct children, e.g. Services > Legal and documentation support).
+    [...(s.dataset.cmsGroup ? [s] : []), ...Array.from(s.querySelectorAll<HTMLElement>('[data-cms-group]'))].forEach((p) => {
       const items = (Array.from(p.children) as HTMLElement[]).filter((c) => c.dataset.cmsCard && !c.dataset.cmsAdded);
       if (items.length < 2) return;
       groups.push({
