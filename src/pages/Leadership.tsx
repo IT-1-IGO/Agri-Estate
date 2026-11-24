@@ -122,7 +122,7 @@ const Leadership: React.FC = () => {
   return (
     <main className="igo-lead">
       <SEO
-        title="Leadership"
+        title="Leadership Team | IGO Agri Estates"
         description="Meet the leaders driving India's fastest-growing farming ecosystem — from executive vision to department excellence."
         canonical="/leadership"
         ogImage="https://www.igoagriestate.com/images/leadership/leadership-core-managers.webp"

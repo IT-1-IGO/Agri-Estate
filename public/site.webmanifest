@@ -1,0 +1,10 @@
+{
+  "name": "IGO Agri Estates",
+  "short_name": "IGO Agri",
+  "description": "Buy, sell and invest in verified managed agricultural land in India.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#124B3B",
+  "icons": [{"src": "/images/logo.png", "sizes": "any", "type": "image/png"}]
+}

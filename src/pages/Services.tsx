@@ -225,7 +225,7 @@ const Services: React.FC = () => {
   return (
     <main className="overflow-x-hidden bg-[#F8F8F0] pt-[76px]" style={{ color: INK }}>
       <SEO
-        title="Services | AMC and Buyback"
+        title="Farm AMC & Land Buyback Services | IGO Agri Estates"
         description="Reliable AMC and Buyback services that bring long-term value and peace of mind to your agricultural investments."
         canonical="/services"
       />

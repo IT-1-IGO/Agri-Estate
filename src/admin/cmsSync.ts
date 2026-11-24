@@ -65,11 +65,12 @@ async function push(key: string, value: unknown) {
 const apply = (key: string, value: unknown) => lsSet(PREFIX + key, JSON.stringify(value));
 
 async function pullPublic() {
-  const r = await fetch(`${API_URL!.replace(/\/$/, '')}/api/public/cms`);
+  const r = await fetch(`${API_URL!.replace(/\/$/, '')}/api/public/cms`, { cache: 'no-store' }); // never reuse a stale cached copy
   if (!r.ok) return;
   const d = await r.json() as { docs: Record<string, { published: Record<string, unknown>; publishedAt?: string }>; collections: Record<string, unknown[]> };
-  for (const [n, x] of Object.entries(d.docs)) apply('doc.' + n, { draft: x.published, published: x.published, publishedAt: x.publishedAt, updatedAt: x.publishedAt });
-  for (const [n, items] of Object.entries(d.collections)) apply('col.' + n, items);
+  const p = pending(); // keep anything an admin has saved here that is still on its way to the server
+  for (const [n, x] of Object.entries(d.docs)) if (!p['doc.' + n]) apply('doc.' + n, { draft: x.published, published: x.published, publishedAt: x.publishedAt, updatedAt: x.publishedAt });
+  for (const [n, items] of Object.entries(d.collections)) if (!p['col.' + n]) apply('col.' + n, items);
   window.dispatchEvent(new Event(EVENT));
 }
 

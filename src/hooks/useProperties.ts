@@ -86,7 +86,16 @@ const computeNumericValues = (prop: Property): Property => {
 };
 
 export const useProperties = () => {
-  const [properties, setProperties] = useState<Property[]>([]);
+  // Render instantly from local/fallback data; the live fetch below replaces it when it arrives.
+  const [properties, setProperties] = useState<Property[]>(() => {
+    try {
+      const local = getLocalProperties();
+      const ids = new Set(local.map((p) => p.id));
+      return [...local, ...fallbackProperties.filter((p) => !ids.has(p.id))].map(computeNumericValues);
+    } catch {
+      return fallbackProperties.map(computeNumericValues);
+    }
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -24,7 +24,10 @@ Allow: /blogs
 Allow: /knowledge-hub
 Allow: /valuation
 Allow: /tax-optimizer
-Allow: /marketplace
+Allow: /projects
+Allow: /sell-land
+Allow: /faq
+Allow: /blogs/
 Allow: /services/
 Allow: /policy
 
