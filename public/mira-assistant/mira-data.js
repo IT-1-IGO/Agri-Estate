@@ -25,7 +25,8 @@ window.MIRA_DATA = {
     showLess: "Show fewer questions",
     placeholder: "Type your question\u2026",
     emptyError: "Please type a question first\u2026",
-    tooltip: "Chat with Mira"
+    tooltip: "Chat with Mira",
+    whatsappBar: "Chat with us on WhatsApp"
   },
 
   // Only real pages of this website (each route exists in src/App.tsx).
