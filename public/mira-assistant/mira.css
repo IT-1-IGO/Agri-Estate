@@ -72,13 +72,13 @@
 .mira-panel {
   position: fixed;
   right: calc(24px + env(safe-area-inset-right, 0px));
-  bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   z-index: 2147483001;
   width: 420px;
   max-width: calc(100vw - 32px);
   height: 640px;
-  max-height: calc(100vh - 130px);
-  max-height: calc(100dvh - 130px);
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
   display: flex; flex-direction: column;
   background: var(--mira-white);
   border-radius: 20px;
@@ -179,12 +179,12 @@
 .mira-link--wa { background: var(--mira-wa); color: #053b1d; }
 .mira-link--wa:hover { background: #1fbe5b; }
 
-.mira-footer { flex: none; padding: 10px 12px 12px; border-top: 1px solid #e3ece5; background: var(--mira-white); }
+.mira-footer { flex: none; padding: 12px 14px; border-top: 1px solid #e3ece5; background: var(--mira-white); }
 .mira-form { display: flex; gap: 8px; }
 .mira-input {
   flex: 1; min-width: 0;
-  height: 44px; padding: 0 14px;
-  border: 1.5px solid #cfdcd2; border-radius: 12px;
+  height: 46px; padding: 0 14px;
+  border: 1.5px solid #cfdcd2; border-radius: 14px;
   background: var(--mira-white); color: var(--mira-text);
   font: 400 14.5px/1 var(--mira-font);
 }
@@ -193,8 +193,8 @@
 .mira-input.mira-invalid { border-color: var(--mira-danger); box-shadow: 0 0 0 3px rgba(198, 40, 40, .15); }
 .mira-send {
   flex: none; display: inline-flex; align-items: center; gap: 6px;
-  height: 44px; padding: 0 16px;
-  border: 0; border-radius: 12px;
+  height: 46px; padding: 0 16px;
+  border: 0; border-radius: 14px;
   background: var(--mira-dark); color: var(--mira-white);
   font: 600 14px/1 var(--mira-font); cursor: pointer;
   transition: background .15s ease;
@@ -204,8 +204,8 @@
 .mira-send svg { width: 16px; height: 16px; }
 .mira-wa-bar {
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  margin-top: 10px; min-height: 44px; padding: 0 16px;
-  border: 1.5px solid #bfe8cf; border-radius: 999px;
+  margin-top: 10px; min-height: 42px; padding: 0 14px;
+  border: 1px solid #bfe8cf; border-radius: 14px;
   background: #eafaf1; color: var(--mira-wa-dark);
   font: 600 14px/1.2 var(--mira-font); text-decoration: none;
   transition: background .15s ease, border-color .15s ease;

@@ -9,7 +9,7 @@
   if (window.__miraLoaded) return;
   window.__miraLoaded = true;
 
-  var VERSION = '3';
+  var VERSION = '4';
   var script = document.currentScript;
   var BASE = (function () {
     var src = (script && script.src) || '';
@@ -298,7 +298,7 @@
       if (!started) resetConversation();
       panel.hidden = false;
       launcher.setAttribute('aria-expanded', 'true');
-      if (isMobile()) launcherWrap.hidden = true;
+      launcherWrap.hidden = true;
       setTimeout(function () { panel.focus({ preventScroll: true }); }, 30);
     }
     function hidePanel() {
