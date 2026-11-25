@@ -9,7 +9,7 @@
   if (window.__miraLoaded) return;
   window.__miraLoaded = true;
 
-  var VERSION = '2';
+  var VERSION = '3';
   var script = document.currentScript;
   var BASE = (function () {
     var src = (script && script.src) || '';

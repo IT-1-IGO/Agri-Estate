@@ -26,7 +26,7 @@ window.MIRA_DATA = {
     placeholder: "Type your question\u2026",
     emptyError: "Please type a question first\u2026",
     tooltip: "Chat with Mira",
-    whatsappBar: "Chat on WhatsApp \u2014 instant reply"
+    whatsappBar: "Chat with us on WhatsApp"
   },
 
   // Only real pages of this website (each route exists in src/App.tsx).
