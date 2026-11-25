@@ -9,7 +9,7 @@
   if (window.__miraLoaded) return;
   window.__miraLoaded = true;
 
-  var VERSION = '1';
+  var VERSION = '2';
   var script = document.currentScript;
   var BASE = (function () {
     var src = (script && script.src) || '';
@@ -133,6 +133,12 @@
     function iconBtn(name, label, onClick) {
       return el('button', { type: 'button', class: 'mira-icon-btn', 'aria-label': label, title: label, html: ICONS[name], onclick: onClick });
     }
+    function waBar() {
+      if (!hasWa) return null;
+      var a = el('a', { class: 'mira-wa-bar', href: waUrl, target: '_blank', rel: 'noopener noreferrer' }, [M.whatsappBar || 'Chat on WhatsApp \u2014 instant reply', el('span', { class: 'mira-sr', text: ' (opens in a new tab)' })]);
+      a.insertAdjacentHTML('afterbegin', ICONS.wa);
+      return a;
+    }
     var headerAvatar = el('div', { class: 'mira-header-avatar' }, [avatarImg(44, '', ''), el('span', { class: 'mira-dot', 'aria-hidden': 'true' })]);
     var panel = el('section', { class: 'mira-panel', role: 'dialog', 'aria-modal': 'false', 'aria-labelledby': 'mira-title', 'aria-describedby': 'mira-subtitle', tabindex: '-1', hidden: true }, [
       el('header', { class: 'mira-header' }, [
@@ -146,7 +152,7 @@
         iconBtn('close', 'Close chat', function () { closeChat(); })
       ]),
       messages,
-      el('div', { class: 'mira-footer' }, [form, errorMsg])
+      el('div', { class: 'mira-footer' }, [form, errorMsg, waBar()])
     ]);
     root.appendChild(panel);
 

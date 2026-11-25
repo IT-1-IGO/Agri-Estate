@@ -201,6 +201,17 @@
 .mira-send:hover { background: var(--mira-primary); }
 .mira-send:focus-visible { outline: 3px solid var(--mira-accent); outline-offset: 2px; }
 .mira-send svg { width: 16px; height: 16px; }
+.mira-wa-bar {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 10px; min-height: 44px; padding: 0 16px;
+  border: 1.5px solid #bfe8cf; border-radius: 999px;
+  background: #eafaf1; color: var(--mira-wa-dark);
+  font: 600 14px/1.2 var(--mira-font); text-decoration: none;
+  transition: background .15s ease, border-color .15s ease;
+}
+.mira-wa-bar:hover { background: #d6f5e3; border-color: var(--mira-wa); }
+.mira-wa-bar:focus-visible { outline: 3px solid var(--mira-accent); outline-offset: 2px; }
+.mira-wa-bar svg { width: 18px; height: 18px; flex: none; color: var(--mira-wa); }
 .mira-error { margin: 6px 2px 0; min-height: 0; font-size: 12.5px; color: var(--mira-danger); }
 .mira-error:empty { display: none; }
 
