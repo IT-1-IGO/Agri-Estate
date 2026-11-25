@@ -6,14 +6,15 @@ import { brandsData } from '../../data/brandsData';
 type Brand = (typeof brandsData)[number];
 
 const CARD =
-  'group/card relative mx-2.5 flex h-[220px] w-[260px] shrink-0 flex-col justify-center overflow-hidden rounded-3xl border border-black/5 bg-white p-5 shadow-sm transition-all duration-300 sm:w-[270px]';
+  'group/card relative mx-2.5 flex h-[232px] w-[250px] shrink-0 flex-col justify-center overflow-hidden rounded-3xl border border-black/5 bg-white p-4 shadow-sm transition-all duration-300 sm:w-[258px]';
 
 const CardBody: React.FC<{ brand: Brand; linked: boolean }> = ({ brand }) => (
   <>
-    <div className="flex h-28 items-center justify-center rounded-2xl border border-transparent bg-black/[0.02] p-3 transition-all group-hover/card:border-black/5 group-hover/card:bg-white">
-      <img src={brand.logo} alt={brand.title} loading="lazy" className="max-h-[88px] max-w-full object-contain mix-blend-multiply" />
+    <div className="flex h-[142px] items-center justify-center overflow-hidden rounded-2xl border border-transparent bg-black/[0.02] transition-all group-hover/card:border-black/5 group-hover/card:bg-white">
+      {/* The logo files are 600px squares with white margin around the artwork, so they are scaled up to show the artwork large and sharp. */}
+      <img src={brand.logo} alt={brand.title} loading="lazy" decoding="async" className="h-full w-full scale-[1.02] object-contain mix-blend-multiply" />
     </div>
-    <h3 className="mt-4 text-center text-base font-black leading-snug text-primary">{brand.title}</h3>
+    <h3 className="mt-3 text-center text-base font-black leading-snug text-primary">{brand.title}</h3>
   </>
 );
 
@@ -98,12 +99,12 @@ const ComingSoonModal: React.FC<{ brand: Brand | null; onClose: () => void }> = 
 const arrowBtn =
   'flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-black/10 text-text-muted transition-colors hover:bg-primary hover:text-white';
 
-const BrandsMarquee = () => {
+const BrandsMarquee: React.FC<{ headless?: boolean }> = ({ headless = false }) => {
   const [soon, setSoon] = useState<Brand | null>(null);
   const closeSoon = React.useCallback(() => setSoon(null), []);
   return (
-    <section className="overflow-hidden border-b border-t border-black/5 bg-background py-12 md:py-14">
-      <div className="container-pro">
+    <section className={headless ? 'overflow-hidden pb-2 pt-2' : 'overflow-hidden border-b border-t border-black/5 bg-background py-12 md:py-14'}>
+      {!headless && <div className="container-pro">
         <div className="relative mb-8 text-center">
           <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
             <img src="/images/igo-group-map.png" alt="" aria-hidden="true" loading="lazy" className="w-full max-w-[460px] object-contain opacity-[0.22] mix-blend-multiply" />
@@ -132,11 +133,11 @@ const BrandsMarquee = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
 
       <div className="relative w-full pb-4">
-        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-16 bg-gradient-to-r from-background to-transparent md:w-24" />
-        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-background to-transparent md:w-24" />
+        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-16 bg-gradient-to-r from-[#fbf8ef] to-transparent md:w-24" />
+        <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-16 bg-gradient-to-l from-[#fbf8ef] to-transparent md:w-24" />
 
         <div className="animate-marquee hover:animation-play-state-paused group flex w-max py-2">
           <div className="flex">

@@ -8,7 +8,6 @@ import SEO from './components/SEO';
 import type { Property } from './types';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import AIAssistant from './components/ai/AIAssistant';
 import { AnimatePresence } from 'framer-motion';
 import PropertyCard from './components/PropertyCard';
 import AboutPage from './pages/AboutPage';
@@ -51,7 +50,6 @@ import PopularLocations from './components/home/PopularLocations';
 import VerifiedInvestments from './components/home/VerifiedInvestments';
 import KnowledgeHubSection from './components/home/KnowledgeHubSection';
 import { submitLead } from './lib/leadsService';
-import LiveChatWidget from './components/LiveChatWidget';
 import { useProperties } from './hooks/useProperties';
 import { useEffect, useMemo, useState } from 'react';
 import { getLocalSettings, SETTINGS_SYNC_EVENT, subscribeLocalSync } from './lib/localSync';
@@ -85,7 +83,6 @@ const RouteLoader: React.FC = () => (
 
 const NotFound: React.FC = () => (
   <div className="min-h-screen bg-background flex items-center justify-center p-6">
-    <SEO title="Page Not Found | IGO Agri Estates" description="The page you are looking for does not exist or has been moved." canonical="/" noIndex />
     <div className="text-center max-w-lg">
       <div className="text-[120px] font-black text-primary/10 leading-none mb-4">404</div>
       <h1 className="text-4xl font-black text-primary uppercase tracking-tighter mb-4">Page Not Found</h1>
@@ -99,7 +96,7 @@ const NotFound: React.FC = () => (
   </div>
 );
 
-import BrandsMarquee from './components/home/BrandsMarquee';
+import EcosystemSection from './components/home/EcosystemSection';
 import SellBuyPaths from './components/home/SellBuyPaths';
 import RequirementSection from './components/home/RequirementSection';
 
@@ -205,7 +202,6 @@ const Home: React.FC = () => {
       {/* Knowledge */}
       <KnowledgeHubSection />
 
-      <div id="mira-intro-slot"></div>
       <RequirementSection />
     </main>
   );
@@ -321,9 +317,10 @@ function App() {
             </Suspense>
            </AnimatePresence>
 
+          {/* The old round chat buttons (AIAssistant, LiveChatWidget) sat behind the Mira avatar launcher, so they are no longer rendered. Mira is the only floating assistant. */}
 
-          {/* 26 Verticals Brands Marquee - Home page only */}
-          {!isPanel && location.pathname === '/' && <BrandsMarquee />}
+          {/* Backed by a Strong & Diversified Ecosystem - Home page only (replaces the 26 Verticals marquee) */}
+          {!isPanel && location.pathname === '/' && <EcosystemSection />}
 
           {/* Footer */}
           {!isPanel && <footer className="relative overflow-hidden bg-[#022c22] text-white normal-case tracking-normal">
