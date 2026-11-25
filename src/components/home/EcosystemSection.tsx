@@ -9,7 +9,7 @@ const STATS = [
 ];
 
 const CARDS = [
-  { src: '/images/igo-group-head-office.webp', alt: 'IGO Group front office building', label: 'Front Office' },
+  { src: '/images/igo-group-head-office.webp', alt: 'IGO Group head office building', label: 'Head Office' },
   { src: '/images/igo-group-back-office.webp', alt: 'Sundarakottam, Thiruvalluvar Illam back office', label: 'Back Office' },
 ];
 
